@@ -11,6 +11,10 @@ import {
   User,
   Chip,
   Tooltip,
+  Card,
+  CardHeader,
+  CardBody,
+  Pagination,
   // type ChipProps,
   // getKeyValue,
 } from "@nextui-org/react";
@@ -89,26 +93,55 @@ export default function Customer() {
   }, []);
 
   return (
-    <Table aria-label="Example table with custom cells">
-      <TableHeader columns={columns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody items={users}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
+    <Card className="py-4">
+      <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
+        <h4 className="mx-4 my-2 text-tiny font-bold uppercase">Customer</h4>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <Card>
+            <CardHeader className="flex-col items-start px-4 pb-0 pt-4">
+              <h1 className="text-tiny font-bold uppercase">Active</h1>
+            </CardHeader>
+            <CardBody overflow-visible py-2>
+              <p>200 / customer</p>
+            </CardBody>
+          </Card>
+          <Card>
+            <CardHeader className="flex-col items-start px-4 pb-0 pt-4">
+              <h1 className="text-tiny font-bold uppercase">Puased</h1>
+            </CardHeader>
+            <CardBody overflow-visible py-2>
+              <p>200 / customer</p>
+            </CardBody>
+          </Card>
+        </div>
+        {/* <p className="text-tiny font-bold uppercase">Daily Mix</p> */}
+      </CardHeader>
+      <CardBody className="overflow-visible py-2 ">
+        <Table aria-label="Example table with custom cells">
+          <TableHeader columns={columns}>
+            {(column) => (
+              <TableColumn
+                key={column.uid}
+                align={column.uid === "actions" ? "center" : "start"}
+              >
+                {column.name}
+              </TableColumn>
             )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+          </TableHeader>
+          <TableBody items={users}>
+            {(item) => (
+              <TableRow key={item.id}>
+                {(columnKey) => (
+                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <div className="flex justify-center  my-4">
+          <Pagination color="warning" initialPage={3} total={10} />
+        </div>
+      </CardBody>
+    </Card>
   );
 }

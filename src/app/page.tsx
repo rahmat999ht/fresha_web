@@ -22,7 +22,7 @@ export default async function Home() {
   const session = await getServerAuthSession();
 
   const menuItems = ["Sayur", "Pesanan", "Customer"];
-  const toMenuItem = ["/items/sayur", "/items/pesanan", "/items/customer"];
+  const toMenuItem = ["/sayur", "/pesanan", "/customer"];
 
   return (
     <Navbar disableAnimation isBordered>
@@ -70,18 +70,7 @@ export default async function Home() {
         <NavbarMenu>
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                className="w-full"
-                color={
-                  index === 2
-                    ? "warning"
-                    : index === menuItems.length - 1
-                      ? "danger"
-                      : "foreground"
-                }
-                href="#"
-                size="lg"
-              >
+              <Link className="w-full" color="foreground" href="#" size="lg">
                 {item}
               </Link>
             </NavbarMenuItem>
