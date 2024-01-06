@@ -1,12 +1,11 @@
-.container{
-    background-color: var(--bgSoft);
-    padding: 20px;
-    border-radius:10px ;
-  }
-  
-  .title{
-    margin-bottom: 20px;
-    font-weight: 200;
-    color: var(--textSoft);
-  }
-  
+.container {
+  background-color: var(--bgSoft);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.title {
+  margin-bottom: 20px;
+  font-weight: 200;
+  color: var(--textSoft);
+}

@@ -3,8 +3,6 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import styles from "./navbar.module.css";
-import { FreshaImage } from "public/images/FRESHA";
-
 import {
   MdSearch,
 } from "react-icons/md";
