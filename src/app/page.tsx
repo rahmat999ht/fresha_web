@@ -1,83 +1,28 @@
-// import Link from "next/link";
-
-// import { CreatePost } from "~/app/_components/create-post";
 import React from "react";
 import { getServerAuthSession } from "~/server/auth";
 
-// import { api } from "~/trpc/server";
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarMenuToggle,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenu,
-  NavbarMenuItem,
-  Link,
-  Button,
-} from "@nextui-org/react";
+import DashboardComponent, {
+  type IDashboardProps,
+} from "./_components/dashboard";
+import LoginComponent from "./_components/login";
 
 export default async function Home() {
-  // const hello = await api.post.hello.query({ text: "from tRPC" });
   const session = await getServerAuthSession();
-
-  const menuItems = ["Sayur", "Pesanan", "Customer"];
-  const toMenuItem = ["/sayur", "/pesanan", "/customer"];
-
+  const profileData: IDashboardProps = {
+    src: session?.user.image ?? "image kosong",
+    name: session?.user.name ?? "name kosong",
+    email: session?.user.email ?? "email kosong",
+  };
   return (
-    <Navbar disableAnimation isBordered>
-      <NavbarContent className="sm:hidden" justify="start">
-        <NavbarMenuToggle />
-      </NavbarContent>
-      <NavbarContent>
-        <NavbarBrand>
-          {/* <AcmeLogo /> */}
-          <p className="font-bold text-inherit">Fresha</p>
-        </NavbarBrand>
-      </NavbarContent>
-
-      {session && (
-        <NavbarContent className="hidden gap-4 sm:flex" justify="center">
-          {menuItems.map((item, index) => (
-            <NavbarItem key={`${item}-${index}`} isActive>
-              <Link href={toMenuItem[index]} color="foreground" size="sm">
-                {item}
-              </Link>
-            </NavbarItem>
-          ))}
-        </NavbarContent>
+    <div>
+      {session ? (
+        // <div>sudah login</div>
+        <DashboardComponent {...profileData}></DashboardComponent>
+      ) : (
+        // <div>belum login</div>
+        <LoginComponent></LoginComponent>
       )}
-
-      <NavbarContent justify="end">
-        <NavbarItem>
-          <div className="flex items-center gap-4">
-            <p style={{ fontSize: "1rem" }} className="text-center text-black">
-              {session && <span>{session.user?.name}</span>}
-            </p>
-            <Button
-              as={Link}
-              color="primary"
-              href={session ? "/api/auth/signout" : "/api/auth/signin"}
-              variant="flat"
-            >
-              {session ? "Sing Out" : "Sign in"}
-            </Button>
-          </div>
-        </NavbarItem>
-      </NavbarContent>
-
-      {session && (
-        <NavbarMenu>
-          {menuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link className="w-full" color="foreground" href="#" size="lg">
-                {item}
-              </Link>
-            </NavbarMenuItem>
-          ))}
-        </NavbarMenu>
-      )}
-    </Navbar>
+    </div>
   );
 }
 
