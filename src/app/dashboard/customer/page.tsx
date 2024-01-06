@@ -15,14 +15,15 @@ import {
   CardHeader,
   CardBody,
   Pagination,
-  // type ChipProps,
-  // getKeyValue,
 } from "@nextui-org/react";
+import styles from "./customer.module.css";
 import { type ChipProps } from "@nextui-org/react";
 import { EditIcon } from "public/icons/EditIcon";
 import { DeleteIcon } from "public/icons/DeleteIcon";
 import { EyeIcon } from "public/icons/EyeIcon";
 import { columns, users } from "public/data";
+import Cards from "~/app/_components/dashboard/cards/cards";
+import { cards } from "public/data/cards";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -93,52 +94,40 @@ export default function Customer() {
   }, []);
 
   return (
-    <Card className="py-4">
+    <Card className="px-1 py-1">
       <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
-        <h4 className="mx-4 my-2 text-tiny font-bold uppercase">Customer</h4>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          <Card>
-            <CardHeader className="flex-col items-start px-4 pb-0 pt-4">
-              <h1 className="text-tiny font-bold uppercase">Active</h1>
-            </CardHeader>
-            <CardBody overflow-visible py-2>
-              <p>200 / customer</p>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardHeader className="flex-col items-start px-4 pb-0 pt-4">
-              <h1 className="text-tiny font-bold uppercase">Puased</h1>
-            </CardHeader>
-            <CardBody overflow-visible py-2>
-              <p>200 / customer</p>
-            </CardBody>
-          </Card>
+        <div className="my-4 grid grid-cols-2 flex-wrap gap-x-4 gap-y-4 sm:grid-cols-4">
+          {cards.map((item) => (
+            <Cards item={item} key={item.id} />
+          ))}
         </div>
-        {/* <p className="text-tiny font-bold uppercase">Daily Mix</p> */}
       </CardHeader>
       <CardBody className="overflow-visible py-2 ">
-        <Table aria-label="Example table with custom cells">
-          <TableHeader columns={columns}>
-            {(column) => (
-              <TableColumn
-                key={column.uid}
-                align={column.uid === "actions" ? "center" : "start"}
-              >
-                {column.name}
-              </TableColumn>
-            )}
-          </TableHeader>
-          <TableBody items={users}>
-            {(item) => (
-              <TableRow key={item.id}>
-                {(columnKey) => (
-                  <TableCell>{renderCell(item, columnKey)}</TableCell>
-                )}
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        <div className="flex justify-center  my-4">
+        <div className={styles.container}>
+          <h2 className={styles.title}>Customers</h2>
+          <Table aria-label="Example table with custom cells">
+            <TableHeader columns={columns}>
+              {(column) => (
+                <TableColumn
+                  key={column.uid}
+                  align={column.uid === "actions" ? "center" : "start"}
+                >
+                  {column.name}
+                </TableColumn>
+              )}
+            </TableHeader>
+            <TableBody items={users}>
+              {(item) => (
+                <TableRow key={item.id}>
+                  {(columnKey) => (
+                    <TableCell>{renderCell(item, columnKey)}</TableCell>
+                  )}
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="my-4 flex  justify-center">
           <Pagination color="warning" initialPage={3} total={10} />
         </div>
       </CardBody>

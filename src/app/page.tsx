@@ -1,23 +1,18 @@
 import React from "react";
 import { getServerAuthSession } from "~/server/auth";
-
-import DashboardComponent, {
-  type IDashboardProps,
-} from "./_components/dashboard";
-import LoginComponent from "./_components/login";
+import LoginComponent from "./login/page";
+import Dashboard from "./dashboard/page";
+import Layout from "./dashboard/layout";
 
 export default async function Home() {
   const session = await getServerAuthSession();
-  const profileData: IDashboardProps = {
-    src: session?.user.image ?? "image kosong",
-    name: session?.user.name ?? "name kosong",
-    email: session?.user.email ?? "email kosong",
-  };
   return (
     <div>
       {session ? (
         // <div>sudah login</div>
-        <DashboardComponent {...profileData}></DashboardComponent>
+        <Layout>
+          <Dashboard />
+        </Layout>
       ) : (
         // <div>belum login</div>
         <LoginComponent></LoginComponent>

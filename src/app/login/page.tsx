@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardHeader, CardBody, Button } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Button, Link } from "@nextui-org/react";
 import { GoogleIcon } from "public/icons/GoogleIcon";
 import { FreshaImage } from "public/images/FRESHA";
 import React from "react";
@@ -9,10 +9,16 @@ import React from "react";
 function LoginComponent() {
   return (
     <div
-      className="centered-container mx-2 my-60 flex flex-wrap content-center items-center justify-center gap-x-4 gap-y-10"
+      className="centered-container mx-2 md:my-60 sm:my-10 flex flex-wrap content-center items-center justify-center gap-x-4 gap-y-10"
       // style={{ height: "100vh" }}
     >
-      <FreshaImage />
+      <div style={{ maxWidth: "300px" }} >
+        <FreshaImage />
+        <p className=" my-4">
+          Fresha is a company that provides kitchen ingredients such as
+          vegetables
+        </p>
+      </div>
 
       <Card className="gap-y-4 py-4">
         <CardHeader className="flex-col items-center gap-y-4 px-4 pb-0 pt-2">
@@ -26,9 +32,12 @@ function LoginComponent() {
           </div>
         </CardHeader>
         <CardBody className="overflow-visible py-2">
-          <Button color="success" href="/api/auth/signin">
-            Login
-          </Button>
+          <Link
+            className="centered-container justify-center"
+            href="/api/auth/signin"
+          >
+            <Button color="success">Login</Button>
+          </Link>
         </CardBody>
       </Card>
     </div>
