@@ -3,9 +3,7 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import styles from "./navbar.module.css";
-import {
-  MdSearch,
-} from "react-icons/md";
+import { MdSearch } from "react-icons/md";
 
 import {
   DropdownItem,
@@ -16,14 +14,14 @@ import {
 } from "@nextui-org/react";
 import { type IUser } from "~/app/model/user";
 
-
-const Navbar: React.FC<IUser> = (props ) => {
+const Navbar: React.FC<IUser> = (props) => {
   const pathname = usePathname();
 
   return (
-
     <div className={styles.container}>
-      <div className={styles.title}>{pathname.split("/").pop()}</div>
+      <div className={styles.title}>
+        {pathname == "/" ? "Dashboard" : pathname.split("/").pop()}
+      </div>
       <div className={styles.menu}>
         <div className={styles.search}>
           <MdSearch />

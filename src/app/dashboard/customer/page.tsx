@@ -104,7 +104,8 @@ export default function Customer() {
       </CardHeader>
       <CardBody className="overflow-visible py-2 ">
         <div className={styles.container}>
-          <h2 className={styles.title}>Customers Status</h2>
+          <h2 className={styles.title}>Customers Fresha</h2>
+
           <Table aria-label="Example table with custom cells">
             <TableHeader columns={columns}>
               {(column) => (

@@ -6,9 +6,7 @@ import {
   MdSupervisedUserCircle,
   MdShoppingBag,
   MdAttachMoney,
-  MdLogout,
 } from "react-icons/md";
-import Link from "next/link";
 import { FreshaImage } from "public/images/FRESHA";
 interface MenuItem {
   title: string;
@@ -80,12 +78,6 @@ const Sidebar: React.FC = async () => {
           </li>
         ))}
       </ul>
-      <Link href="/api/auth/signout">
-        <button type="submit" className={styles.logout}>
-          <MdLogout />
-          Logout
-        </button>
-      </Link>
     </div>
   );
 };
