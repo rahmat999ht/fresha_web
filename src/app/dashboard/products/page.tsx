@@ -20,71 +20,71 @@ import { MdAdd } from "react-icons/md";
 import { Button, Link } from "@nextui-org/react";
 import styles from "./product.module.css";
 
-import { type ChipProps } from "@nextui-org/react";
+// import { type ChipProps } from "@nextui-org/react";
 import { EditIcon } from "public/icons/EditIcon";
 import { DeleteIcon } from "public/icons/DeleteIcon";
 import { EyeIcon } from "public/icons/EyeIcon";
-import { columns, users } from "public/data";
+import { columns, product } from "public/data/products";
 import Cards from "~/app/_components/dashboard/cards/cards";
 import { cards } from "public/data/cards";
 
-const statusColorMap: Record<string, ChipProps["color"]> = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
-};
+// const statusColorMap: Record<string, ChipProps["color"]> = {
+//   active: "success",
+//   paused: "danger",
+//   vacation: "warning",
+// };
 
-type User = (typeof users)[0];
+type Products = (typeof product)[0];
 
 function Product() {
-  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User];
+  const renderCell = React.useCallback((user: Products, columnKey: React.Key) => {
+    const cellValue = user[columnKey as keyof Products];
 
     switch (columnKey) {
       case "name":
         return (
           <User
-            avatarProps={{ radius: "lg", src: user.avatar }}
-            description={user.email}
+            avatarProps={{ radius: "lg", src: user.image }}
+            description={user.category}
             name={cellValue}
           >
-            {user.email}
+            {user.name}
           </User>
         );
-      case "role":
+      case "stock":
         return (
           <div className="flex flex-col">
             <p className="text-bold text-sm capitalize">{cellValue}</p>
-            <p className="text-bold text-sm capitalize text-default-400">
-              {user.team}
-            </p>
+            {/* <p className="text-bold text-sm capitalize text-default-400">
+              {user.stock}
+            </p> */}
           </div>
         );
-      case "status":
+      case "price":
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[user.status]}
+            // color={statusColorMap[user.status]}
             size="sm"
             variant="flat"
           >
-            {cellValue}
+            {user.price}
           </Chip>
         );
       case "actions":
         return (
           <div className="relative flex items-center gap-2">
-            <Tooltip content="Details">
+            <Tooltip content="Details product">
               <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
                 <EyeIcon />
               </span>
             </Tooltip>
-            <Tooltip content="Edit user">
+            <Tooltip content="Edit product">
               <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
                 <EditIcon />
               </span>
             </Tooltip>
-            <Tooltip color="danger" content="Delete user">
+            <Tooltip color="danger" content="Delete product">
               <span className="cursor-pointer text-lg text-danger active:opacity-50">
                 <DeleteIcon />
               </span>
@@ -126,7 +126,7 @@ function Product() {
                 </TableColumn>
               )}
             </TableHeader>
-            <TableBody items={users}>
+            <TableBody items={product}>
               {(item) => (
                 <TableRow key={item.id}>
                   {(columnKey) => (

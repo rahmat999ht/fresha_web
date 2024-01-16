@@ -19,9 +19,8 @@ import {
 import styles from "./customer.module.css";
 import { type ChipProps } from "@nextui-org/react";
 import { EditIcon } from "public/icons/EditIcon";
-import { DeleteIcon } from "public/icons/DeleteIcon";
 import { EyeIcon } from "public/icons/EyeIcon";
-import { columns, users } from "public/data";
+import { columns, users } from "public/data/users";
 import Cards from "~/app/_components/dashboard/cards/cards";
 import { cards } from "public/data/cards";
 
@@ -74,16 +73,11 @@ export default function Customer() {
             <Tooltip content="Details">
               <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
                 <EyeIcon />
-              </span>
+              </span>Edit
             </Tooltip>
             <Tooltip content="Edit user">
               <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
                 <EditIcon />
-              </span>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete user">
-              <span className="cursor-pointer text-lg text-danger active:opacity-50">
-                <DeleteIcon />
               </span>
             </Tooltip>
           </div>

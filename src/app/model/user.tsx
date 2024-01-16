@@ -1,4 +1,4 @@
-export interface IUser {
+export interface IUserLogin {
     image: string;
     name: string;
     email: string;
