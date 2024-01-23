@@ -1,19 +1,24 @@
 "use server";
 
-import { api } from "~/trpc/server";
-// import toast from "react-hot-toast";
+// import { api } from "~/trpc/server";
+import { api } from "~/trpc/react";
+import toast from "react-hot-toast";
 
-export const deleteProduct = async (idItem: string) => {
-  try {
-    console.log(`item ${idItem}`);
-    if (!idItem) {
-      console.log(`item ${idItem}`);
-      return;
-    }
-    console.log(`Berhasil Menghapus ${idItem}`);
-    return await api.product.delete.mutate({ id: idItem });
-  } catch (e) {
-    const error = e as Error;
-    console.log(error.message);
-  }
+export const deleteProduct = async () => {
+  const trpc = api.useContext();
+
+  const deleteItem = api.product.delete.useMutation({
+    onSettled: async (values, error, value) => {
+      console.log("SETTLED", value);
+      await trpc.product.getAll.invalidate();
+      if (values) {
+        const name = values.name;
+        toast.success(`Berhasil Menghapus Product ${name}`);
+      } else if (error) {
+        toast.success(`Error ${error.message}`);
+      }
+    },
+  });
+
+  return deleteItem;
 };
