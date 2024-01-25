@@ -1,18 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { type ChangeEvent, useState } from "react";
 import { Input, Button, Image } from "@nextui-org/react";
-import axios from "axios";
 import { api } from "~/trpc/react";
 import CameraIcon from "public/icons/CameraIcon";
 import { type NextPage } from "next";
+import { supabase } from "~/utils/supabase";
 
-interface Props {
-  dirs: string[];
-}
-
-export const CreateProduct: NextPage<Props> = () => {
+export const CreateProduct: NextPage = () => {
   const router = useRouter();
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
@@ -21,25 +17,15 @@ export const CreateProduct: NextPage<Props> = () => {
   const [price, setPrice] = useState(0);
   const [stock, setStock] = useState(0);
   const [selectedImage, setSelectedImage] = useState("");
-  const [selectedFile, setSelectedFile] = useState<File>();
+  const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [uploading, setUploading] = useState(false);
 
-  const handleUpload = async () => {
-    setUploading(true);
-    try {
-      if (!selectedFile) return;
-      const formData = new FormData();
-      formData.append("myImage", selectedFile);
-      const data = await axios.post("/api/image", formData);
-      console.log(data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.response?.data);
-      } else {
-        console.log("Unexpected error:", error);
-      }
+  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      setSelectedImage(URL.createObjectURL(file ?? new Blob()));
+      setSelectedFile(file);
     }
-    setUploading(false);
   };
 
   const createNewProduct = api.product.create.useMutation({
@@ -51,24 +37,42 @@ export const CreateProduct: NextPage<Props> = () => {
       setDescription("");
       setPrice(0);
       setStock(0);
+      setSelectedImage("");
+      setSelectedFile(undefined);
     },
   });
+
+  const handleSubmit = async () => {
+    setUploading(true);
+    if (selectedFile) {
+      const { data, error } = await supabase.storage
+        .from("images")
+        .upload("sayur/" + selectedFile.name, selectedFile);
+      createNewProduct.mutate({
+        name: name,
+        image: selectedFile.name,
+        category: category,
+        hastag_ml: hastag,
+        desc: description,
+        price: price,
+        stock: stock,
+      });
+      setUploading(false);
+      console.log("berhasil guys");
+
+      if (data) {
+        console.log(data);
+      } else if (error) {
+        console.log(error);
+      }
+    }
+    setUploading(false);
+  };
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        if (selectedFile) {
-          createNewProduct.mutate({
-            name: name,
-            image: selectedFile.name,
-            category: category,
-            hastag_ml: hastag,
-            desc: description,
-            price: price,
-            stock: stock,
-          });
-        }
       }}
       className="flex flex-col gap-2"
     >
@@ -79,12 +83,9 @@ export const CreateProduct: NextPage<Props> = () => {
               <input
                 type="file"
                 hidden
-                onChange={({ target }) => {
-                  if (target.files) {
-                    const file = target.files[0];
-                    setSelectedImage(URL.createObjectURL(file ?? new Blob()));
-                    setSelectedFile(file);
-                  }
+                accept="image/*"
+                onChange={(e) => {
+                  void handleImage(e);
                 }}
               />
               <div className="flex aspect-video w-80 cursor-pointer items-center justify-center rounded border-2 border-dashed">
@@ -107,6 +108,7 @@ export const CreateProduct: NextPage<Props> = () => {
           <div className="flex w-full flex-col gap-8">
             <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
               <Input
+                isRequired
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 type="text"
@@ -114,6 +116,7 @@ export const CreateProduct: NextPage<Props> = () => {
                 label="Name"
               />
               <Input
+                isRequired
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 type="text"
@@ -123,6 +126,7 @@ export const CreateProduct: NextPage<Props> = () => {
             </div>
             <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
               <Input
+                isRequired
                 value={hastag}
                 onChange={(e) => setHastag(e.target.value)}
                 type="text"
@@ -130,6 +134,7 @@ export const CreateProduct: NextPage<Props> = () => {
                 label="Hastag"
               />
               <Input
+                isRequired
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 type="text"
@@ -139,6 +144,7 @@ export const CreateProduct: NextPage<Props> = () => {
             </div>
             <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
               <Input
+                isRequired
                 value={price.toString()} // Convert number to string
                 onChange={(e) => setPrice(parseFloat(e.target.value))}
                 type="number"
@@ -146,6 +152,7 @@ export const CreateProduct: NextPage<Props> = () => {
                 label="Price"
               />
               <Input
+                isRequired
                 value={stock.toString()} // Convert number to string
                 onChange={(e) => setStock(parseInt(e.target.value, 10))}
                 type="number"
@@ -165,10 +172,10 @@ export const CreateProduct: NextPage<Props> = () => {
         <Button
           type="submit"
           color="success"
-          disabled={createNewProduct.isLoading && uploading}
-          onClick={handleUpload}
+          disabled={uploading}
+          onClick={handleSubmit}
         >
-          {createNewProduct.isLoading && uploading ? "Submitting..." : "Submit"}
+          {uploading ? "Submitting..." : "Submit"}
         </Button>
       </div>
     </form>

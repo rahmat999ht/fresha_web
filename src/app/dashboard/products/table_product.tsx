@@ -28,7 +28,7 @@ import { DeleteIcon } from "public/icons/DeleteIcon";
 import { EyeIcon } from "public/icons/EyeIcon";
 import OpenModal, { type IModal } from "~/app/_components/open_modal";
 import { api } from "~/trpc/react";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 interface TableProductProps {
@@ -49,9 +49,9 @@ function TableProduct({ data }: TableProductProps) {
       await utils.product.getAll.invalidate();
       if (values) {
         const name = values.name;
-        toast.success(`Berhasil Menghapus Product ${name}`);
+        // toast.success(`Berhasil Menghapus Product ${name}`);
       } else if (error) {
-        toast.error(`Error ${error.message}`);
+        // toast.error(`Error ${error.message}`);
       }
     },
   });
@@ -178,8 +178,7 @@ function TableProduct({ data }: TableProductProps) {
               )}
             </TableHeader>
             <TableBody>
-              {data.length > 0 ? (
-                data.map((item, index) => (
+              {data.map((item, index) => (
                   <TableRow key={index}>
                     {(columnKey) => (
                       <TableCell key={columnKey}>
@@ -187,10 +186,7 @@ function TableProduct({ data }: TableProductProps) {
                       </TableCell>
                     )}
                   </TableRow>
-                ))
-              ) : (
-                <p className="truncate">kosong</p>
-              )}
+                ))}
             </TableBody>
           </Table>
         </div>
