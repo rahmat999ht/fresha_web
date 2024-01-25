@@ -11,8 +11,6 @@ import {
   useDisclosure,
   Image,
 } from "@nextui-org/react";
-import { deleteProduct } from "~/services/sv_product";
-import { toast } from 'react-hot-toast';
 
 export interface IModal {
   title: string;
@@ -27,7 +25,7 @@ interface OpenModalProps {
   toOpen: React.ReactNode; // Menggunakan React.ReactNode untuk menangani konten dinamis
   isAction?: boolean;
   actionTitle?: string; // Menggunakan React.ReactNode untuk menangani konten dinamis
-  idItem?: string; // Menggunakan React.ReactNode untuk menangani konten dinamis
+  onAction?: ()=> void;// Menggunakan React.ReactNode untuk menangani konten dinamis
 }
 
 export default function OpenModal({
@@ -35,7 +33,7 @@ export default function OpenModal({
   toOpen,
   isAction = false,
   actionTitle = "Action",
-  idItem,
+  onAction,
 }: OpenModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -76,17 +74,11 @@ export default function OpenModal({
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                {isAction && idItem && (
+                {isAction && onAction && (
                   <Button
                     color="danger"
                     onPress={() => {
-                      deleteProduct(idItem)
-                        .then(()=>{
-                          toast.success('Sukses menghapus data product');
-                        })
-                        .catch((error) => {
-                          toast.error(`pesan error${error}`);
-                        });
+                      onAction();
                       onClose();
                     }}
                   >

@@ -27,12 +27,35 @@ import { EditIcon } from "public/icons/EditIcon";
 import { DeleteIcon } from "public/icons/DeleteIcon";
 import { EyeIcon } from "public/icons/EyeIcon";
 import OpenModal, { type IModal } from "~/app/_components/open_modal";
+import { api } from "~/trpc/react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface TableProductProps {
   data: IProduct[]; // Menggunakan React.ReactNode untuk menangani konten dinamis
 }
 
 function TableProduct({ data }: TableProductProps) {
+
+  const router = useRouter();
+
+  const servicesDeleteProduct = api.product.delete.useMutation<IProduct>({
+    onSuccess: () => {
+      router.refresh();
+    },
+    onSettled: async (values, error, value) => {
+      const utils = api.useUtils();
+      console.log("SETTLED", value);
+      await utils.product.getAll.invalidate();
+      if (values) {
+        const name = values.name;
+        toast.success(`Berhasil Menghapus Product ${name}`);
+      } else if (error) {
+        toast.error(`Error ${error.message}`);
+      }
+    },
+  });
+
   const renderCell = React.useCallback(
     (item: IProduct, columnKey: React.Key): React.ReactNode => {
       const cellValue = item[columnKey as keyof IProduct];
@@ -101,7 +124,9 @@ function TableProduct({ data }: TableProductProps) {
                 data={modalDelete}
                 isAction={true}
                 actionTitle="Hapus"
-                idItem={item.id}
+                onAction={ () => {
+                  servicesDeleteProduct.mutate({id: item.id})
+                }}
                 toOpen={
                   <Tooltip color="danger" content="Delete product">
                     <span className="cursor-pointer text-lg text-danger active:opacity-50">
@@ -116,7 +141,7 @@ function TableProduct({ data }: TableProductProps) {
           return cellValue instanceof Date ? cellValue.toString() : cellValue;
       }
     },
-    [],
+    [servicesDeleteProduct],
   );
 
   return (
