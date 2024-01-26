@@ -1,7 +1,7 @@
 import styles from "./addUser.module.css";
 
 import { api } from "~/trpc/server";
-import { CreateProduct } from "~/app/_components/addProduct/create-product";
+import { CreateProduct } from "~/app/_components/product/create-product";
 
 const AddProduct: React.FC = async () => {
 

@@ -1,5 +1,5 @@
 import styles from "./addUser.module.css";
-import { CreateProduct } from "~/app/_components/addProduct/create-product";
+import { CreateProduct } from "~/app/_components/product/create-product";
 
 const AddProduct: React.FC = async () => {
 
