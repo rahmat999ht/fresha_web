@@ -1,7 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure, } from "~/server/api/trpc";
 
 const idProductSchema = z.object({ id: z.string() });
 
@@ -28,10 +27,11 @@ const productUpdateSchema = z.object({
 
 export const productRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.product.findMany({
+    const fanyManyOption = {
       orderBy: { createdAt: "desc" },
       where: { createdBy: { id: ctx.session.user.id } },
-    });
+    }
+    return ctx.db.product.findMany();
   }),
 
   getOne: protectedProcedure.input(idProductSchema).query(({ ctx, input }) => {

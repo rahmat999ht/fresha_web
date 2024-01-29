@@ -47,6 +47,7 @@ export default function OpenModal({
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         radius="lg"
+        // isDismissable 
         classNames={{
           body: "py-6",
           backdrop: "bg-[#292f46]/50 backdrop-opacity-40",

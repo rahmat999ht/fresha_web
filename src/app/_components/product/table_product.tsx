@@ -11,59 +11,92 @@ import {
   Chip,
   Tooltip,
   Card,
-  CardHeader,
+  // CardHeader,
   CardBody,
   Pagination,
 } from "@nextui-org/react";
 import { columns } from "public/data/products";
-import Cards from "~/app/_components/dashboard/cards/cards";
-import { cards } from "public/data/cards";
+// import Cards from "~/app/_components/dashboard/cards/cards";
+// import { cards } from "public/data/cards";
 import styles from "./product.module.css";
 import { MdAdd } from "react-icons/md";
 import { Button, Link } from "@nextui-org/react";
 import { type IProduct } from "~/type/iProduct";
-import React from "react";
+import React, { useState } from "react";
 import { EditIcon } from "public/icons/EditIcon";
 import { DeleteIcon } from "public/icons/DeleteIcon";
 import { EyeIcon } from "public/icons/EyeIcon";
 import OpenModal, { type IModal } from "~/app/_components/open_modal";
 import { api } from "~/trpc/react";
-// import toast from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { supabase } from "~/utils/supabase";
 
 interface TableProductProps {
   data: IProduct[]; // Menggunakan React.ReactNode untuk menangani konten dinamis
 }
 
 function TableProduct({ data }: TableProductProps) {
-
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const servicesDeleteProduct = api.product.delete.useMutation<IProduct>({
-    onSuccess: () => {
+    onSuccess: (data) => {
       router.refresh();
+      toast.success(`Berhasil Menghapus Product ${data.name}`);
     },
-    onSettled: async (values, error, value) => {
-      const utils = api.useUtils();
-      console.log("SETTLED", value);
-      await utils.product.getAll.invalidate();
-      if (values) {
-        const name = values.name;
-        // toast.success(`Berhasil Menghapus Product ${name}`);
-      } else if (error) {
-        // toast.error(`Error ${error.message}`);
-      }
+    onError(error) {
+      toast.success(`Gagal Menghapus Product, Pesan Error : ${error.message}`);
     },
+    // onSettled: async (values, error, value) => {
+    //   const utils = api.useUtils();
+    //   console.log("SETTLED", value);
+    //   await utils.pr.getAll.invalidate();
+    //   if (values) {
+    //     const name = values.name;
+    //     console.log("success", name);
+    //   } else if (error) {
+    //     // toast.error(`Error ${error.message}`);
+    //     console.log("error", error);
+    //   }
+    // },
   });
 
   const renderCell = React.useCallback(
     (item: IProduct, columnKey: React.Key): React.ReactNode => {
       const cellValue = item[columnKey as keyof IProduct];
 
+      const handleDelete = async ({
+        id,
+        image,
+      }: {
+        id: string;
+        image: string;
+      }) => {
+        setLoading(true);
+        if (id !== null && image !== null) {
+          servicesDeleteProduct.mutate({ id: id });
+          const { data, error } = await supabase.storage
+            .from("images")
+            .remove([`sayur/${image}`]);
+          if (data) {
+            console.log(data);
+          } else if (error) {
+            console.log(error);
+          }
+          setLoading(false);
+        } else {
+          setLoading(false);
+          return;
+        }
+      };
+
+      const image = `https://omhmokdygpqbhwdtshvk.supabase.co/storage/v1/object/public/images/sayur/${item.image}`;
+      console.log("image", image);
+
       const modalView: IModal = {
         title: item.name,
-        image:
-          "https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg",
+        image: image,
         subTitle: item.category,
         content: item.price.toString(),
         desc: item.stock.toString(),
@@ -80,7 +113,7 @@ function TableProduct({ data }: TableProductProps) {
             <User
               avatarProps={{
                 radius: "lg",
-                src: item.image,
+                src: image,
               }}
               description={item.category}
               name={item.name}
@@ -91,13 +124,13 @@ function TableProduct({ data }: TableProductProps) {
         case "stock":
           return (
             <div className="flex flex-col">
-              <p className="text-bold text-sm capitalize">{item.stock}</p>
+              <p className="text-bold text-sm capitalize">{item.stock} kg</p>
             </div>
           );
         case "price":
           return (
             <Chip className="capitalize" size="sm" variant="flat">
-              {item.price}
+              Rp. {item.price}
             </Chip>
           );
         case "actions":
@@ -120,39 +153,41 @@ function TableProduct({ data }: TableProductProps) {
                   </span>
                 </Tooltip>
               </Link>
-              <OpenModal
-                data={modalDelete}
-                isAction={true}
-                actionTitle="Hapus"
-                onAction={ () => {
-                  servicesDeleteProduct.mutate({id: item.id})
-                }}
-                toOpen={
-                  <Tooltip color="danger" content="Delete product">
-                    <span className="cursor-pointer text-lg text-danger active:opacity-50">
-                      <DeleteIcon />
-                    </span>
-                  </Tooltip>
-                }
-              />
+              {loading == false && (
+                <OpenModal
+                  data={modalDelete}
+                  isAction={true}
+                  actionTitle="Hapus"
+                  onAction={() => {
+                    void handleDelete({ id: item.id, image: item.image });
+                  }}
+                  toOpen={
+                    <Tooltip color="danger" content="Delete product">
+                      <span className="cursor-pointer text-lg text-danger active:opacity-50">
+                        <DeleteIcon />
+                      </span>
+                    </Tooltip>
+                  }
+                />
+              )}
             </div>
           );
         default:
           return cellValue instanceof Date ? cellValue.toString() : cellValue;
       }
     },
-    [servicesDeleteProduct],
+    [loading, servicesDeleteProduct],
   );
 
   return (
     <Card className="px-1 py-1">
-      <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
+      {/* <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
         <div className="my-4 grid grid-cols-2 flex-wrap gap-x-4 gap-y-4 sm:grid-cols-4">
           {cards.map((item) => (
             <Cards item={item} key={item.id} />
           ))}
         </div>
-      </CardHeader>
+      </CardHeader> */}
       <CardBody className="overflow-visible py-2 ">
         <div className={styles.container}>
           <div className={styles.spaceBetween}>
@@ -179,14 +214,14 @@ function TableProduct({ data }: TableProductProps) {
             </TableHeader>
             <TableBody>
               {data.map((item, index) => (
-                  <TableRow key={index}>
-                    {(columnKey) => (
-                      <TableCell key={columnKey}>
-                        {renderCell(item, columnKey)}
-                      </TableCell>
-                    )}
-                  </TableRow>
-                ))}
+                <TableRow key={index}>
+                  {(columnKey) => (
+                    <TableCell key={columnKey}>
+                      {renderCell(item, columnKey)}
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </div>

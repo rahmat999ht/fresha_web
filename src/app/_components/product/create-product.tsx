@@ -45,12 +45,13 @@ export const CreateProduct: NextPage = () => {
   const handleSubmit = async () => {
     setUploading(true);
     if (selectedFile) {
+      const imageName = Date.now().toString() + selectedFile.name;
       const { data, error } = await supabase.storage
         .from("images")
-        .upload("sayur/" + selectedFile.name, selectedFile);
+        .upload("sayur/" + imageName , selectedFile);
       createNewProduct.mutate({
         name: name,
-        image: selectedFile.name,
+        image: imageName,
         category: category,
         hastag_ml: hastag,
         desc: description,
@@ -66,7 +67,6 @@ export const CreateProduct: NextPage = () => {
         console.log(error);
       }
     }
-    setUploading(false);
   };
 
   return (

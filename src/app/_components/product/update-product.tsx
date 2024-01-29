@@ -59,6 +59,7 @@ export const UpdateProduct: NextPage = () => {
       });
       setUploading(false);
       console.log("berhasil guys");
+      console.log("berhasil guys");
 
       if (data) {
         console.log(data);
