@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure, } from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import * as productRepo from "~/repository/products";
 
 const idProductSchema = z.object({ id: z.string() });
 
@@ -27,11 +28,10 @@ const productUpdateSchema = z.object({
 
 export const productRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
-    const fanyManyOption = {
+    return productRepo.getsProduct({
       orderBy: { createdAt: "desc" },
       where: { createdBy: { id: ctx.session.user.id } },
-    }
-    return ctx.db.product.findMany();
+    });
   }),
 
   getOne: protectedProcedure.input(idProductSchema).query(({ ctx, input }) => {
