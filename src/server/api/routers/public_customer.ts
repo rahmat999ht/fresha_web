@@ -6,7 +6,7 @@ const idProductSchema = z.object({ id: z.string() });
 
 export const publicCustomerRouter = createTRPCRouter({
   getOne: publicProcedure.input(idProductSchema).query(({ ctx, input }) => {
-    return ctx.db.user.findUnique({
+    return ctx.db.custamer.findUnique({
       where: idProductSchema.parse(input),
     });
   }),

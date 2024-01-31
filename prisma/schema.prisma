@@ -65,9 +65,11 @@ model Custamer {
     name          String?
     email         String?   @unique
     phone         String?
+    address       String?
     emailVerified DateTime?
     image         String?
     riwPes        Order[]
+    basket        Basket[]
 }
 
 model Order {
@@ -86,6 +88,19 @@ model Order {
     orderById String
 }
 
+model Basket {
+    id         String  @id @default(cuid())
+    customerId String
+    productId  String
+    product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    orderBy   Custamer @relation(fields: [orderById], references: [id])
+    orderById String
+}
+
+
 model Product {
     id        String @id @default(cuid())
     image     String
@@ -100,7 +115,8 @@ model Product {
     updatedAt   DateTime @updatedAt
     createdBy   User     @relation(fields: [createdById], references: [id])
     createdById String
-    order       Order[]
+    order       Order[] 
+    basket        Basket[]
 
     @@index([name])
 }

@@ -33,7 +33,7 @@ export const login = async (loginProps: { email: string }) => {
 
   if (!costumer) {
     throw new HTTPException(401, {
-      message: "Email anda salah",
+      message: "Email anda tidak terdaftar",
     });
   }
 
