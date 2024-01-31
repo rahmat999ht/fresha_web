@@ -21,8 +21,8 @@ import { type ChipProps } from "@nextui-org/react";
 import { EditIcon } from "public/icons/EditIcon";
 import { EyeIcon } from "public/icons/EyeIcon";
 import { columns, users } from "public/data/users";
-import Cards from "~/app/_components/dashboard/cards/cards";
-import { cards } from "public/data/cards";
+// import Cards from "~/app/_components/dashboard/cards/cards";
+// import { cards } from "public/data/cards";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -89,13 +89,13 @@ export default function Customer() {
 
   return (
     <Card className="px-1 py-1">
-      <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
+      {/* <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
         <div className="my-4 grid grid-cols-2 flex-wrap gap-x-4 gap-y-4 sm:grid-cols-4">
           {cards.map((item) => (
             <Cards item={item} key={item.id} />
           ))}
         </div>
-      </CardHeader>
+      </CardHeader> */}
       <CardBody className="overflow-visible py-2 ">
         <div className={styles.container}>
           <h2 className={styles.title}>Customers Fresha</h2>

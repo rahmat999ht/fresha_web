@@ -29,11 +29,6 @@ const menuItems: MenuCategory[] = [
         icon: <MdDashboard />,
       },
       {
-        title: "Users",
-        path: "/dashboard/customer",
-        icon: <MdSupervisedUserCircle />,
-      },
-      {
         title: "Products",
         path: "/dashboard/products",
         icon: <MdShoppingBag />,
@@ -42,6 +37,11 @@ const menuItems: MenuCategory[] = [
         title: "Transactions",
         path: "/dashboard/transactions",
         icon: <MdAttachMoney />,
+      },
+      {
+        title: "Customer",
+        path: "/dashboard/customer",
+        icon: <MdSupervisedUserCircle />,
       },
     ],
   },
