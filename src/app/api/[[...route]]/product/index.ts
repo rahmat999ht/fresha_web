@@ -21,7 +21,7 @@ const productRouter = new Hono();
  * If cached data exists, return it
  * Otherwise call next() to continue request processing
  */
-productRouter.use("*", authMiddleware);
+// productRouter.use("*", authMiddleware);
 // productRouter.use("*", cacheMiddleware);
 
 productRouter.get("/", async (c) => {

@@ -30,7 +30,7 @@ export const productRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
     return productRepo.getsProduct({
       orderBy: { createdAt: "desc" },
-      where: { createdBy: { id: ctx.session.user.id } },
+      // where: { createdBy: { id: ctx.session.user.id } },
     });
   }),
 
