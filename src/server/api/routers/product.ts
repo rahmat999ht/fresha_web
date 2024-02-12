@@ -27,7 +27,7 @@ const productUpdateSchema = z.object({
 });
 
 export const productRouter = createTRPCRouter({
-  getAll: protectedProcedure.query(({ ctx }) => {
+  getAll: protectedProcedure.query(({}) => {
     return productRepo.getsProduct({
       orderBy: { createdAt: "desc" },
       // where: { createdBy: { id: ctx.session.user.id } },
@@ -75,11 +75,6 @@ export const productRouter = createTRPCRouter({
     .input(idProductSchema)
     .mutation(async ({ ctx, input }) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // useMutation({
-      //   onSettled(data, error, variables, context) {},
-      //   onError(error, variables, context) {},
-      //   onSuccess(data, variables, context) {},
-      // });
       return ctx.db.product.delete({
         where: idProductSchema.parse(input),
       });

@@ -3,12 +3,12 @@ import { HTTPException } from "hono/http-exception";
 
 import { verifyJwt } from "~/services/jwt";
 import { type Custamer } from "@prisma/client";
-// import { logger } from "~/utils/logger";
+import logger from "~/utils/logger";
 
 const authCheck = (c: Context) => {
   const authorization = c.req.header("Authorization");
 
-  //   logger.info("here: " + authorization);
+  logger.info("here: " + authorization);
 
   if (!authorization) {
     throw new HTTPException(404, {

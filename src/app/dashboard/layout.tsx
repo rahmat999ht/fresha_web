@@ -4,14 +4,14 @@ import Sidebar from "../_components/dashboard/sidebar/sidebar";
 import styles from "../_components/dashboard/dashboard.module.css";
 import Footer from "../_components/dashboard/footer/footer";
 import { getServerAuthSession } from "~/server/auth";
-import { type IUser } from "~/app/model/user";
+import { type IUserLogin } from "~/app/model/user";
 interface LayoutProps {
   children: ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = async({ children }) => {
   const session = await getServerAuthSession();
-  const user: IUser = {
+  const user: IUserLogin = {
     image: session?.user.image ?? "image kosong",
     name: session?.user.name ?? "name kosong",
     email: session?.user.email ?? "email kosong",

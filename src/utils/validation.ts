@@ -7,8 +7,8 @@ export const validateCreateUser = async (data: Prisma.CustamerCreateInput) => {
     costamerRepo.getUserByUniq({
       where: {
         email: data.email ?? "",
-        name: data.name ?? "",
-        image: data.image ?? "",
+        // name: data.name ?? "",
+        // image: data.image ?? "",
       },
     }),
     // costamerRepo.getUserByUniq({

@@ -1,11 +1,12 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma, Product } from "@prisma/client";
 import { db } from "~/server/db";
 
 type FindManyProps = Prisma.ProductFindManyArgs | undefined;
 
-export function getsProduct(fineManyProps: FindManyProps) {
+export function getsProduct(fineManyProps: FindManyProps): Promise<Product[]> {
   return db.product.findMany(fineManyProps);
 }
-export function getsProductCount(fineManyProps: FindManyProps) {
-  return db.product.count({ where: fineManyProps?.where });
+
+export function getsProductCount() {
+  return db.product.count();
 }

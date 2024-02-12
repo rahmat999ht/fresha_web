@@ -6,8 +6,8 @@ export const getsProduct = async ({ page, perPage }: TQueryPage) => {
     page,
     perPage,
     getData: productRepo.getsProduct,
-    getDataCount: () => productRepo.getsProductCount(undefined),
-  });
+    getDataCount: () => productRepo.getsProductCount(),
+  });getsProduct
 
   return productPagination;
 };

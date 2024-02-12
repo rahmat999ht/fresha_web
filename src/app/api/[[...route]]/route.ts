@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { handle } from "hono/vercel";
 import { HTTPException } from "hono/http-exception";
 import productRouter from "./product";
+import orderRouter from "./order";
 import authRouter from "./auth";
 
 // export const runtime = "edge";
@@ -35,8 +36,9 @@ app.onError((err, c) => {
   );
 });
 
+app.route("/orders", orderRouter);
 app.route("/products", productRouter);
-app.route("/auth-cotumer", authRouter);
+app.route("/auth-costumer", authRouter);
 
 export const GET = handle(app);
 export const POST = handle(app);

@@ -5,7 +5,7 @@ import { queryPageSchema } from "~/utils/pagination";
 // import logger from "~/utils/logger";
 
 import * as productService from "./product.service";
-import { authMiddleware } from "../auth/auth.middelware";
+// import { authMiddleware } from "../auth/auth.middelware";
 // import { createUserSchema, updateUserSchema } from "./user.schema";
 // import { idSchema, queryPageSchema } from "~/schemas";
 // import { setCache } from "~/services/redis";

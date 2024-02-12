@@ -43,7 +43,7 @@ function TableProduct({ data }: TableProductProps) {
   const servicesDeleteProduct = api.product.delete.useMutation<IProduct>({
     onSuccess: (data) => {
       router.refresh();
-      toast.success(`Berhasil Menghapus Product ${data.name}`);
+      toast.success(`Berhasil Menghapus Product ${data}`);
     },
     onError(error) {
       toast.success(`Gagal Menghapus Product, Pesan Error : ${error.message}`);
@@ -91,12 +91,9 @@ function TableProduct({ data }: TableProductProps) {
         }
       };
 
-      const image = `https://omhmokdygpqbhwdtshvk.supabase.co/storage/v1/object/public/images/sayur/${item.image}`;
-      console.log("image", image);
-
       const modalView: IModal = {
         title: item.name,
-        image: image,
+        image: item.image,
         subTitle: item.category,
         content: item.price.toString(),
         desc: item.stock.toString(),
@@ -113,7 +110,7 @@ function TableProduct({ data }: TableProductProps) {
             <User
               avatarProps={{
                 radius: "lg",
-                src: image,
+                src: item.image,
               }}
               description={item.category}
               name={item.name}

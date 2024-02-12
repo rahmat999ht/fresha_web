@@ -1,12 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { type ChangeEvent, useState } from "react";
+import { type ChangeEvent, useState, useEffect, useRef } from "react";
 import { Input, Button, Image } from "@nextui-org/react";
 import { api } from "~/trpc/react";
 import CameraIcon from "public/icons/CameraIcon";
 import { type NextPage } from "next";
 import { supabase } from "~/utils/supabase";
+import * as mobilenet from "@tensorflow-models/mobilenet";
 
 export const CreateProduct: NextPage = () => {
   const router = useRouter();
@@ -19,6 +20,62 @@ export const CreateProduct: NextPage = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [uploading, setUploading] = useState(false);
+  const [identifyLoading, setIdentifyLoading] = useState(false);
+
+  const [isModelLoading, setModelLoading] = useState(false);
+  const [model, setModel] = useState<mobilenet.MobileNet | null>(null);
+  // const [results, setResults] = useState([]);
+  const [results, setResults] = useState<
+    {
+      className: string;
+      probability: number;
+    }[]
+  >([]);
+
+  // const imageRef = useRef<HTMLImageElement | null | undefined>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null);
+  const textInputRef = useRef<HTMLInputElement | null>();
+  // const fileInputRef = useRef();
+
+  const loadModel = async () => {
+    setModelLoading(true);
+    try {
+      const initModel = await mobilenet.load();
+
+      setModel(initModel);
+      setModelLoading(false);
+    } catch (e) {
+      console.log(e);
+      setModelLoading(false);
+    }
+  };
+
+  const identify = async () => {
+    setIdentifyLoading(true);
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
+    }
+    if (model) {
+      // Ch
+      const imageElement = imageRef.current;
+
+      if (imageElement) {
+        const results = await model.classify(imageElement);
+        setResults(results);
+        setIdentifyLoading(false);
+      } else {
+        console.error("Image element is undefined."); // Handle the case where image element is undefined
+        setIdentifyLoading(false);
+      }
+    } else {
+      console.error("Model is null."); // Handle the case where model is null
+      setIdentifyLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void loadModel();
+  }, []);
 
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -45,13 +102,16 @@ export const CreateProduct: NextPage = () => {
   const handleSubmit = async () => {
     setUploading(true);
     if (selectedFile) {
+      const imageUrl =
+        "https://omhmokdygpqbhwdtshvk.supabase.co/storage/v1/object/public/images/sayur/";
+
       const imageName = Date.now().toString() + selectedFile.name;
       const { data, error } = await supabase.storage
         .from("images")
-        .upload("sayur/" + imageName , selectedFile);
+        .upload("sayur/" + imageName, selectedFile);
       createNewProduct.mutate({
         name: name,
-        image: imageName,
+        image: imageUrl + imageName,
         category: category,
         hastag_ml: hastag,
         desc: description,
@@ -68,6 +128,10 @@ export const CreateProduct: NextPage = () => {
       }
     }
   };
+
+  if (isModelLoading) {
+    return <h2>Model Loading...</h2>;
+  }
 
   return (
     <form
@@ -95,6 +159,7 @@ export const CreateProduct: NextPage = () => {
                     height={200}
                     alt="NextUI hero Image with delay"
                     src={selectedImage}
+                    ref={imageRef}
                   />
                 ) : (
                   <div className="mb-6 flex flex-wrap gap-4 md:mb-0 md:flex-nowrap">
@@ -104,71 +169,98 @@ export const CreateProduct: NextPage = () => {
                 )}
               </div>
             </label>
+            {selectedImage && (
+              <Button
+                color="success"
+                disabled={identifyLoading}
+                onClick={identify}
+              >
+                Identify Image
+              </Button>
+            )}
           </div>
-          <div className="flex w-full flex-col gap-8">
-            <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
-              <Input
-                isRequired
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                type="text"
-                variant="flat"
-                label="Name"
-              />
-              <Input
-                isRequired
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                type="text"
-                variant="flat"
-                label="Category"
-              />
+          <Input
+            value={selectedFile ? selectedFile.name : "Image Kosong"}
+            type="text"
+            disabled
+            variant="flat"
+            label="Image"
+          />
+          {results.length > 0 && (
+            <div className="resultsHolder">
+              {results.map((result, index) => {
+                return (
+                  <div className="result" key={result.className}>
+                    <span className="name">{result.className}</span>
+                    <span className="confidence">
+                      Confidence level: {(result.probability * 100).toFixed(2)}%{" "}
+                      {index === 0 && (
+                        <span className="bestGuess">Best Guess</span>
+                      )}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
-            <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
-              <Input
-                isRequired
-                value={hastag}
-                onChange={(e) => setHastag(e.target.value)}
-                type="text"
-                variant="flat"
-                label="Hastag"
-              />
-              <Input
-                isRequired
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                type="text"
-                variant="flat"
-                label="Description"
-              />
-            </div>
-            <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
-              <Input
-                isRequired
-                value={price.toString()} // Convert number to string
-                onChange={(e) => setPrice(parseFloat(e.target.value))}
-                type="number"
-                variant="flat"
-                label="Price"
-              />
-              <Input
-                isRequired
-                value={stock.toString()} // Convert number to string
-                onChange={(e) => setStock(parseInt(e.target.value, 10))}
-                type="number"
-                variant="flat"
-                label="Stock"
-              />
-            </div>
+          )}
+        </div>
+        <div className="flex w-full flex-col gap-8">
+          <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
+            <Input
+              isRequired
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+              variant="flat"
+              label="Name"
+            />
+            <Input
+              isRequired
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              type="text"
+              variant="flat"
+              label="Category"
+            />
+          </div>
+          <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
+            <Input
+              isRequired
+              value={hastag}
+              onChange={(e) => setHastag(e.target.value)}
+              type="text"
+              variant="flat"
+              label="Hastag"
+            />
+            <Input
+              isRequired
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              type="text"
+              variant="flat"
+              label="Description"
+            />
+          </div>
+          <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
+            <Input
+              isRequired
+              value={price.toString()} // Convert number to string
+              onChange={(e) => setPrice(parseFloat(e.target.value))}
+              type="number"
+              variant="flat"
+              label="Price"
+            />
+            <Input
+              isRequired
+              value={stock.toString()} // Convert number to string
+              onChange={(e) => setStock(parseInt(e.target.value, 10))}
+              type="number"
+              variant="flat"
+              label="Stock"
+            />
           </div>
         </div>
-        <Input
-          value={selectedFile ? selectedFile.name : "Image Kosong"}
-          type="text"
-          disabled
-          variant="flat"
-          label="Image"
-        />
+
         <Button
           type="submit"
           color="success"
