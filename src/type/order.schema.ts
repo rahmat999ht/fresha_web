@@ -14,3 +14,16 @@ export const orderCreateSchema = z.object({
   productId: z.string(),
   orderById: z.string(),
 });
+
+export interface IOrder {
+  id: string;
+  status: string;
+  totPrice: number;
+  amount: number;
+  productId: string;
+  orderById: string;
+  createdAt: Date;
+  updatedAt: Date;
+  // product
+  // orderBy   Custamer @relation(fields: [orderById], references: [id], onDelete: Cascade)
+}

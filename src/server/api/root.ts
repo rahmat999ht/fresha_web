@@ -9,7 +9,7 @@ import { createTRPCRouter } from "~/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   product : productRouter,
-  // order : orderRouter,
+  order : orderRouter,
 });
 
 // export type definition of API

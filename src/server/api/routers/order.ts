@@ -1,5 +1,3 @@
-"use client";
-
 import { createOrder } from "~/repository/order";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";

@@ -43,7 +43,7 @@ function TableProduct({ data }: TableProductProps) {
   const servicesDeleteProduct = api.product.delete.useMutation<IProduct>({
     onSuccess: (data) => {
       router.refresh();
-      toast.success(`Berhasil Menghapus Product ${data}`);
+      toast.success(`Berhasil Menghapus Product ${data.name}`);
     },
     onError(error) {
       toast.success(`Gagal Menghapus Product, Pesan Error : ${error.message}`);
