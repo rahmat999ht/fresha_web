@@ -1,23 +1,9 @@
 "use client";
 
-import { z } from "zod";
+import { createOrder } from "~/repository/order";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-
-export const idOrderSchema = z.object({ id: z.string() });
-
-export const orderSchema = z.object({
-  status: z.string().min(0, "status harus diisi"),
-  totPrice: z.number().min(1, "totPrice harus diisi"),
-  amount: z.number().min(1, "amount harus diisi"),
-  productId: z.string(),
-  orderById: z.string(),
-});
-
-export const orderUpdateSchema = z.object({
-  id: z.string().cuid(),
-  status: z.string().min(0, "status harus diisi"),
-});
+import { idOrderSchema, orderCreateSchema, orderUpdateSchema } from "~/type/order.schema";
 
 export const orderRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
@@ -34,20 +20,12 @@ export const orderRouter = createTRPCRouter({
   }),
 
   create: publicProcedure
-    .input(orderSchema)
-    .mutation(async ({ ctx, input }) => {
+    .input(orderCreateSchema)
+    .mutation(async ({ input }) => {
       // simulate a slow db call
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      return ctx.db.order.create({
-        data: {
-          status: input.status,
-          totPrice: input.totPrice,
-          amount: input.amount,
-          product: { connect: { id: input.productId } },
-          orderBy: { connect: { id: input.orderById } },
-        },
-      });
+      return createOrder(input);
     }),
 
   update: publicProcedure

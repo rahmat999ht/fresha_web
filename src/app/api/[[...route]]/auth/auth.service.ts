@@ -14,7 +14,7 @@ import { validateCreateUser } from "~/utils/validation";
 export const signin = async (signinProps: { email: string }) => {
   await validateCreateUser(signinProps);
 
-  return costumerRepo.createUser(signinProps);
+  return costumerRepo.createCustamer(signinProps);
 };
 
 /**
@@ -27,7 +27,7 @@ export const signin = async (signinProps: { email: string }) => {
  * Throws errors if user not found or invalid password.
  */
 export const login = async (loginProps: { email: string }) => {
-  const costumer = await costumerRepo.getUserByUniq({
+  const costumer = await costumerRepo.getCustamerByUniq({
     where: { email: loginProps.email },
   });
 
@@ -57,7 +57,7 @@ export const currentUser = async ({
   id: string;
   email: string;
 }) => {
-  const costumer = await costumerRepo.getUserByUniq({ where: { id, email } });
+  const costumer = await costumerRepo.getCustamerByUniq({ where: { id, email } });
 
   if (!costumer) {
     throw new HTTPException(404, {

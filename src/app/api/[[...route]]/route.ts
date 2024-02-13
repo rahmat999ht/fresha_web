@@ -4,6 +4,7 @@ import { HTTPException } from "hono/http-exception";
 import productRouter from "./product";
 import orderRouter from "./order";
 import authRouter from "./auth";
+import custamerRouter from "./customer";
 
 // export const runtime = "edge";
 
@@ -39,6 +40,7 @@ app.onError((err, c) => {
 app.route("/orders", orderRouter);
 app.route("/products", productRouter);
 app.route("/auth-costumer", authRouter);
+app.route("/custamer", custamerRouter);
 
 export const GET = handle(app);
 export const POST = handle(app);
