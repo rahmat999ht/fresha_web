@@ -24,7 +24,6 @@ export const CreateProduct: NextPage = () => {
 
   const [isModelLoading, setModelLoading] = useState(false);
   const [model, setModel] = useState<mobilenet.MobileNet | null>(null);
-  // const [results, setResults] = useState([]);
   const [results, setResults] = useState<
     {
       className: string;
@@ -32,16 +31,13 @@ export const CreateProduct: NextPage = () => {
     }[]
   >([]);
 
-  // const imageRef = useRef<HTMLImageElement | null | undefined>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
   const textInputRef = useRef<HTMLInputElement | null>();
-  // const fileInputRef = useRef();
 
   const loadModel = async () => {
     setModelLoading(true);
     try {
       const initModel = await mobilenet.load();
-
       setModel(initModel);
       setModelLoading(false);
     } catch (e) {
@@ -50,18 +46,17 @@ export const CreateProduct: NextPage = () => {
     }
   };
 
-  const identify = async () => {
+  const handleIdentify = async () => {
     setIdentifyLoading(true);
     if (textInputRef.current) {
       textInputRef.current.value = "";
     }
     if (model) {
-      // Ch
       const imageElement = imageRef.current;
-
       if (imageElement) {
         const results = await model.classify(imageElement);
         setResults(results);
+        console.log(`panjang result${results.length}`);
         setIdentifyLoading(false);
       } else {
         console.error("Image element is undefined."); // Handle the case where image element is undefined
@@ -134,13 +129,13 @@ export const CreateProduct: NextPage = () => {
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-      }}
-      className="flex flex-col gap-2"
-    >
-      <div className="flex w-full flex-col gap-8">
+    <div className="flex w-full flex-col gap-8">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+        className="flex flex-col gap-2"
+      >
         <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
           <div className="flex w-80 flex-col gap-4">
             <label>
@@ -171,40 +166,69 @@ export const CreateProduct: NextPage = () => {
             </label>
             {selectedImage && (
               <Button
+                type="submit"
                 color="success"
                 disabled={identifyLoading}
-                onClick={identify}
+                onClick={handleIdentify}
               >
-                Identify Image
+                {identifyLoading ? "identify..." : "Detect image"}
               </Button>
             )}
           </div>
-          <Input
-            value={selectedFile ? selectedFile.name : "Image Kosong"}
-            type="text"
-            disabled
-            variant="flat"
-            label="Image"
-          />
-          {results.length > 0 && (
-            <div className="resultsHolder">
-              {results.map((result, index) => {
-                return (
-                  <div className="result" key={result.className}>
-                    <span className="name">{result.className}</span>
-                    <span className="confidence">
-                      Confidence level: {(result.probability * 100).toFixed(2)}%{" "}
-                      {index === 0 && (
-                        <span className="bestGuess">Best Guess</span>
-                      )}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+          <div className="flex w-full flex-col gap-4">
+            <Input
+              value={selectedFile ? selectedFile.name : "Image Kosong"}
+              type="text"
+              disabled
+              variant="flat"
+              label="Image"
+            />
+            {results.length > 0 ? (
+              <div className="imageResult">
+                {results.map((result, index) => {
+                  return (
+                    <div className="result" key={result.className}>
+                      <span className="name">{result.className}</span>
+                      <span className="accuracy">
+                        Accuracy Level: {(result.probability * 100).toFixed(2)}%{" "}
+                        {index === 0 && (
+                          <span className="bestGuess">Best Guess</span>
+                        )}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              // <div className="resultsHolder">
+              //   {results.map((result, index) => {
+              //     return (
+              //       <div className="result" key={result.className}>
+              //         <span className="name">{result.className}</span>
+              //         <span className="confidence">
+              //           Confidence level:{" "}
+              //           {(result.probability * 100).toFixed(2)}%{" "}
+              //           {index === 0 && (
+              //             <span className="bestGuess">Best Guess</span>
+              //           )}
+              //         </span>
+              //       </div>
+              //     );
+              //   })}
+              // </div>
+              <div>kosong</div>
+            )}
+          </div>
         </div>
-        <div className="flex w-full flex-col gap-8">
+      </form>
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+        className="flex flex-col gap-2"
+      >
+        <div className="flex w-full flex-col gap-6">
           <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
             <Input
               isRequired
@@ -259,18 +283,17 @@ export const CreateProduct: NextPage = () => {
               label="Stock"
             />
           </div>
+          <Button
+            type="submit"
+            color="success"
+            disabled={uploading}
+            onClick={handleSubmit}
+          >
+            {uploading ? "Submitting..." : "Submit"}
+          </Button>
         </div>
-
-        <Button
-          type="submit"
-          color="success"
-          disabled={uploading}
-          onClick={handleSubmit}
-        >
-          {uploading ? "Submitting..." : "Submit"}
-        </Button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 

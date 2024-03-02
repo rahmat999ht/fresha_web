@@ -1,3 +1,4 @@
+import type { Custamer, Product } from "@prisma/client";
 import { z } from "zod";
 
 export const idOrderSchema = z.object({ id: z.string() });
@@ -24,6 +25,6 @@ export interface IOrder {
   orderById: string;
   createdAt: Date;
   updatedAt: Date;
-  // product
-  // orderBy   Custamer @relation(fields: [orderById], references: [id], onDelete: Cascade)
+  product: Product;
+  orderBy: Custamer;
 }

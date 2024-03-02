@@ -7,13 +7,14 @@ export const getsProduct = async ({ page, perPage }: TQueryPage) => {
     perPage,
     getData: productRepo.getsProduct,
     getDataCount: () => productRepo.getsProductCount(),
-  });getsProduct
+  });
+  getsProduct;
 
   return productPagination;
 };
 
 export const getProduct = async (id: string) => {
-  const product = await productRepo.getProductFirst({ where: { id } });
+  const product = await productRepo.getProductFirst(id);
 
   return product;
 };

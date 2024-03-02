@@ -1,9 +1,7 @@
 import type { Order, Prisma } from "@prisma/client";
 import { type z } from "zod";
 import { db } from "~/server/db";
-import type {
-  orderCreateSchema,
-} from "~/type/order.schema";
+import type { orderCreateSchema } from "~/type/order.schema";
 // import { type TCreateOrderProps } from "~/type/order";
 
 // type createOrder = ;
@@ -27,16 +25,25 @@ export function createOrder(input: OrderProps): Promise<Order> {
   });
 }
 
-export function getOrderFirst(findFirstProps: FindFirstProps) {
-  return db.order.findFirst(findFirstProps);
+export function getOrderFirst(id: string) {
+  return db.order.findFirst({
+    where: { id },
+    orderBy: { createdAt: "desc" },
+    include: {
+      product: true,
+      orderBy: true,
+    },
+  });
 }
 
-export function getOrderUniq(fineManyProps: FindUniqProps) {
-  return db.order.findUnique(fineManyProps);
-}
-
-export function getsOrder(fineManyProps: FindManyProps): Promise<Order[]> {
-  return db.order.findMany(fineManyProps) as Promise<Order[]>;
+export function getsOrder(): Promise<Order[]> {
+  return db.order.findMany({
+    orderBy: { createdAt: "desc" },
+    include: {
+      product: true,
+      orderBy: true,
+    },
+  }) as Promise<Order[]>;
 }
 
 export function getsOrderCount() {

@@ -20,7 +20,7 @@ export const getsOrder = async ({ page, perPage }: TQueryPage) => {
 };
 
 export const getOrder = async (id: string) => {
-  const order = await orderRepo.getOrderFirst({ where: { id } });
+  const order = await orderRepo.getOrderFirst(id);
 
   return order;
 };

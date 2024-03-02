@@ -7,6 +7,10 @@ export const orderRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.order.findMany({
       orderBy: { createdAt: "desc" },
+      include: {
+        product : true,
+        orderBy : true,
+      }
       // where: { createdBy: { id: ctx.session.user.id } },
     });
   }),
@@ -14,6 +18,10 @@ export const orderRouter = createTRPCRouter({
   getOne: publicProcedure.input(idOrderSchema).query(({ ctx, input }) => {
     return ctx.db.order.findUnique({
       where: idOrderSchema.parse(input),
+      include: {
+        product : true,
+        orderBy : true,
+      }
     });
   }),
 

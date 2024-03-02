@@ -3,23 +3,6 @@ import { type z } from "zod";
 import { db } from "~/server/db";
 import type { custamerSchema } from "~/type/customer.schema";
 
-// /**
-//  * Retrieves a list of users from the database, filtering and selecting fields based on the provided arguments.
-//  *
-//  * @param userFindManyArgs - Optional filtering and selection criteria to apply to the query.
-//  */
-// export const getUsers = (userFindManyArgs: TFindManyUser = undefined) => {
-//   const users = db.custamer.findMany({
-//     select: selectUserWithoutPass,
-//     orderBy: {
-//       email: "asc",
-//     },
-//     ...userFindManyArgs,
-//   });
-
-//   return users;
-// };
-
 export type FindManyProps = Prisma.CustamerFindManyArgs;
 export type FindFirstProps = Prisma.CustamerFindFirstArgs;
 export type CustomerProps = z.infer<typeof custamerSchema>;
@@ -27,7 +10,6 @@ export type CustomerProps = z.infer<typeof custamerSchema>;
 export function getsCustomer(fineManyProps: FindManyProps) {
   return db.custamer.findMany(fineManyProps) as Promise<Custamer[]>;
 }
-
 
 export const getCustamerCount = () => {
   const usersCount = db.custamer.count();
@@ -46,8 +28,13 @@ export const getCustamerByUniq = (where: Prisma.CustamerFindUniqueArgs) => {
   return user;
 };
 
-export function getCustamerFirst(findFirstProps: FindFirstProps) {
-  return db.custamer.findFirst(findFirstProps);
+export function getCustamerFirst(id: string) {
+  return db.custamer.findFirst({
+    where: { id },
+    include: {
+      riwPes: true,
+    },
+  });
 }
 
 /**
@@ -68,9 +55,7 @@ export const createCustamer = (data: Prisma.CustamerCreateInput) => {
 //  *
 //  * @param data - The updated user data. Must include the user's id to identify the record to update.
 //  */
-export const updateCustamer = (
-  input: CustomerProps,
-) => {
+export const updateCustamer = (input: CustomerProps) => {
   const user = db.custamer.update({
     where: { id: input.id },
     data: {

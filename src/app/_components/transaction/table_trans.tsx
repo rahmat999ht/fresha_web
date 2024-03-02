@@ -52,12 +52,12 @@ function TableTransaction({ data }: TableOrderProps) {
       };
 
       switch (columnKey) {
-        case "customer":
+        case "product":
           return (
             <User
-              avatarProps={{ radius: "lg", src: item.orderById }}
+              avatarProps={{ radius: "lg", src: item.product.image}}
               description={item.updatedAt.toDateString()}
-              name={item.orderById}
+              name={item.product.name}
             >
               {item.updatedAt.toDateString()}
             </User>
@@ -73,10 +73,10 @@ function TableTransaction({ data }: TableOrderProps) {
               {item.status}
             </Chip>
           );
-        case "product":
+        case "customer":
           return (
             <div className="flex flex-col">
-              <p className="text-bold text-sm capitalize">{item.productId}</p>
+              <p className="text-bold text-sm capitalize">{item.orderBy.name}</p>
             </div>
           );
         case "price":
@@ -111,7 +111,13 @@ function TableTransaction({ data }: TableOrderProps) {
             </div>
           );
         default:
-          return cellValue instanceof Date ? cellValue.toString() : cellValue;
+          // Convert cellValue to string or use JSX to ensure it's a ReactNode
+          const stringValue =
+            cellValue instanceof Date
+              ? cellValue.toString()
+              : String(cellValue);
+          return <span>{stringValue}</span>;
+        // return cellValue instanceof Date ? cellValue.toString() : cellValue;
       }
     },
     [],

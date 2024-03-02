@@ -72,18 +72,17 @@ model Custamer {
 }
 
 model Order {
-    id        String  @id @default(cuid())
+    id       String @id @default(cuid())
     // payment     String
-    status    String
-    totPrice  Int
-    amount    Int
-    productId String
-    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+    status   String
+    totPrice Int
+    amount   Int
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    orderBy   Custamer @relation(fields: [orderById], references: [id], onDelete: Cascade)
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    orderBy   Custamer  @relation(fields: [orderById], references: [id], onDelete: Cascade)
     orderById String
+    product   Product[]
 }
 
 model Product {
@@ -104,3 +103,11 @@ model Product {
 
     @@index([name])
 }
+
+// model OrderProduct {
+//     id        String  @id @default(cuid())
+//     productId String
+//     product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+//     orderId   String
+//     order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+// }

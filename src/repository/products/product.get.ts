@@ -1,13 +1,11 @@
-import type { Prisma } from "@prisma/client";
 import { db } from "~/server/db";
 
-type FindFirstProps = Prisma.ProductFindFirstArgs;
-type FindUniqProps = Prisma.ProductFindUniqueArgs;
-
-export function getProductFirst(fineManyProps: FindFirstProps) {
-  return db.product.findFirst(fineManyProps);
-}
-
-export function getProductUniq(fineManyProps: FindUniqProps) {
-  return db.product.findUnique(fineManyProps);
+export function getProductFirst(id: string) {
+  return db.product.findFirst({
+    where: { id },
+    orderBy: { createdAt: "desc" },
+    include: {
+      order: true,
+    },
+  });
 }
