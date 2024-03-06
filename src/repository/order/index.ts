@@ -1,10 +1,7 @@
 import type { Order, Prisma } from "@prisma/client";
 import { type z } from "zod";
 import { db } from "~/server/db";
-import type { orderCreateSchema } from "~/type/order.schema";
-// import { type TCreateOrderProps } from "~/type/order";
-
-// type createOrder = ;
+import type { orderCreateSchema } from "~/type/order";
 
 export type FindManyProps = Prisma.OrderFindManyArgs | undefined;
 export type OrderProps = z.infer<typeof orderCreateSchema>;

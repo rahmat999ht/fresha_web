@@ -21,10 +21,9 @@ export interface IOrder {
   status: string;
   totPrice: number;
   amount: number;
-  productId: string;
   orderById: string;
   createdAt: Date;
   updatedAt: Date;
-  product: Product;
+  product: Product[];
   orderBy: Custamer;
 }

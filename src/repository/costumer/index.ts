@@ -1,7 +1,7 @@
 import type { Custamer, Prisma } from "@prisma/client";
 import { type z } from "zod";
 import { db } from "~/server/db";
-import type { custamerSchema } from "~/type/customer.schema";
+import type { custamerSchema } from "~/type/customer";
 
 export type FindManyProps = Prisma.CustamerFindManyArgs;
 export type FindFirstProps = Prisma.CustamerFindFirstArgs;
@@ -17,11 +17,6 @@ export const getCustamerCount = () => {
   return usersCount;
 };
 
-/**
- * Retrieves a single user from the database based on the provided unique identifier.
- *
- * @param where - The unique identifier to search for the user by.
- */
 export const getCustamerByUniq = (where: Prisma.CustamerFindUniqueArgs) => {
   const user = db.custamer.findUnique(where);
 
@@ -37,24 +32,17 @@ export function getCustamerFirst(id: string) {
   });
 }
 
-/**
- * Creates a new user record in the database.
- *
- * @param data - The user data to insert into the database.
- */
 export const createCustamer = (data: Prisma.CustamerCreateInput) => {
   const user = db.custamer.create({
-    data,
+    data: {
+      email: data.email,
+      isActive: true,
+    },
   });
 
   return user;
 };
 
-// /**
-//  * Updates an existing user record in the database.
-//  *
-//  * @param data - The updated user data. Must include the user's id to identify the record to update.
-//  */
 export const updateCustamer = (input: CustomerProps) => {
   const user = db.custamer.update({
     where: { id: input.id },
@@ -69,16 +57,3 @@ export const updateCustamer = (input: CustomerProps) => {
 
   return user;
 };
-
-// /**
-//  * Deletes a user record from the database.
-//  *
-//  * @param where - The unique identifier of the user record to delete.
-//  */
-// export const deleteUser = (where: TWhereUniqueUser) => {
-//   const user = prisma.user.delete({
-//     where,
-//   });
-
-//   return user;
-// };

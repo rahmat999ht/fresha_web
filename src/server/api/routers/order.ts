@@ -1,10 +1,10 @@
 import { createOrder } from "~/repository/order";
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { idOrderSchema, orderCreateSchema, orderUpdateSchema } from "~/type/order.schema";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { idOrderSchema, orderCreateSchema, orderUpdateSchema } from "~/type/order";
 
 export const orderRouter = createTRPCRouter({
-  getAll: publicProcedure.query(({ ctx }) => {
+  getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.db.order.findMany({
       orderBy: { createdAt: "desc" },
       include: {
@@ -15,7 +15,7 @@ export const orderRouter = createTRPCRouter({
     });
   }),
 
-  getOne: publicProcedure.input(idOrderSchema).query(({ ctx, input }) => {
+  getOne: protectedProcedure.input(idOrderSchema).query(({ ctx, input }) => {
     return ctx.db.order.findUnique({
       where: idOrderSchema.parse(input),
       include: {
@@ -25,7 +25,7 @@ export const orderRouter = createTRPCRouter({
     });
   }),
 
-  create: publicProcedure
+  create: protectedProcedure
     .input(orderCreateSchema)
     .mutation(async ({ input }) => {
       // simulate a slow db call
@@ -34,7 +34,7 @@ export const orderRouter = createTRPCRouter({
       return createOrder(input);
     }),
 
-  update: publicProcedure
+  update: protectedProcedure
     .input(orderUpdateSchema)
     .mutation(async ({ ctx, input }) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -47,7 +47,7 @@ export const orderRouter = createTRPCRouter({
       });
     }),
 
-  delete: publicProcedure
+  delete: protectedProcedure
     .input(idOrderSchema)
     .mutation(async ({ ctx, input }) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));

@@ -21,7 +21,7 @@ import { columns } from "public/data/products";
 import styles from "./product.module.css";
 import { MdAdd } from "react-icons/md";
 import { Button, Link } from "@nextui-org/react";
-import { type IProduct } from "~/type/iProduct";
+import { type IProduct } from "~/type/product";
 import React, { useState } from "react";
 import { EditIcon } from "public/icons/EditIcon";
 import { DeleteIcon } from "public/icons/DeleteIcon";

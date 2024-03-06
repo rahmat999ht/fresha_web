@@ -1,7 +1,7 @@
 const columns = [
-  { name: "PRODUCT", uid: "product" },
-  { name: "STATUS", uid: "status" },
+  // { name: "PRODUCT", uid: "product" },
   { name: "CUSTOMER", uid: "customer" },
+  { name: "STATUS", uid: "status" },
   { name: "TOTAL PRICE / AMOUNT", uid: "price" },
   { name: "ACTIONS", uid: "actions" },
 ];

@@ -6,7 +6,7 @@ import { authMiddleware } from "../auth/auth.middelware";
 import logger from "~/utils/logger";
 import { HttpStatus } from "~/utils/http_status";
 import validatorSchemaMiddleware from "~/utils/validate_midleware";
-import { orderCreateSchema } from "~/type/order.schema";
+import { orderCreateSchema } from "~/type/order";
 
 const orderRouter = new Hono();
 

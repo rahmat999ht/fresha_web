@@ -63,12 +63,16 @@ model VerificationToken {
 model Custamer {
     id            String    @id @default(cuid())
     name          String?
+    image         String?
     email         String?   @unique
+    emailVerified DateTime?
     phone         String?
     address       String?
-    emailVerified DateTime?
-    image         String?
+    isActive      Boolean?
     riwPes        Order[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Order {

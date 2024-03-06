@@ -12,11 +12,6 @@ const authRouter = new Hono();
 
 type Email = { email: string };
 
-/**
- * @route Post /auth/my
- * @desc Login user
- * @access Public
- */
 authRouter.post(
   "/login",
   //   validatorSchemaMiddleware("json", loginSchema),
@@ -36,11 +31,6 @@ authRouter.post(
   },
 );
 
-/**
- * @route Post /auth/my
- * @desc Sign-in user
- * @access Public
- */
 authRouter.post("/signin", async (c) => {
   const user: Email = await c.req.json();
   console.log(user);
@@ -53,11 +43,6 @@ authRouter.post("/signin", async (c) => {
   });
 });
 
-/**
- * @route GET /auth/my
- * @desc Get current user
- * @access Private
- */
 authRouter.get("/my", authMiddleware, async (c) => {
   const {
     userData: { email, id },

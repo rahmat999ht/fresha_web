@@ -5,7 +5,7 @@ import { authMiddleware } from "../auth/auth.middelware";
 import logger from "~/utils/logger";
 import { HttpStatus } from "~/utils/http_status";
 import validatorSchemaMiddleware from "~/utils/validate_midleware";
-import { custamerSchema, idCustamerSchema } from "~/type/customer.schema";
+import { custamerSchema, idCustamerSchema } from "~/type/customer";
 import { queryPageSchema } from "~/utils/pagination";
 
 const custamerRouter = new Hono();
@@ -19,8 +19,6 @@ const custamerRouter = new Hono();
 custamerRouter.use("*", authMiddleware);
 // custamerRouter.use("*", cacheMiddleware);
 
-
-
 custamerRouter.get("/", async (c) => {
   const query = c.req.query();
 
@@ -33,7 +31,6 @@ custamerRouter.get("/", async (c) => {
     ...orders,
   });
 });
-
 
 custamerRouter.get("/:id", async (c) => {
   const { id } = c.req.param();
@@ -57,14 +54,14 @@ custamerRouter.put(
     const userWithoutId = c.req.valid("json");
     const { id } = c.req.valid("param");
     const customer = await custamerService.updateCustamer({
-      id : id,
+      id: id,
       name: userWithoutId.name,
       image: userWithoutId.image,
       email: userWithoutId.email,
       address: userWithoutId.address,
       phone: userWithoutId.phone,
+      isActive: userWithoutId.isActive,
     });
-
     logger.debug(customer);
 
     return c.json({

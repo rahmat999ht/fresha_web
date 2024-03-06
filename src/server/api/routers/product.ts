@@ -28,10 +28,7 @@ const productUpdateSchema = z.object({
 
 export const productRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({}) => {
-    return productRepo.getsProduct({
-      orderBy: { createdAt: "desc" },
-      // where: { createdBy: { id: ctx.session.user.id } },
-    });
+    return productRepo.getsProduct();
   }),
 
   getOne: protectedProcedure.input(idProductSchema).query(({ ctx, input }) => {

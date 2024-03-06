@@ -39,7 +39,7 @@ app.onError((err, c) => {
 
 app.route("/orders", orderRouter);
 app.route("/products", productRouter);
-app.route("/auth-costumer", authRouter);
+app.route("/auth-custamer", authRouter);
 app.route("/custamer", custamerRouter);
 
 export const GET = handle(app);

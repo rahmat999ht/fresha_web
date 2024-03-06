@@ -3,7 +3,6 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import styles from "./navbar.module.css";
-import { MdSearch } from "react-icons/md";
 
 import {
   DropdownItem,
@@ -12,9 +11,9 @@ import {
   DropdownMenu,
   Avatar,
 } from "@nextui-org/react";
-import { type IUser } from "~/app/model/user";
+import { type IUserLogin } from "~/app/model/user";
 
-const Navbar: React.FC<IUser> = (props) => {
+const Navbar: React.FC<IUserLogin> = (props) => {
   const pathname = usePathname();
 
   return (
@@ -23,10 +22,6 @@ const Navbar: React.FC<IUser> = (props) => {
         {pathname == "/" ? "Dashboard" : pathname.split("/").pop()}
       </div>
       <div className={styles.menu}>
-        <div className={styles.search}>
-          <MdSearch />
-          <input type="text" placeholder="Search..." className={styles.input} />
-        </div>
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
             <Avatar
