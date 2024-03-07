@@ -10,17 +10,10 @@ import {
   User,
   Chip,
   Tooltip,
-  Card,
-  // CardHeader,
-  CardBody,
   Pagination,
+  Link,
 } from "@nextui-org/react";
 import { columns } from "public/data/products";
-// import Cards from "~/app/_components/dashboard/cards/cards";
-// import { cards } from "public/data/cards";
-import styles from "./product.module.css";
-import { MdAdd } from "react-icons/md";
-import { Button, Link } from "@nextui-org/react";
 import { type IProduct } from "~/type/product";
 import React, { useState } from "react";
 import { EditIcon } from "public/icons/EditIcon";
@@ -48,18 +41,6 @@ function TableProduct({ data }: TableProductProps) {
     onError(error) {
       toast.success(`Gagal Menghapus Product, Pesan Error : ${error.message}`);
     },
-    // onSettled: async (values, error, value) => {
-    //   const utils = api.useUtils();
-    //   console.log("SETTLED", value);
-    //   await utils.pr.getAll.invalidate();
-    //   if (values) {
-    //     const name = values.name;
-    //     console.log("success", name);
-    //   } else if (error) {
-    //     // toast.error(`Error ${error.message}`);
-    //     console.log("error", error);
-    //   }
-    // },
   });
 
   const renderCell = React.useCallback(
@@ -176,57 +157,60 @@ function TableProduct({ data }: TableProductProps) {
     [loading, servicesDeleteProduct],
   );
 
+  const [page, setPage] = React.useState(1);
+  const rowsPerPage = 5;
+
+  const pages = Math.ceil(data.length / rowsPerPage);
+
+  const items = React.useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return data.slice(start, end);
+  }, [page, data]);
+
   return (
-    <Card className="px-1 py-1">
-      {/* <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
-        <div className="my-4 grid grid-cols-2 flex-wrap gap-x-4 gap-y-4 sm:grid-cols-4">
-          {cards.map((item) => (
-            <Cards item={item} key={item.id} />
-          ))}
+    <Table
+      aria-label="Example table with client side pagination"
+      bottomContent={
+        <div className="flex w-full justify-center">
+          <Pagination
+            isCompact
+            showControls
+            showShadow
+            color="success"
+            page={page}
+            total={pages}
+            onChange={(page) => setPage(page)}
+          />
         </div>
-      </CardHeader> */}
-      <CardBody className="overflow-visible py-2 ">
-        <div className={styles.container}>
-          <div className={styles.spaceBetween}>
-            <h2 className={styles.title}>Product Fresha</h2>
-            <Link
-              className={styles.title}
-              href="/dashboard/products/addProduct"
-            >
-              <Button color="success" startContent={<MdAdd />}>
-                Product
-              </Button>
-            </Link>
-          </div>
-          <Table aria-label="Example table with custom cells">
-            <TableHeader columns={columns}>
-              {(column) => (
-                <TableColumn
-                  key={column.uid}
-                  align={column.uid === "actions" ? "center" : "start"}
-                >
-                  {column.name}
-                </TableColumn>
-              )}
-            </TableHeader>
-            <TableBody>
-              {data.map((item, index) => (
-                <TableRow key={index}>
-                  {(columnKey) => (
-                    <TableCell key={columnKey}>
-                      {renderCell(item, columnKey)}
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-        <div className="my-4 flex  justify-center">
-          <Pagination color="warning" initialPage={3} total={10} />
-        </div>
-      </CardBody>
-    </Card>
+      }
+      classNames={{
+        wrapper: "min-h-[222px]",
+      }}
+    >
+      <TableHeader columns={columns}>
+        {(column) => (
+          <TableColumn
+            key={column.uid}
+            align={column.uid === "actions" ? "center" : "start"}
+          >
+            {column.name}
+          </TableColumn>
+        )}
+      </TableHeader>
+      <TableBody>
+        {items.map((item, index) => (
+          <TableRow key={index}>
+            {(columnKey) => (
+              <TableCell key={columnKey}>
+                {renderCell(item, columnKey)}
+              </TableCell>
+            )}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
 

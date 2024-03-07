@@ -3,7 +3,7 @@ import TableCustamer from "~/app/_components/custamer/table_custamer";
 import { type ICustomer } from "~/type/customer";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import CardHeaderCustamer from "~/app/_components/custamer/header_data";
-import InputSearch from "~/app/_components/custamer/input_search";
+import InputSearchCustamer from "~/app/_components/custamer/input_search";
 import styles from "./custamer.module.css";
 
 const CustamerPage: React.FC = async () => {
@@ -14,7 +14,7 @@ const CustamerPage: React.FC = async () => {
       <CardHeader className="my-4 w-full flex-col items-start px-4 pb-0 pt-2">
         <div className={styles.spaceBetween}>
           <CardHeaderCustamer data = {data}/>
-          <InputSearch data={data} />
+          <InputSearchCustamer data={data} />
         </div>
       </CardHeader>
       <CardBody className="overflow-visible py-2 ">
@@ -27,7 +27,6 @@ const CustamerPage: React.FC = async () => {
       </CardBody>
     </Card>
   );
-
 };
 
 export default CustamerPage;

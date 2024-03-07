@@ -13,6 +13,7 @@ declare module "jsonwebtoken" {
     phone: string | null;
     emailVerified: Date | null;
     image: string | null;
+    isActive: boolean | null;
   }
 }
 

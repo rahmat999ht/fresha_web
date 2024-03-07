@@ -1,17 +1,15 @@
-.container {
-  background-color: var(--bgSoft);
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.title {
-  margin-bottom: 20px;
-  font-weight: 200;
-  color: var(--textSoft);
-}
-
-.spaceBetween {
+.search {
   display: flex;
-  justify-content: space-between;
-  align-items: center; /* Jika Anda ingin mengatur align-items */
+  align-items: center;
+  /* gap: 10px; */
+  background-color: #7de7ae;
+  padding: 10px;
+  border-radius: 10px;
+  height: 40px;
+}
+
+.input {
+  background-color: transparent;
+  border: none;
+  color: var(--text);
 }

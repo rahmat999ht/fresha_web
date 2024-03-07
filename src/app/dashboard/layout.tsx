@@ -4,7 +4,7 @@ import Sidebar from "../_components/dashboard/sidebar/sidebar";
 import styles from "../_components/dashboard/dashboard.module.css";
 import Footer from "../_components/dashboard/footer/footer";
 import { getServerAuthSession } from "~/server/auth";
-import { type IUserLogin } from "~/app/model/user";
+import { type IUserLogin } from "~/type/user";
 interface LayoutProps {
   children: ReactNode;
 }

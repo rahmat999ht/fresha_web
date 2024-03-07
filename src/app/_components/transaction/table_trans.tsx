@@ -9,19 +9,13 @@ import {
   TableCell,
   User,
   Chip,
-  Card,
-  CardBody,
   Pagination,
   type ChipProps,
   Tooltip,
   Link,
 } from "@nextui-org/react";
 import { columns } from "public/data/transactions";
-// import Cards from "~/app/_components/dashboard/cards/cards";
-// import { cards } from "public/data/cards";
-import styles from "./trans.module.css";
 import React from "react";
-// import { useRouter } from "next/navigation";
 import { type IOrder } from "~/type/order";
 import OpenModal, { type IModal } from "../open_modal";
 import { EyeIcon } from "public/icons/EyeIcon";
@@ -37,9 +31,6 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 };
 
 function TableTransaction({ data }: TableOrderProps) {
-  // const router = useRouter();
-  // const [loading, setLoading] = useState(false);
-
   const renderCell = React.useCallback(
     (item: IOrder, columnKey: React.Key): React.ReactNode => {
       const cellValue = item[columnKey as keyof IOrder];
@@ -76,12 +67,6 @@ function TableTransaction({ data }: TableOrderProps) {
               {item.status}
             </Chip>
           );
-        // case "customer":
-        //   return (
-        //     <div className="flex flex-col">
-        //       <p className="text-bold text-sm capitalize">{item.orderBy.name}</p>
-        //     </div>
-        //   );
         case "price":
           return (
             <div className="flex flex-col">
@@ -124,49 +109,60 @@ function TableTransaction({ data }: TableOrderProps) {
     [],
   );
 
+  const [page, setPage] = React.useState(1);
+  const rowsPerPage = 5;
+
+  const pages = Math.ceil(data.length / rowsPerPage);
+
+  const items = React.useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return data.slice(start, end);
+  }, [page, data]);
+
   return (
-    <Card className="px-1 py-1">
-      {/* <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
-        <div className="my-4 grid grid-cols-2 flex-wrap gap-x-4 gap-y-4 sm:grid-cols-4">
-          {cards.map((item) => (
-            <Cards item={item} key={item.id} />
-          ))}
+    <Table
+      aria-label="Example table with client side pagination"
+      bottomContent={
+        <div className="flex w-full justify-center">
+          <Pagination
+            isCompact
+            showControls
+            showShadow
+            color="success"
+            page={page}
+            total={pages}
+            onChange={(page) => setPage(page)}
+          />
         </div>
-      </CardHeader> */}
-      <CardBody className="overflow-visible py-2 ">
-        <div className={styles.container}>
-          <div className={styles.spaceBetween}>
-            <h2 className={styles.title}>Transaction Fresha</h2>
-          </div>
-          <Table aria-label="Example table with custom cells">
-            <TableHeader columns={columns}>
-              {(column) => (
-                <TableColumn
-                  key={column.uid}
-                  align={column.uid === "actions" ? "center" : "start"}
-                >
-                  {column.name}
-                </TableColumn>
-              )}
-            </TableHeader>
-            <TableBody>
-              {data.map((item, index) => (
-                <TableRow key={index}>
-                  {(columnKey) => (
-                    <TableCell key={columnKey}>
-                      {renderCell(item, columnKey)}
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-        <div className="my-4 flex  justify-center">
-          <Pagination color="warning" initialPage={3} total={10} />
-        </div>
-      </CardBody>
-    </Card>
+      }
+      classNames={{
+        wrapper: "min-h-[222px]",
+      }}
+    >
+      <TableHeader columns={columns}>
+        {(column) => (
+          <TableColumn
+            key={column.uid}
+            align={column.uid === "actions" ? "center" : "start"}
+          >
+            {column.name}
+          </TableColumn>
+        )}
+      </TableHeader>
+      <TableBody>
+        {items.map((item, index) => (
+          <TableRow key={index}>
+            {(columnKey) => (
+              <TableCell key={columnKey}>
+                {renderCell(item, columnKey)}
+              </TableCell>
+            )}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
 

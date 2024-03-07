@@ -1,29 +1,27 @@
 import type { Custamer, Prisma } from "@prisma/client";
-import { type z } from "zod";
 import { db } from "~/server/db";
-import type { custamerSchema } from "~/type/customer";
+import type {
+  FindManyCustomerProps,
+  UpdateCustomerProps,
+} from "~/type/customer";
 
-export type FindManyProps = Prisma.CustamerFindManyArgs;
-export type FindFirstProps = Prisma.CustamerFindFirstArgs;
-export type CustomerProps = z.infer<typeof custamerSchema>;
-
-export function getsCustomer(fineManyProps: FindManyProps) {
-  return db.custamer.findMany(fineManyProps) as Promise<Custamer[]>;
+export function getsCustomer(fineManyProps: FindManyCustomerProps) : Promise<Custamer[]> {
+  return db.custamer.findMany(fineManyProps) ;
 }
 
-export const getCustamerCount = () => {
-  const usersCount = db.custamer.count();
+export function getCustamerCount() : Promise<number>{
+  const custamerCount = db.custamer.count();
 
-  return usersCount;
-};
+  return custamerCount;
+}
 
-export const getCustamerByUniq = (where: Prisma.CustamerFindUniqueArgs) => {
-  const user = db.custamer.findUnique(where);
+export function getCustamerByUniq(where: Prisma.CustamerFindUniqueArgs) {
+  const custamer = db.custamer.findUnique(where);
 
-  return user;
-};
+  return custamer;
+}
 
-export function getCustamerFirst(id: string) {
+export function getCustamerFirst(id: string)  {
   return db.custamer.findFirst({
     where: { id },
     include: {
@@ -32,19 +30,19 @@ export function getCustamerFirst(id: string) {
   });
 }
 
-export const createCustamer = (data: Prisma.CustamerCreateInput) => {
-  const user = db.custamer.create({
+export function createCustamer(data: Prisma.CustamerCreateInput) : Promise<Custamer> {
+  const custamer = db.custamer.create({
     data: {
       email: data.email,
       isActive: true,
     },
   });
 
-  return user;
-};
+  return custamer;
+}
 
-export const updateCustamer = (input: CustomerProps) => {
-  const user = db.custamer.update({
+export function updateCustamer(input: UpdateCustomerProps) : Promise<Custamer> {
+  const custamer = db.custamer.update({
     where: { id: input.id },
     data: {
       name: input.name,
@@ -55,5 +53,5 @@ export const updateCustamer = (input: CustomerProps) => {
     },
   });
 
-  return user;
-};
+  return custamer;
+}

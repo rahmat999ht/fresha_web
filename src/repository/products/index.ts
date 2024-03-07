@@ -1,3 +1,25 @@
-// export { default as getsProduct } from "./product.gets";
-export * from "./product.gets";
-export * from "./product.get";
+import type { Product } from "@prisma/client";
+import { db } from "~/server/db";
+
+export function getsProduct(): Promise<Product[]> {
+  return db.product.findMany({
+    orderBy: { createdAt: "desc" },
+    include: {
+      order: true,
+    },
+  });
+}
+
+export function getsProductCount() {
+  return db.product.count();
+}
+
+export function getProductFirst(id: string) {
+  return db.product.findFirst({
+    where: { id },
+    orderBy: { createdAt: "desc" },
+    include: {
+      order: true,
+    },
+  });
+}

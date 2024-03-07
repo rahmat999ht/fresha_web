@@ -1,6 +1,9 @@
 import { z } from "zod";
-// import { type IOrder } from "./order";
-import { type Order } from "@prisma/client";
+import type { Prisma,  Order } from "@prisma/client";
+
+export type FindManyCustomerProps = Prisma.CustamerFindManyArgs;
+export type FindFirstCustomerProps = Prisma.CustamerFindFirstArgs;
+export type CustomerProps = z.infer<typeof custamerSchema>;
 
 export const idCustamerSchema = z.object({ id: z.string() });
 

@@ -11,7 +11,7 @@ import {
   DropdownMenu,
   Avatar,
 } from "@nextui-org/react";
-import { type IUserLogin } from "~/app/model/user";
+import { type IUserLogin } from "~/type/user";
 
 const Navbar: React.FC<IUserLogin> = (props) => {
   const pathname = usePathname();
