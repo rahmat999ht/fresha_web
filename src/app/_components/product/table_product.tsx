@@ -10,7 +10,6 @@ import {
   User,
   Chip,
   Tooltip,
-  Pagination,
   Link,
 } from "@nextui-org/react";
 import { columns } from "public/data/products";
@@ -24,6 +23,7 @@ import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { supabase } from "~/utils/supabase";
+import { PaginationCustom } from "../pagination_custom";
 
 interface TableProductProps {
   data: IProduct[]; // Menggunakan React.ReactNode untuk menangani konten dinamis
@@ -173,17 +173,7 @@ function TableProduct({ data }: TableProductProps) {
     <Table
       aria-label="Example table with client side pagination"
       bottomContent={
-        <div className="flex w-full justify-center">
-          <Pagination
-            isCompact
-            showControls
-            showShadow
-            color="success"
-            page={page}
-            total={pages}
-            onChange={(page) => setPage(page)}
-          />
-        </div>
+        <PaginationCustom page={page} pages={pages} setPage={setPage} />
       }
       classNames={{
         wrapper: "min-h-[222px]",

@@ -9,7 +9,6 @@ import {
   TableCell,
   User,
   Chip,
-  Pagination,
   type ChipProps,
   Tooltip,
   Link,
@@ -20,6 +19,7 @@ import { type IOrder } from "~/type/order";
 import OpenModal, { type IModal } from "../open_modal";
 import { EyeIcon } from "public/icons/EyeIcon";
 import { EditIcon } from "public/icons/EditIcon";
+import { PaginationCustom } from "../pagination_custom";
 
 interface TableOrderProps {
   data: IOrder[]; // Menggunakan React.ReactNode untuk menangani konten dinamis
@@ -125,17 +125,7 @@ function TableTransaction({ data }: TableOrderProps) {
     <Table
       aria-label="Example table with client side pagination"
       bottomContent={
-        <div className="flex w-full justify-center">
-          <Pagination
-            isCompact
-            showControls
-            showShadow
-            color="success"
-            page={page}
-            total={pages}
-            onChange={(page) => setPage(page)}
-          />
-        </div>
+        <PaginationCustom page={page} pages={pages} setPage={setPage} />
       }
       classNames={{
         wrapper: "min-h-[222px]",

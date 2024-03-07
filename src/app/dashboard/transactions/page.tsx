@@ -20,7 +20,7 @@ const OrderPage: React.FC = async () => {
       <CardBody className="overflow-visible py-2 ">
         <div className={styles.container}>
           <div className={styles.spaceBetween}>
-            <h2 className={styles.title}>Custamer Fresha</h2>
+            <h2 className={styles.title}>Transaction Fresha</h2>
           </div>
           <TableTransaction data={data} />
         </div>

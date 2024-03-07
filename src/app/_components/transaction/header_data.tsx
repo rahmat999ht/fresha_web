@@ -15,7 +15,7 @@ const CardHeaderTransaction = (props: Props) => {
   const cardsHeader = [
     {
       id: 1,
-      title: "Total Users",
+      title: "Total Transaction",
       number: props.data.length,
     },
     {

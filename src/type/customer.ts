@@ -3,7 +3,7 @@ import type { Prisma,  Order } from "@prisma/client";
 
 export type FindManyCustomerProps = Prisma.CustamerFindManyArgs;
 export type FindFirstCustomerProps = Prisma.CustamerFindFirstArgs;
-export type CustomerProps = z.infer<typeof custamerSchema>;
+export type UpdateCustomerProps = z.infer<typeof custamerSchema>;
 
 export const idCustamerSchema = z.object({ id: z.string() });
 
@@ -19,7 +19,6 @@ export const custamerSchema = z.object({
   phone: z.string().min(1, "phone harus diisi"),
   address: z.string(),
   image: z.string(),
-  isActive: z.boolean(),
 });
 
 export interface ICustomer {

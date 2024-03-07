@@ -9,7 +9,6 @@ import {
   TableCell,
   User,
   Chip,
-  Pagination,
   type ChipProps,
   Tooltip,
   Link,
@@ -20,6 +19,7 @@ import OpenModal, { type IModal } from "../open_modal";
 import { EyeIcon } from "public/icons/EyeIcon";
 import { EditIcon } from "public/icons/EditIcon";
 import { type ICustomer } from "~/type/customer";
+import { PaginationCustom } from "../pagination_custom";
 
 interface TableCustamerProps {
   data: ICustomer[]; // Menggunakan React.ReactNode untuk menangani konten dinamis
@@ -130,17 +130,7 @@ function TableCustamer({ data }: TableCustamerProps) {
     <Table
       aria-label="Example table with client side pagination"
       bottomContent={
-        <div className="flex w-full justify-center">
-          <Pagination
-            isCompact
-            showControls
-            showShadow
-            color="success"
-            page={page}
-            total={pages}
-            onChange={(page) => setPage(page)}
-          />
-        </div>
+        <PaginationCustom page={page} pages={pages} setPage={setPage} />
       }
       classNames={{
         wrapper: "min-h-[222px]",

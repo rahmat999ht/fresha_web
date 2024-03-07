@@ -1,4 +1,5 @@
 import * as customerRepo from "~/repository/costumer";
+import { type UpdateCustomerProps } from "~/type/customer";
 import pagination, { type TQueryPage } from "~/utils/pagination";
 
 export const getsCustomer = async ({ page, perPage }: TQueryPage) => {
@@ -17,7 +18,7 @@ export const getOrder = async (id: string) => {
   return customer;
 };
 
-export const updateCustamer = async (update: customerRepo.CustomerProps) => {
+export const updateCustamer = async (update: UpdateCustomerProps) => {
   const customer = await customerRepo.updateCustamer(update);
 
   return customer;

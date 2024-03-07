@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { type KeyboardEvent, useRef, type MouseEvent } from "react";
 import styles from "./custamer.module.css";
 import { MdSearch } from "react-icons/md";
 import { type ICustomer } from "~/type/customer";
@@ -12,23 +12,41 @@ type Props = {
 function InputSearchCustamer(props: Props) {
   const searchRef = useRef<HTMLInputElement | null>(null);
 
-  const handleSearch = () => {
+  const handleSearch = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      performSearch();
+    }
+  };
+
+  const handleSearchIconClick = (event: MouseEvent<SVGElement>) => {
+    event.preventDefault();
+    performSearch();
+  };
+
+  const performSearch = () => {
+    const keyword = searchRef.current?.value.toLowerCase();
+    if (!keyword) return;
+
     const value = props.data.filter(
       (item) =>
-        item.name == searchRef.current?.value ||
-        item.email == searchRef.current?.value,
+        item.email.toLowerCase().includes(keyword)
     );
+    if (value.length == 0) {
+      alert("No matching result found.");
+    }
     alert(value[0]?.email);
   };
 
   return (
     <div className={styles.search}>
-      <MdSearch onClick={handleSearch} />
+      <MdSearch onClick={handleSearchIconClick} />
       <input
         type="text"
         placeholder="Search..."
         className={styles.input}
         ref={searchRef}
+        onKeyDown={handleSearch}
       />
     </div>
   );
