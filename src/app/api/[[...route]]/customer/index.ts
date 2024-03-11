@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-import * as custamerService from "./customer.service";
+import * as custamerService from "../../../../services/customer.service";
 import { authMiddleware } from "../auth/auth.middelware";
 import logger from "~/utils/logger";
 import { HttpStatus } from "~/utils/http_status";
@@ -23,25 +23,25 @@ custamerRouter.get("/", async (c) => {
   const query = c.req.query();
 
   const queryPage = queryPageSchema.parse(query);
-  const orders = await custamerService.getsCustomer(queryPage);
+  const custamers = await custamerService.getsCustomer(queryPage);
 
   return c.json({
     code: HttpStatus.OK,
     status: "Ok",
-    ...orders,
+    ...custamers,
   });
 });
 
 custamerRouter.get("/:id", async (c) => {
   const { id } = c.req.param();
-  const order = await custamerService.getOrder(id);
+  const custamer = await custamerService.getCustomer(id);
 
-  logger.debug(order);
+  logger.debug(custamer);
 
   return c.json({
     code: HttpStatus.OK,
     status: "Ok",
-    data: order,
+    data: custamer,
   });
 });
 

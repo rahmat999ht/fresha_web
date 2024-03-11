@@ -19,10 +19,10 @@ import OpenModal, { type IModal } from "../open_modal";
 import { EyeIcon } from "public/icons/EyeIcon";
 import { EditIcon } from "public/icons/EditIcon";
 import { type ICustomer } from "~/type/customer";
-import { PaginationCustom } from "../pagination_custom";
 
 interface TableCustamerProps {
   data: ICustomer[]; // Menggunakan React.ReactNode untuk menangani konten dinamis
+  bottomContent: React.ReactNode;
 }
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
@@ -30,7 +30,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
   false: "danger",
 };
 
-function TableCustamer({ data }: TableCustamerProps) {
+function TableCustamer({ data, bottomContent }: TableCustamerProps) {
   const renderCell = React.useCallback(
     (item: ICustomer, columnKey: React.Key): React.ReactNode => {
       const cellValue = item[columnKey as keyof ICustomer];
@@ -114,24 +114,10 @@ function TableCustamer({ data }: TableCustamerProps) {
     [],
   );
 
-  const [page, setPage] = React.useState(1);
-  const rowsPerPage = 5;
-
-  const pages = Math.ceil(data.length / rowsPerPage);
-
-  const items = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-
-    return data.slice(start, end);
-  }, [page, data]);
-
   return (
     <Table
       aria-label="Example table with client side pagination"
-      bottomContent={
-        <PaginationCustom page={page} pages={pages} setPage={setPage} />
-      }
+      bottomContent={bottomContent}
       classNames={{
         wrapper: "min-h-[222px]",
       }}
@@ -147,7 +133,7 @@ function TableCustamer({ data }: TableCustamerProps) {
         )}
       </TableHeader>
       <TableBody>
-        {items.map((item, index) => (
+        {data.map((item, index) => (
           <TableRow key={index}>
             {(columnKey) => (
               <TableCell key={columnKey}>

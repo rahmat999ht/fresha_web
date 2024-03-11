@@ -19,10 +19,10 @@ import { type IOrder } from "~/type/order";
 import OpenModal, { type IModal } from "../open_modal";
 import { EyeIcon } from "public/icons/EyeIcon";
 import { EditIcon } from "public/icons/EditIcon";
-import { PaginationCustom } from "../pagination_custom";
 
 interface TableOrderProps {
   data: IOrder[]; // Menggunakan React.ReactNode untuk menangani konten dinamis
+  bottomContent: React.ReactNode;
 }
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
@@ -30,7 +30,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
   diproses: "danger",
 };
 
-function TableTransaction({ data }: TableOrderProps) {
+function TableTransaction({ data, bottomContent }: TableOrderProps) {
   const renderCell = React.useCallback(
     (item: IOrder, columnKey: React.Key): React.ReactNode => {
       const cellValue = item[columnKey as keyof IOrder];
@@ -109,24 +109,10 @@ function TableTransaction({ data }: TableOrderProps) {
     [],
   );
 
-  const [page, setPage] = React.useState(1);
-  const rowsPerPage = 5;
-
-  const pages = Math.ceil(data.length / rowsPerPage);
-
-  const items = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-
-    return data.slice(start, end);
-  }, [page, data]);
-
   return (
     <Table
       aria-label="Example table with client side pagination"
-      bottomContent={
-        <PaginationCustom page={page} pages={pages} setPage={setPage} />
-      }
+      bottomContent={bottomContent}
       classNames={{
         wrapper: "min-h-[222px]",
       }}
@@ -142,7 +128,7 @@ function TableTransaction({ data }: TableOrderProps) {
         )}
       </TableHeader>
       <TableBody>
-        {items.map((item, index) => (
+        {data.map((item, index) => (
           <TableRow key={index}>
             {(columnKey) => (
               <TableCell key={columnKey}>

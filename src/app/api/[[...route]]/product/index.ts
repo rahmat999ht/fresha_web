@@ -4,7 +4,7 @@ import { queryPageSchema } from "~/utils/pagination";
 // import HttpStatus from "~/utils/http-utils";
 // import logger from "~/utils/logger";
 
-import * as productService from "./product.service";
+import * as productService from "../../../../services/product.service";
 // import { authMiddleware } from "../auth/auth.middelware";
 // import { createUserSchema, updateUserSchema } from "./user.schema";
 // import { idSchema, queryPageSchema } from "~/schemas";

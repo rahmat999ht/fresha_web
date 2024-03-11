@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { queryPageSchema } from "~/utils/pagination";
 
-import * as orderService from "./order.service";
+import * as orderService from "../../../../services/order.service";
 import { authMiddleware } from "../auth/auth.middelware";
 import logger from "~/utils/logger";
 import { HttpStatus } from "~/utils/http_status";

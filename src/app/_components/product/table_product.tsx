@@ -23,13 +23,13 @@ import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { supabase } from "~/utils/supabase";
-import { PaginationCustom } from "../pagination_custom";
 
 interface TableProductProps {
   data: IProduct[]; // Menggunakan React.ReactNode untuk menangani konten dinamis
+  bottomContent: React.ReactNode;
 }
 
-function TableProduct({ data }: TableProductProps) {
+function TableProduct({ data, bottomContent }: TableProductProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -157,24 +157,10 @@ function TableProduct({ data }: TableProductProps) {
     [loading, servicesDeleteProduct],
   );
 
-  const [page, setPage] = React.useState(1);
-  const rowsPerPage = 5;
-
-  const pages = Math.ceil(data.length / rowsPerPage);
-
-  const items = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-
-    return data.slice(start, end);
-  }, [page, data]);
-
   return (
     <Table
       aria-label="Example table with client side pagination"
-      bottomContent={
-        <PaginationCustom page={page} pages={pages} setPage={setPage} />
-      }
+      bottomContent={bottomContent}
       classNames={{
         wrapper: "min-h-[222px]",
       }}
@@ -190,7 +176,7 @@ function TableProduct({ data }: TableProductProps) {
         )}
       </TableHeader>
       <TableBody>
-        {items.map((item, index) => (
+        {data.map((item, index) => (
           <TableRow key={index}>
             {(columnKey) => (
               <TableCell key={columnKey}>

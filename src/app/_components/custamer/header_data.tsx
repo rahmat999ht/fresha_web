@@ -9,8 +9,8 @@ type Props = {
 };
 
 const CardHeaderCustamer = (props: Props) => {
-  const userActive = props.data.filter((item) => item.isActive == true);
-  const userNonActive = props.data.filter((item) => item.isActive == false);
+  const userActive = props.data.filter((item) => item.isActive === true);
+  const userNonActive = props.data.filter((item) => item.isActive === false);
 
   const cardsHeader = [
     {
