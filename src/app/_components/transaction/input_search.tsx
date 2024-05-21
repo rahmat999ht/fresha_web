@@ -1,7 +1,7 @@
 "use client";
 
 import React, { type  MouseEventHandler, type KeyboardEventHandler } from "react";
-import styles from "./custamer.module.css";
+import styles from "./trans.module.css";
 import { MdSearch } from "react-icons/md";
 
 type Props = {

@@ -124,7 +124,7 @@ function TableProduct({ data, bottomContent }: TableProductProps) {
                   </Tooltip>
                 }
               />
-              <Link href="/dashboard/products/updateProduct">
+              <Link href="/dashboard/products/productId">
                 <Tooltip content="Edit product">
                   <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
                     <EditIcon />

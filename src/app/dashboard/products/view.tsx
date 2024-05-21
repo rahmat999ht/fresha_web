@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardBody, CardHeader } from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader, Link } from "@nextui-org/react";
 import styles from "./product.module.css";
 import React, {
   type KeyboardEvent,
@@ -99,6 +99,9 @@ const ProducVtiew = (props: Props) => {
           <div className={styles.container}>
             <div className={styles.spaceBetween}>
               <h2 className={styles.title}>ProductFresha</h2>
+              <Link href="/dashboard/products/addProduct">
+                <Button color="success">Add Product</Button>
+              </Link>
             </div>
             <TableProduct
               data={items}

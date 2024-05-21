@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import styles from "./Transaction.module.css";
+import styles from "./trans.module.css";
 import React, {
   type KeyboardEvent,
   type MouseEvent,

@@ -200,6 +200,7 @@ export const CreateProduct: NextPage = () => {
                 })}
               </div>
             ) : (
+              <div>kosong</div>
               // <div className="resultsHolder">
               //   {results.map((result, index) => {
               //     return (
@@ -216,7 +217,6 @@ export const CreateProduct: NextPage = () => {
               //     );
               //   })}
               // </div>
-              <div>kosong</div>
             )}
           </div>
         </div>
