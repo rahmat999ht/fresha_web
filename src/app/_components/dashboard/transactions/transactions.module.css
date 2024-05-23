@@ -9,3 +9,10 @@
   font-weight: 200;
   color: var(--textSoft);
 }
+
+.spaceBetween {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: top; /* Jika Anda ingin mengatur align-items */
+}

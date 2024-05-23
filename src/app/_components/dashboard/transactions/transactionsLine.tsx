@@ -7,7 +7,7 @@ import { LineChart } from "@mui/x-charts/LineChart";
 const TransactionsLine: React.FC = () => {
   return (
     <div>
-      <h2 className={styles.title}>Transaction</h2>
+      <h2 className={styles.title}>Transaction weekly</h2>
       
         <LineChart
           xAxis={[{ data: [1, 2, 3, 4, 5, 6, 7] }]}

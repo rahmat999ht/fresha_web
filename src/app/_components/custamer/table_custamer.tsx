@@ -13,7 +13,7 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 import { columns } from "public/data/users";
-import React, { useState } from "react";
+import React from "react";
 import OpenModal, { type IModal } from "../open_modal";
 import { EyeIcon } from "public/icons/EyeIcon";
 import { EditIcon } from "public/icons/EditIcon";
@@ -147,7 +147,7 @@ function TableCustamer({ data, bottomContent }: TableCustamerProps) {
           return <span>{stringValue}</span>;
       }
     },
-    [],
+    [updateActivate],
   );
 
   return (
