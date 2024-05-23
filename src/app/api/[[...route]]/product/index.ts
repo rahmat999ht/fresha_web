@@ -39,12 +39,12 @@ productRouter.get("/", async (c) => {
 
 productRouter.get("/:id", async (c) => {
   const { id } = c.req.param();
-  const user = await productService.getProduct(id);
+  const product = await productService.getProduct(id);
 
   return c.json({
     code: 200,
     status: "Ok",
-    data: user,
+    data: product,
   });
 });
 

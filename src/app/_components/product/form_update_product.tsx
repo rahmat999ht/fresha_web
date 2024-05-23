@@ -1,23 +1,28 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { type ChangeEvent, useState, useEffect, useRef } from "react";
+import { type ChangeEvent, useEffect, useRef, useState } from "react";
 import { Input, Button, Image } from "@nextui-org/react";
 import { api } from "~/trpc/react";
 import CameraIcon from "public/icons/CameraIcon";
-import { type NextPage } from "next";
+// import { type NextPage } from "next";
 import { supabase } from "~/utils/supabase";
-import * as mobilenet from "@tensorflow-models/mobilenet";
+import { type IProduct } from "~/type/product";
+import  * as mobilenet from "@tensorflow-models/mobilenet";
 
-export const CreateProduct: NextPage = () => {
+interface UpdateProductProps {
+  data: IProduct;
+}
+
+export const FormUpdateProduct = ({data} : UpdateProductProps) => {
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [hastag, setHastag] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
-  const [stock, setStock] = useState(0);
-  const [selectedImage, setSelectedImage] = useState("");
+  const [name, setName] = useState(data.name);
+  const [category, setCategory] = useState(data.category);
+  const [hastag, setHastag] = useState(data.hastag_ml);
+  const [description, setDescription] = useState(data.desc);
+  const [price, setPrice] = useState(data.price);
+  const [stock, setStock] = useState(data.stock);
+  const [selectedImage, setSelectedImage] = useState(data.image);
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [uploading, setUploading] = useState(false);
   const [identifyLoading, setIdentifyLoading] = useState(false);
@@ -33,6 +38,7 @@ export const CreateProduct: NextPage = () => {
 
   const imageRef = useRef<HTMLImageElement | null>(null);
   const textInputRef = useRef<HTMLInputElement | null>();
+  const dataId = data.id;
 
   const loadModel = async () => {
     setModelLoading(true);
@@ -80,7 +86,7 @@ export const CreateProduct: NextPage = () => {
     }
   };
 
-  const createNewProduct = api.product.create.useMutation({
+  const createNewProduct = api.product.update.useMutation({
     onSuccess: () => {
       router.refresh();
       setName("");
@@ -97,16 +103,13 @@ export const CreateProduct: NextPage = () => {
   const handleSubmit = async () => {
     setUploading(true);
     if (selectedFile) {
-      const imageUrl =
-        "https://omhmokdygpqbhwdtshvk.supabase.co/storage/v1/object/public/images/sayur/";
-
-      const imageName = Date.now().toString() + selectedFile.name;
       const { data, error } = await supabase.storage
         .from("images")
-        .upload("sayur/" + imageName, selectedFile);
+        .upload("sayur/" + selectedFile.name, selectedFile);
       createNewProduct.mutate({
+        id: dataId,
         name: name,
-        image: imageUrl + imageName,
+        image: selectedFile.name,
         category: category,
         hastag_ml: hastag,
         desc: description,
@@ -115,6 +118,7 @@ export const CreateProduct: NextPage = () => {
       });
       setUploading(false);
       console.log("berhasil guys");
+      console.log("berhasil guys");
 
       if (data) {
         console.log(data);
@@ -122,6 +126,7 @@ export const CreateProduct: NextPage = () => {
         console.log(error);
       }
     }
+    setUploading(false);
   };
 
   if (isModelLoading) {
@@ -296,5 +301,3 @@ export const CreateProduct: NextPage = () => {
     </div>
   );
 };
-
-// export default CreateProduct;

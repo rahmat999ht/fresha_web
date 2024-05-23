@@ -1,11 +1,11 @@
-import styles from "./addUser.module.css";
-import { CreateProduct } from "~/app/_components/product/create-product";
+import styles from "./productAdd.module.css";
+import { FormCreateProduct } from "~/app/_components/product/form_create_product";
 
 const AddProduct: React.FC = async () => {
 
   return (
     <div className={styles.container}>
-      <CreateProduct />
+      <FormCreateProduct />
     </div>
   );
 };

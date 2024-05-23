@@ -1,11 +1,23 @@
 import styles from "./productUp.module.css";
 
-import { UpdateProduct } from "~/app/_components/product/update-product";
+import { FormUpdateProduct } from "~/app/_components/product/form_update_product";
+// import { getProduct } from "~/services/product.service";
+import * as productService from "../../../../services/product.service";
 
-function ProductUpdate({ params }: { params: { productId: string } }) {
+const ProductUpdate =  async ({params} : {params : {productId :string}}) => {
+
+  const product = await productService.getProduct(params.productId);
+
+  if (!product) {
+    return (
+      <div className={styles.container}>
+        <p>Product not found</p>
+      </div>
+    );
+  }
   return (
     <div className={styles.container}>
-      <UpdateProduct />
+      <FormUpdateProduct data={product} />
     </div>
   );
 };

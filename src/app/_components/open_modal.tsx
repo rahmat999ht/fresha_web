@@ -25,7 +25,7 @@ interface OpenModalProps {
   toOpen: React.ReactNode; // Menggunakan React.ReactNode untuk menangani konten dinamis
   isAction?: boolean;
   actionTitle?: string; // Menggunakan React.ReactNode untuk menangani konten dinamis
-  onAction?: ()=> void;// Menggunakan React.ReactNode untuk menangani konten dinamis
+  onAction?: () => void; // Menggunakan React.ReactNode untuk menangani konten dinamis
 }
 
 export default function OpenModal({
@@ -47,7 +47,7 @@ export default function OpenModal({
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         radius="lg"
-        // isDismissable 
+        // isDismissable
         classNames={{
           body: "py-6",
           backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
@@ -67,9 +67,9 @@ export default function OpenModal({
                 <div className="flex flex-col items-center">
                   <Image width={300} alt="NextUI hero Image" src={data.image} />
                 </div>
-                <p>{data.subTitle}</p>
-                <p>{data.content}</p>
-                <p>{data.desc}</p>
+                <p className="text-bold text-sm">{data.subTitle}</p>
+                <p className="text-bold text-sm">{data.content}</p>
+                <p className="text-bold text-sm">{data.desc}</p>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>

@@ -10,7 +10,7 @@ import {
   User,
   Chip,
   Tooltip,
-  Link,
+  // Link,
 } from "@nextui-org/react";
 import { columns } from "public/data/products";
 import { type IProduct } from "~/type/product";
@@ -23,6 +23,7 @@ import { api } from "~/trpc/react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { supabase } from "~/utils/supabase";
+import Link from "next/link";
 
 interface TableProductProps {
   data: IProduct[]; // Menggunakan React.ReactNode untuk menangani konten dinamis
@@ -85,6 +86,10 @@ function TableProduct({ data, bottomContent }: TableProductProps) {
         content: `Apakah anda yakin ingin menghapus product "${item.name}" ??`,
       };
 
+      // const handleEditClick = () => {
+      //   router.push(`/dashboard/products/${item.id}`);
+      // };
+
       switch (columnKey) {
         case "name":
           return (
@@ -124,7 +129,7 @@ function TableProduct({ data, bottomContent }: TableProductProps) {
                   </Tooltip>
                 }
               />
-              <Link href="/dashboard/products/productId">
+              <Link href={`/dashboard/products/${item.id}`} passHref>
                 <Tooltip content="Edit product">
                   <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
                     <EditIcon />

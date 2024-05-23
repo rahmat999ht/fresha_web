@@ -11,14 +11,15 @@ import {
   Chip,
   type ChipProps,
   Tooltip,
-  Link,
 } from "@nextui-org/react";
 import { columns } from "public/data/users";
-import React from "react";
+import React, { useState } from "react";
 import OpenModal, { type IModal } from "../open_modal";
 import { EyeIcon } from "public/icons/EyeIcon";
 import { EditIcon } from "public/icons/EditIcon";
 import { type ICustomer } from "~/type/customer";
+import { api } from "~/trpc/react";
+import { useRouter } from "next/navigation";
 
 interface TableCustamerProps {
   data: ICustomer[]; // Menggunakan React.ReactNode untuk menangani konten dinamis
@@ -31,15 +32,38 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 };
 
 function TableCustamer({ data, bottomContent }: TableCustamerProps) {
+  const router = useRouter();
+  // const [activate, setActivate] = useState(false);
+  // const [uploading, setUploading] = useState(false);
+
+  const updateActivate = api.custamer.update.useMutation({
+    onSuccess: () => {
+      router.refresh();
+      // setActivate(false);
+    },
+  });
+
   const renderCell = React.useCallback(
     (item: ICustomer, columnKey: React.Key): React.ReactNode => {
       const cellValue = item[columnKey as keyof ICustomer];
+
       const modalView: IModal = {
         title: item.name,
         image: item.image,
         subTitle: item.isActive ? "Active" : "non Active",
         content: item.address,
         desc: item.phone,
+      };
+
+      const handleActivate = async () => {
+        // setUploading(true);
+        updateActivate.mutate({
+          id: item.id,
+          isActive: !item.isActive,
+        });
+        console.log("berhasil guys");
+        console.log("berhasil guys");
+        // setUploading(false);
       };
 
       switch (columnKey) {
@@ -87,20 +111,32 @@ function TableCustamer({ data, bottomContent }: TableCustamerProps) {
               <OpenModal
                 data={modalView}
                 toOpen={
-                  <Tooltip content="Details product">
+                  <Tooltip content="Details Customer">
                     <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
                       <EyeIcon />
                     </span>
                   </Tooltip>
                 }
               />
-              <Link href="/dashboard">
-                <Tooltip content="Edit product">
-                  <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
-                    <EditIcon />
-                  </span>
-                </Tooltip>
-              </Link>
+              <OpenModal
+                data={modalView}
+                isAction={true}
+                actionTitle={
+                  item.isActive ? "DeActive Customer" : "Activate Customer"
+                }
+                onAction={handleActivate}
+                toOpen={
+                  <Tooltip
+                    content={
+                      item.isActive ? "DeActive Customer" : "Activate Customer"
+                    }
+                  >
+                    <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
+                      <EditIcon />
+                    </span>
+                  </Tooltip>
+                }
+              />
             </div>
           );
         default:
