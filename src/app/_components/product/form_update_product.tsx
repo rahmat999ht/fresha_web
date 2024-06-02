@@ -8,13 +8,13 @@ import CameraIcon from "public/icons/CameraIcon";
 // import { type NextPage } from "next";
 import { supabase } from "~/utils/supabase";
 import { type IProduct } from "~/type/product";
-import  * as mobilenet from "@tensorflow-models/mobilenet";
+import * as mobilenet from "@tensorflow-models/mobilenet";
 
 interface UpdateProductProps {
   data: IProduct;
 }
 
-export const FormUpdateProduct = ({data} : UpdateProductProps) => {
+export const FormUpdateProduct = ({ data }: UpdateProductProps) => {
   const router = useRouter();
   const [name, setName] = useState(data.name);
   const [category, setCategory] = useState(data.category);
@@ -194,8 +194,9 @@ export const FormUpdateProduct = ({data} : UpdateProductProps) => {
                   return (
                     <div className="result" key={result.className}>
                       <span className="name">{result.className}</span>
-                      <span className="accuracy">
-                        Accuracy Level: {(result.probability * 100).toFixed(2)}%{" "}
+                      <span className="confidence">
+                        Confidence level:{" "}
+                        {(result.probability * 100).toFixed(2)}%{" "}
                         {index === 0 && (
                           <span className="bestGuess">Best Guess</span>
                         )}
@@ -206,22 +207,6 @@ export const FormUpdateProduct = ({data} : UpdateProductProps) => {
               </div>
             ) : (
               <div>kosong</div>
-              // <div className="resultsHolder">
-              //   {results.map((result, index) => {
-              //     return (
-              //       <div className="result" key={result.className}>
-              //         <span className="name">{result.className}</span>
-              //         <span className="confidence">
-              //           Confidence level:{" "}
-              //           {(result.probability * 100).toFixed(2)}%{" "}
-              //           {index === 0 && (
-              //             <span className="bestGuess">Best Guess</span>
-              //           )}
-              //         </span>
-              //       </div>
-              //     );
-              //   })}
-              // </div>
             )}
           </div>
         </div>

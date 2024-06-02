@@ -4,7 +4,7 @@ import Cards from "../_components/dashboard/cards/cards";
 import styles from "../_components/dashboard/dashboard.module.css";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import TransactionsLine from "../_components/dashboard/transactions/transactionsLine";
-import TransactionsBars from "../_components/dashboard/transactions/transactionsBars";
+import PieArcLabel from "../_components/dashboard/transactions/transactions.pie";
 
 const Dashboard: React.FC = () => {
   return (
@@ -19,7 +19,7 @@ const Dashboard: React.FC = () => {
       <CardBody className="overflow-visible py-2">
         <div className={styles.container}>
         <TransactionsLine />
-        <TransactionsBars />
+        <PieArcLabel/>
         </div>
       </CardBody>
     </Card>

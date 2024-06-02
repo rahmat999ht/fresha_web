@@ -189,8 +189,9 @@ export const FormCreateProduct: NextPage = () => {
                   return (
                     <div className="result" key={result.className}>
                       <span className="name">{result.className}</span>
-                      <span className="accuracy">
-                        Accuracy Level: {(result.probability * 100).toFixed(2)}%{" "}
+                      <span className="confidence">
+                        Confidence level:{" "}
+                        {(result.probability * 100).toFixed(2)}%{" "}
                         {index === 0 && (
                           <span className="bestGuess">Best Guess</span>
                         )}
@@ -201,22 +202,6 @@ export const FormCreateProduct: NextPage = () => {
               </div>
             ) : (
               <div>kosong</div>
-              // <div className="resultsHolder">
-              //   {results.map((result, index) => {
-              //     return (
-              //       <div className="result" key={result.className}>
-              //         <span className="name">{result.className}</span>
-              //         <span className="confidence">
-              //           Confidence level:{" "}
-              //           {(result.probability * 100).toFixed(2)}%{" "}
-              //           {index === 0 && (
-              //             <span className="bestGuess">Best Guess</span>
-              //           )}
-              //         </span>
-              //       </div>
-              //     );
-              //   })}
-              // </div>
             )}
           </div>
         </div>
