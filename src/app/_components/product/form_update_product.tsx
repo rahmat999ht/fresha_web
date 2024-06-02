@@ -9,6 +9,7 @@ import CameraIcon from "public/icons/CameraIcon";
 import { supabase } from "~/utils/supabase";
 import { type IProduct } from "~/type/product";
 import * as mobilenet from "@tensorflow-models/mobilenet";
+import styles from "./product.module.css";
 
 interface UpdateProductProps {
   data: IProduct;
@@ -192,15 +193,17 @@ export const FormUpdateProduct = ({ data }: UpdateProductProps) => {
               <div className="imageResult">
                 {results.map((result, index) => {
                   return (
-                    <div className="result" key={result.className}>
-                      <span className="name">{result.className}</span>
-                      <span className="confidence">
-                        Confidence level:{" "}
-                        {(result.probability * 100).toFixed(2)}%{" "}
+                    <div className={styles.borderCard} key={result.className}>
+                      <span className={styles.name}>{result.className}</span>
+                      <div className={styles.confidence}>
+                        <span className={styles.confidenceText}>
+                          Confidence level:{" "}
+                          {(result.probability * 100).toFixed(2)}%
+                        </span>
                         {index === 0 && (
-                          <span className="bestGuess">Best Guess</span>
+                          <span className={styles.bestGuess}>Best Guess</span>
                         )}
-                      </span>
+                      </div>
                     </div>
                   );
                 })}

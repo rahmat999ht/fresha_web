@@ -186,8 +186,9 @@ export const FormCreateProduct: NextPage = () => {
             {results.length > 0 ? (
               <div className="imageResult">
                 {results.map((result, index) => {
+                  const bgColor = index === 0 ? 'bg-blue-500' : `bg-gray-${(index + 1) * 200}`;
                   return (
-                    <div className="result" key={result.className}>
+                    <div key={result.className} className={`result border ${bgColor}`}>
                       <span className="name">{result.className}</span>
                       <span className="confidence">
                         Confidence level:{" "}
@@ -201,7 +202,7 @@ export const FormCreateProduct: NextPage = () => {
                 })}
               </div>
             ) : (
-              <div>kosong</div>
+              <div className="text-center text-gray-500 italic font-medium">kosong</div>
             )}
           </div>
         </div>

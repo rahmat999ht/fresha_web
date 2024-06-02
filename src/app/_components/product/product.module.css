@@ -13,3 +13,31 @@
   border: none;
   color: var(--text);
 }
+
+.confidence {
+  display: flex; /* Enables flexbox */
+  flex-direction: row; /* Stacks elements horizontally */
+  align-items: center; /* Aligns items vertically */
+  background-color: white; /* White background for the entire section */
+ }
+
+.confidenceText {
+  margin-right: 8px; /* Adds space between the text and "Best Guess" */
+}
+
+.bestGuess {
+  background-color: #09e359; /* White background for the label by default */
+  padding: 4px; /* Adds padding to the label */
+  border-radius: 4px; /* Rounds the corners */
+}
+
+.borderCard {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+.name {
+  font-weight: bold;
+}
