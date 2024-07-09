@@ -58,6 +58,10 @@ export const FormCreateProduct: NextPage = () => {
         setResults(results);
         console.log(`panjang result${results.length}`);
         setIdentifyLoading(false);
+        if (results.length > 0) {
+          updateHastag(results[0]?.className ?? "result kosong");
+          console.log(results[0]?.className ?? "result kosong", "hasil result");
+        }
       } else {
         console.error("Image element is undefined."); // Handle the case where image element is undefined
         setIdentifyLoading(false);
@@ -78,6 +82,10 @@ export const FormCreateProduct: NextPage = () => {
       setSelectedImage(URL.createObjectURL(file ?? new Blob()));
       setSelectedFile(file);
     }
+  };
+
+  const updateHastag = (hastag: string) => {
+    setHastag(hastag);
   };
 
   const createNewProduct = api.product.create.useMutation({
@@ -104,6 +112,7 @@ export const FormCreateProduct: NextPage = () => {
       const { data, error } = await supabase.storage
         .from("images")
         .upload("sayur/" + imageName, selectedFile);
+
       createNewProduct.mutate({
         name: name,
         image: imageUrl + imageName,
@@ -186,9 +195,15 @@ export const FormCreateProduct: NextPage = () => {
             {results.length > 0 ? (
               <div className="imageResult">
                 {results.map((result, index) => {
-                  const bgColor = index === 0 ? 'bg-blue-500' : `bg-gray-${(index + 1) * 200}`;
+                  const bgColor =
+                    index === 0
+                      ? "bg-blue-500"
+                      : `bg-gray-${(index + 1) * 200}`;
                   return (
-                    <div key={result.className} className={`result border ${bgColor}`}>
+                    <div
+                      key={result.className}
+                      className={`result border ${bgColor}`}
+                    >
                       <span className="name">{result.className}</span>
                       <span className="confidence">
                         Confidence level:{" "}
@@ -202,7 +217,9 @@ export const FormCreateProduct: NextPage = () => {
                 })}
               </div>
             ) : (
-              <div className="text-center text-gray-500 italic font-medium">kosong</div>
+              <div className="text-center font-medium italic text-gray-500">
+                kosong
+              </div>
             )}
           </div>
         </div>

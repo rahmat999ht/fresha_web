@@ -5,7 +5,7 @@ import { authMiddleware } from "../auth/auth.middelware";
 import logger from "~/utils/logger";
 import { HttpStatus } from "~/utils/http_status";
 import validatorSchemaMiddleware from "~/utils/validate_midleware";
-import { custamerSchema, idCustamerSchema } from "~/type/customer";
+import { customerSchema, idCustomerSchema } from "~/type/customer";
 import { queryPageSchema } from "~/utils/pagination";
 
 const custamerRouter = new Hono();
@@ -21,6 +21,17 @@ custamerRouter.use("*", authMiddleware);
 
 custamerRouter.get("/", async (c) => {
   const query = c.req.query();
+
+  const { id } = query;
+
+  if (id) {
+    const customer = await custamerService.getCustomer(id);
+    return c.json({
+      code: HttpStatus.OK,
+      status: "Ok",
+      data: customer,
+    });
+  }
 
   const queryPage = queryPageSchema.parse(query);
   const custamers = await custamerService.getsCustomer(queryPage);
@@ -47,8 +58,8 @@ custamerRouter.get("/:id", async (c) => {
 
 custamerRouter.put(
   "/:id",
-  validatorSchemaMiddleware("json", custamerSchema),
-  validatorSchemaMiddleware("param", idCustamerSchema),
+  validatorSchemaMiddleware("json", customerSchema),
+  validatorSchemaMiddleware("param", idCustomerSchema),
 
   async (c) => {
     const userWithoutId = c.req.valid("json");

@@ -27,6 +27,24 @@ const productRouter = new Hono();
 productRouter.get("/", async (c) => {
   const query = c.req.query();
 
+  const { id } = query;
+
+  if (id) {
+    const product = await productService.getProduct(id);
+    if (!product) {
+      return c.json({
+        code: 404,
+        status: "Not Found",
+        message: "Product not found",
+      });
+    }
+    return c.json({
+      code: 200,
+      status: "Ok",
+      data: product,
+    });
+  }
+
   const queryPage = queryPageSchema.parse(query);
   const products = await productService.getsProduct(queryPage);
 

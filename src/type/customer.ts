@@ -1,18 +1,18 @@
 import { z } from "zod";
-import type { Prisma,  Order } from "@prisma/client";
+import type { Prisma, Order } from "@prisma/client";
 
 export type FindManyCustomerProps = Prisma.CustamerFindManyArgs;
 export type FindFirstCustomerProps = Prisma.CustamerFindFirstArgs;
-export type UpdateCustomerProps = z.infer<typeof custamerSchema>;
+export type UpdateCustomerProps = z.infer<typeof customerSchema>;
 
-export const idCustamerSchema = z.object({ id: z.string() });
+export const idCustomerSchema = z.object({ id: z.string() });
 
-export const custamerUpdateSchema = z.object({
+export const customerUpdateSchema = z.object({
   id: z.string().cuid(),
-  isActive: z.boolean(),
+  isActive: z.boolean(), // Added this line
 });
 
-export const custamerSchema = z.object({
+export const customerSchema = z.object({
   id: z.string(),
   name: z.string().min(0, "name harus diisi"),
   email: z.string().email(),

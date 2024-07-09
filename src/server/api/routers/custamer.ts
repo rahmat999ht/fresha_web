@@ -1,6 +1,6 @@
 import { createCustamer } from "~/repository/costumer";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { custamerSchema, custamerUpdateSchema, idCustamerSchema } from "~/type/customer";
+import { customerSchema, customerUpdateSchema, idCustomerSchema } from "~/type/customer";
 
 export const custamerRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
@@ -11,15 +11,15 @@ export const custamerRouter = createTRPCRouter({
     });
   }),
 
-  getOne: protectedProcedure.input(idCustamerSchema).query(({ ctx, input }) => {
+  getOne: protectedProcedure.input(idCustomerSchema).query(({ ctx, input }) => {
     return ctx.db.custamer.findUnique({
-      where: idCustamerSchema.parse(input),
+      where: idCustomerSchema.parse(input),
       include: { riwPes: true },
     });
   }),
 
   create: protectedProcedure
-    .input(custamerSchema)
+    .input(customerSchema)
     .mutation(async ({ input }) => {
       // simulate a slow db call
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -28,11 +28,11 @@ export const custamerRouter = createTRPCRouter({
     }),
 
   update: protectedProcedure
-    .input(custamerUpdateSchema)
+    .input(customerUpdateSchema)
     .mutation(async ({ ctx, input }) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       return ctx.db.custamer.update({
-        where: idCustamerSchema.parse(input),
+        where: idCustomerSchema.parse(input),
         data: {
           id: input.id,
           isActive: input.isActive,
@@ -41,11 +41,11 @@ export const custamerRouter = createTRPCRouter({
     }),
 
   delete: protectedProcedure
-    .input(idCustamerSchema)
+    .input(idCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       return ctx.db.custamer.delete({
-        where: idCustamerSchema.parse(input),
+        where: idCustomerSchema.parse(input),
       });
     }),
 });

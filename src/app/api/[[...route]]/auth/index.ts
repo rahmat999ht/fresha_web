@@ -1,12 +1,7 @@
 import { Hono } from "hono";
 
-// import HttpStatus from "~/utils/http-utils";
-
 import * as authService from "./auth.service";
 import { authMiddleware } from "./auth.middelware";
-// import { loginSchema, signInSchema } from "./auth.schema";
-// import validatorSchemaMiddleware from "~/middlewares/validator";
-// import { authMiddleware } from "~/middlewares/auth";
 
 const authRouter = new Hono();
 
@@ -14,7 +9,6 @@ type Email = { email: string };
 
 authRouter.post(
   "/login",
-  //   validatorSchemaMiddleware("json", loginSchema),
   async (c) => {
     const loginProps: Email = await c.req.json();
 
