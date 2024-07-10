@@ -16,20 +16,27 @@ export const orderUpdateSchema = z.object({
 
 export const orderCreateSchema = z.object({
   status: z.string().min(0, "status harus diisi"),
-  totPrice: z.number().min(1, "totPrice harus diisi"),
-  amount: z.number().min(1, "amount harus diisi"),
-  productId: z.string(),
+  totBuy: z.number().min(1, "totBuy harus diisi"),
   orderById: z.string(),
+  listProduct: z.array(
+    z.object({
+      productId: z.string(),
+      // orderId: z.string(),
+      quantity: z.number().min(1, "quantity harus diisi"),
+      totPrice: z.number().min(1, "totPrice harus diisi"),
+     })
+  ),
 });
 
 export interface IOrder {
   id: string;
   status: string;
-  totPrice: number;
-  amount: number;
+  totBuy: number;
   orderById: string;
   createdAt: Date;
   updatedAt: Date;
-  product: Product[];
+  listProduct: Product[];
   orderBy: Custamer;
 }
+
+

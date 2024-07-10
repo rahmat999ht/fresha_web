@@ -1,4 +1,4 @@
-import { createOrder } from "~/repository/order";
+import { createOrderRepo } from "~/repository/order";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { idOrderSchema, orderCreateSchema, orderUpdateSchema } from "~/type/order";
@@ -6,9 +6,8 @@ import { idOrderSchema, orderCreateSchema, orderUpdateSchema } from "~/type/orde
 export const orderRouter = createTRPCRouter({
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.db.order.findMany({
-      orderBy: { createdAt: "desc" },
       include: {
-        product : true,
+        listProduct : true,
         orderBy : true,
       }
       // where: { createdBy: { id: ctx.session.user.id } },
@@ -19,7 +18,7 @@ export const orderRouter = createTRPCRouter({
     return ctx.db.order.findUnique({
       where: idOrderSchema.parse(input),
       include: {
-        product : true,
+        listProduct : true,
         orderBy : true,
       }
     });
@@ -31,7 +30,7 @@ export const orderRouter = createTRPCRouter({
       // simulate a slow db call
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      return createOrder(input);
+      return createOrderRepo(input);
     }),
 
   update: protectedProcedure

@@ -38,8 +38,8 @@ function TableTransaction({ data, bottomContent }: TableOrderProps) {
         title: item.status,
         image: item.status,
         subTitle: item.status,
-        content: item.amount.toString(),
-        desc: item.totPrice.toString(),
+        content: item.totBuy.toString(),
+        desc: item.totBuy.toString(),
       };
 
       switch (columnKey) {
@@ -50,8 +50,8 @@ function TableTransaction({ data, bottomContent }: TableOrderProps) {
                 radius: "lg",
                 src: item.orderBy.image?.toString(),
               }}
-              description={item.updatedAt.toDateString()}
-              name={item.orderBy.name}
+              description={item.orderBy.name}
+              name={item.orderBy.email}
             >
               {item.updatedAt.toDateString()}
             </User>
@@ -67,11 +67,11 @@ function TableTransaction({ data, bottomContent }: TableOrderProps) {
               {item.status}
             </Chip>
           );
-        case "price":
+        case "totBuy":
           return (
             <div className="flex flex-col">
               <p className="text-bold text-sm capitalize">
-                {item.totPrice} /{item.amount}
+                {item.totBuy}
               </p>
             </div>
           );
@@ -89,13 +89,13 @@ function TableTransaction({ data, bottomContent }: TableOrderProps) {
                   </Tooltip>
                 }
               />
-              <Link href="/dashboard/products/updateProduct">
+              {/* <Link href="/dashboard/products/updateProduct">
                 <Tooltip content="Edit product">
                   <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
                     <EditIcon />
                   </span>
                 </Tooltip>
-              </Link>
+              </Link> */}
             </div>
           );
         default:

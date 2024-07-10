@@ -25,7 +25,7 @@ authRouter.post(
   },
 );
 
-authRouter.post("/signin", async (c) => {
+authRouter.post("/register", async (c) => {
   const user: Email = await c.req.json();
   console.log(user);
 

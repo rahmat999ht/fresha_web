@@ -22,6 +22,17 @@ orderRouter.use("*", authMiddleware);
 orderRouter.get("/", async (c) => {
   const query = c.req.query();
 
+  const { id } = query;
+  if (id) {
+    const order = await orderService.getOrder(id);
+    logger.debug(order);
+    return c.json({
+      code: HttpStatus.OK,
+      status: "Ok",
+      data: order,
+    });
+  }
+
   const queryPage = queryPageSchema.parse(query);
   const orders = await orderService.getsOrder(queryPage);
 

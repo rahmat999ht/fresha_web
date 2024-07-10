@@ -25,7 +25,11 @@ export function getCustamerFirst(id: string)  {
   return db.custamer.findFirst({
     where: { id },
     include: {
-      riwPes: true,
+      riwPes: {
+        include: {
+          listProduct: true,
+        },
+      },
     },
   });
 }

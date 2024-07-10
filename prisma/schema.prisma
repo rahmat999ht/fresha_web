@@ -76,17 +76,17 @@ model Custamer {
 }
 
 model Order {
-    id       String @id @default(cuid())
+    id     String @id @default(cuid())
     // payment     String
-    status   String
-    totPrice Int
-    amount   Int
+    status String
+    totBuy Int
+    // amount   Int
 
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
-    orderBy   Custamer  @relation(fields: [orderById], references: [id], onDelete: Cascade)
-    orderById String
-    product   Product[]
+    createdAt   DateTime          @default(now())
+    updatedAt   DateTime          @updatedAt
+    orderBy     Custamer          @relation(fields: [orderById], references: [id], onDelete: Cascade)
+    orderById   String
+    listProduct ProductsOnOrder[]
 }
 
 model Product {
@@ -99,13 +99,24 @@ model Product {
     price     Int
     stock     Int
 
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
+    createdAt   DateTime          @default(now())
+    updatedAt   DateTime          @updatedAt
+    createdBy   User              @relation(fields: [createdById], references: [id], onDelete: Cascade)
     createdById String
-    order       Order[]
+    listOrder   ProductsOnOrder[]
 
     @@index([name])
+}
+
+model ProductsOnOrder {
+    productId String
+    product  Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+    orderId   String
+    order    Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    quantity  Int     @default(1)
+    totPrice  Int
+
+    @@id([productId, orderId])
 }
 
 // model OrderProduct {
