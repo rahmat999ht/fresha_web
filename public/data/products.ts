@@ -1,8 +1,14 @@
 const columns = [
-  { name: "NAME", uid: "name" },
-  { name: "STOCK", uid: "stock" },
-  { name: "PRICE", uid: "price" },
-  { name: "ACTIONS", uid: "actions" },
+  { name: "NAME", uid: "name", sortable: true },
+  { name: "STOCK", uid: "stock", sortable: true },
+  { name: "PRICE", uid: "price", sortable: true },
+  { name: "CATEGORY", uid: "category" },
+  { name: "ACTIONS", uid: "actions", sortable: true },
+];
+
+const stockOptions = [
+  { name: "Tersedia", uid: "tersedia" },
+  { name: "Tidak Tersedia", uid: "tidak tersedia" },
 ];
 
 const product = [
@@ -35,4 +41,4 @@ const product = [
   },
 ];
 
-export { columns, product };
+export { columns, product, stockOptions };

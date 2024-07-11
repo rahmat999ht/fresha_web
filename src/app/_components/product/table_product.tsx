@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "~/utils/supabase";
 import Link from "next/link";
 
+
 interface TableProductProps {
   data: IProduct[]; // Menggunakan React.ReactNode untuk menangani konten dinamis
   bottomContent: React.ReactNode;
@@ -74,11 +75,11 @@ function TableProduct({ data, bottomContent }: TableProductProps) {
       };
 
       const modalView: IModal = {
-        title: item.name,
+        title: "Detail Product",
         image: item.image,
-        subTitle: item.category,
-        content: item.price.toString(),
-        desc: item.stock.toString(),
+        subTitle: "Nama Sayur :  "+item.category,
+        content: "Harga Sayur :  "+ item.price.toString(),
+        desc: "Stock :  " +item.stock.toString(),
       };
 
       const modalDelete: IModal = {
@@ -156,6 +157,11 @@ function TableProduct({ data, bottomContent }: TableProductProps) {
             </div>
           );
         default:
+          if (Array.isArray(cellValue)) {
+            return cellValue.map((item) => (
+              <div key={item.productId}>{item.productId}</div>
+            ));
+          }
           return cellValue instanceof Date ? cellValue.toString() : cellValue;
       }
     },
@@ -180,16 +186,16 @@ function TableProduct({ data, bottomContent }: TableProductProps) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody>
-        {data.map((item, index) => (
-          <TableRow key={index}>
+      <TableBody items={data} emptyContent={'No data product'}>
+        {item => (
+          <TableRow key={item.id}>
             {(columnKey) => (
               <TableCell key={columnKey}>
                 {renderCell(item, columnKey)}
               </TableCell>
             )}
           </TableRow>
-        ))}
+        )}
       </TableBody>
     </Table>
   );

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import Cards from "../dashboard/cards/cards";
@@ -9,8 +9,9 @@ type Props = {
 };
 
 const CardHeaderTransaction = (props: Props) => {
-  const orderDone = props.data.filter((item) => item.status == 'selesai');
-  const orderProcessed = props.data.filter((item) => item.status == 'diproses');
+  const orderDone = props.data.filter((item) => item.status == "done");
+  const orderProcessed = props.data.filter((item) => item.status == "processed");
+  const orderPending = props.data.filter((item) => item.status == "pending");
 
   const cardsHeader = [
     {
@@ -27,10 +28,14 @@ const CardHeaderTransaction = (props: Props) => {
       id: 3,
       title: "Processed",
       number: orderProcessed.length,
+    }, {
+      id: 4,
+      title: "Pending",
+      number: orderPending.length,
     },
   ];
   return (
-    <div className=" grid grid-cols-2 flex-wrap gap-x-4 sm:grid-cols-4">
+    <div className="grid grid-cols-4 flex-wrap gap-x-4 sm:flex-wrap">
       {cardsHeader.map((item) => (
         <Cards item={item} key={item.id} />
       ))}

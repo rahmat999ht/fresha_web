@@ -1,9 +1,15 @@
 const columns = [
   // { name: "PRODUCT", uid: "product" },
-  { name: "CUSTOMER", uid: "customer" },
-  { name: "STATUS", uid: "status" },
-  { name: "TOTAL BUY", uid: "totBuy" },
-  { name: "ACTIONS", uid: "actions" },
+  { name: "CUSTOMER", uid: "customer" , sortable: true },
+  { name: "STATUS", uid: "status" , sortable: true},
+  { name: "TOTAL BUY", uid: "totBuy"  },
+  { name: "TOTAL PRODUCT", uid: "totPro" },
+  { name: "ACTIONS", uid: "actions" , sortable: true},
+];
+
+const statusOptions = [
+  {name: "Pending", uid: "pending"},
+  {name: "Done", uid: "done"},
 ];
 
 const transactions = [
@@ -55,4 +61,4 @@ const transactions = [
     email: "kristen.cooper@example.com",
   },
 ];
-export { columns, transactions };
+export { columns, transactions , statusOptions};

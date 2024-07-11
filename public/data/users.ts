@@ -1,10 +1,15 @@
 // import React from "react";
 const columns = [
-  {name: "NAME", uid: "name"},
-  {name: "PHONE", uid: "phone"},
-  {name: "STATUS", uid: "status"},
-  {name: "ADDRESS", uid: "address"},
-  {name: "ACTIONS", uid: "actions"},
+  { name: "NAME", uid: "name", sortable: true },
+  { name: "PHONE", uid: "phone" },
+  { name: "STATUS", uid: "status", sortable: true },
+  { name: "ADDRESS", uid: "address", sortable: true },
+  { name: "ACTIONS", uid: "actions", sortable: true },
+];
+
+const statusOptions = [
+  { name: "Active", uid: "active" },
+  { name: "Paused", uid: "paused" },
 ];
 
 const users = [
@@ -60,4 +65,4 @@ const users = [
   },
 ];
 
-export {columns, users};
+export { columns, users, statusOptions };

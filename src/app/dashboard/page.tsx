@@ -8,21 +8,29 @@ import PieArcLabel from "../_components/dashboard/transactions/transactions.pie"
 
 const Dashboard: React.FC = () => {
   return (
-    <Card className="px-1 py-1">
-      <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
-        <div className="my-4 grid grid-cols-2 flex-wrap gap-x-4 gap-y-4 sm:grid-cols-4">
-          {cards.map((item) => (
-            <Cards item={item} key={item.id} />
-          ))}
-        </div>
-      </CardHeader>
-      <CardBody className="overflow-visible py-2">
-        <div className={styles.container}>
-        <TransactionsLine />
-        <PieArcLabel/>
-        </div>
-      </CardBody>
-    </Card>
+    <div className="flex flex-col gap-4">
+      <div className="grid w-full grid-cols-3 flex-wrap gap-x-4  sm:flex-wrap">
+        {cards.map((item) => (
+          <Cards item={item} key={item.id} />
+        ))}
+      </div>
+      <div className="grid w-full grid-cols-2 flex-wrap gap-x-4  sm:flex-wrap">
+        <Card className="px-1 py-1">
+          <CardBody className="overflow-visible py-2">
+            <div className={styles.container}>
+              <PieArcLabel />
+            </div>
+          </CardBody>
+        </Card>
+        <Card className="px-1 py-1">
+          <CardBody className="overflow-visible py-2">
+            <div className={styles.container}>
+              <TransactionsLine />
+            </div>
+          </CardBody>
+        </Card>
+      </div>
+    </div>
   );
 };
 

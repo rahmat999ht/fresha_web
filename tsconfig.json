@@ -37,6 +37,6 @@
     "**/*.cjs",
     "**/*.js",
     ".next/types/**/*.ts"
-  ],
+, "public/icons/searchIcon.jsx"  ],
   "exclude": ["node_modules"]
 }

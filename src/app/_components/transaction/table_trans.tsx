@@ -11,14 +11,12 @@ import {
   Chip,
   type ChipProps,
   Tooltip,
-  Link,
 } from "@nextui-org/react";
 import { columns } from "public/data/transactions";
 import React from "react";
 import { type IOrder } from "~/type/order";
 import OpenModal, { type IModal } from "../open_modal";
 import { EyeIcon } from "public/icons/EyeIcon";
-import { EditIcon } from "public/icons/EditIcon";
 
 interface TableOrderProps {
   data: IOrder[]; // Menggunakan React.ReactNode untuk menangani konten dinamis
@@ -35,10 +33,10 @@ function TableTransaction({ data, bottomContent }: TableOrderProps) {
     (item: IOrder, columnKey: React.Key): React.ReactNode => {
       const cellValue = item[columnKey as keyof IOrder];
       const modalView: IModal = {
-        title: item.status,
-        image: item.status,
-        subTitle: item.status,
-        content: item.totBuy.toString(),
+        title: "Detail Transaction",
+        image: item.orderBy.image!,
+        subTitle:  item.orderBy.name ?  "Nama Customer :  " + item.orderBy.name :  "Nama Customer :  " + item.orderBy.email,
+        content: "Status :  " +item.status,
         desc: item.totBuy.toString(),
       };
 
@@ -50,8 +48,8 @@ function TableTransaction({ data, bottomContent }: TableOrderProps) {
                 radius: "lg",
                 src: item.orderBy.image?.toString(),
               }}
-              description={item.orderBy.name}
-              name={item.orderBy.email}
+              description={item.orderBy.email}
+              name={item.orderBy.name}
             >
               {item.updatedAt.toDateString()}
             </User>

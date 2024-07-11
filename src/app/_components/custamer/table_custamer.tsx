@@ -48,11 +48,13 @@ function TableCustamer({ data, bottomContent }: TableCustamerProps) {
       const cellValue = item[columnKey as keyof ICustomer];
 
       const modalView: IModal = {
-        title: item.name,
+        title: "Info Custamer",
         image: item.image,
-        subTitle: item.isActive ? "Active" : "non Active",
-        content: item.address,
-        desc: item.phone,
+        subTitle: item.name ? "Nama :  " + item.name : "Nama :  " + item.email,
+        content: item.isActive
+          ? "Status :  " + "Active"
+          : "Status :  " + "non Active",
+        desc: "No.HP :  " + item.phone,
       };
 
       const handleActivate = async () => {

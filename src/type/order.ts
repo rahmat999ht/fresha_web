@@ -1,4 +1,4 @@
-import type { Custamer, Prisma, Product } from "@prisma/client";
+import type { Custamer, Prisma, ProductsOnOrder } from "@prisma/client";
 import { z } from "zod";
 
 export type FindManyProps = Prisma.OrderFindManyArgs | undefined;
@@ -35,7 +35,7 @@ export interface IOrder {
   orderById: string;
   createdAt: Date;
   updatedAt: Date;
-  listProduct: Product[];
+  listProduct: ProductsOnOrder[];
   orderBy: Custamer;
 }
 

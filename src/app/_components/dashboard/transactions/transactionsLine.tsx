@@ -8,7 +8,6 @@ const TransactionsLine: React.FC = () => {
   return (
     <div>
       <h2 className={styles.title}>Transaction weekly</h2>
-      
         <LineChart
           xAxis={[{ data: [1, 2, 3, 4, 5, 6, 7] }]}
           series={[
@@ -17,8 +16,8 @@ const TransactionsLine: React.FC = () => {
               showMark: ({ index }) => index % 2 === 0,
             },
           ]}
-          width={500}
-          height={300}
+          width={700}
+          height={420}
         />
     </div>
   );

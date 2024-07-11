@@ -3,8 +3,10 @@
 import React, { type  MouseEventHandler, type KeyboardEventHandler } from "react";
 import styles from "./product.module.css";
 import { MdSearch } from "react-icons/md";
+// import { type ReadonlyURLSearchParams } from "next/navigation";
 
 type Props = {
+  // searchParams: ReadonlyURLSearchParams,
   searchRef : React.MutableRefObject<HTMLInputElement | null>;
   handleSearch : KeyboardEventHandler<HTMLInputElement> | undefined;
   handleSearchIconClick : MouseEventHandler<SVGElement> | undefined;
@@ -21,6 +23,7 @@ function InputSearchProduct(props: Props) {
         className={styles.input}
         ref={props.searchRef}
         onKeyDown={props.handleSearch}
+        // defaultValue={props.searchParams.get('query')?.toString()}
       />
     </div>
   );

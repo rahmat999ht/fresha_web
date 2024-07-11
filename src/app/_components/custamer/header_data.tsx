@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import { type ICustomer } from "~/type/customer";
@@ -30,7 +30,7 @@ const CardHeaderCustamer = (props: Props) => {
     },
   ];
   return (
-    <div className=" grid grid-cols-2 flex-wrap gap-x-4 sm:grid-cols-4">
+    <div className="grid grid-cols-3 flex-wrap gap-x-4 sm:flex-wrap">
       {cardsHeader.map((item) => (
         <Cards item={item} key={item.id} />
       ))}

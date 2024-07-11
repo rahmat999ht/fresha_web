@@ -12,19 +12,19 @@ const data = [
 ];
 
 const size = {
-  width: 400,
-  height: 200,
+  width: 600,
+  height: 400,
 };
 
 export default function PieArcLabel() {
   return (
-    <div style={{ width: "100%" }}>
+    <div className="w-full">
       <h2 className={styles.title}>Category Product</h2>
       <PieChart
         series={[
           {
             arcLabel: (item) => `${item.label} (${item.value})`,
-            arcLabelMinAngle: 45,
+            arcLabelMinAngle: 25,
             data,
           },
         ]}

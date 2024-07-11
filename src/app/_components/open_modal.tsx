@@ -11,6 +11,7 @@ import {
   useDisclosure,
   Image,
 } from "@nextui-org/react";
+import { FreshaImage } from "public/images/FRESHA";
 
 export interface IModal {
   title: string;
@@ -65,7 +66,15 @@ export default function OpenModal({
               </ModalHeader>
               <ModalBody>
                 <div className="flex flex-col items-center">
-                  <Image width={300} alt="NextUI hero Image" src={data.image} />
+                  {data.image ? (
+                    <Image
+                      width={300}
+                      alt="NextUI hero Image"
+                      src={data.image}
+                    />
+                  ) : (
+                    <FreshaImage />
+                  )}
                 </div>
                 <p className="text-bold text-sm">{data.subTitle}</p>
                 <p className="text-bold text-sm">{data.content}</p>
