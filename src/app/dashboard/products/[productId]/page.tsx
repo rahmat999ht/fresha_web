@@ -18,6 +18,7 @@ const ProductUpdate =  async ({params} : {params : {productId :string}}) => {
   return (
     <div className={styles.container}>
       <FormUpdateProduct data={product} />
+      //sudah di perbaiki
     </div>
   );
 };
