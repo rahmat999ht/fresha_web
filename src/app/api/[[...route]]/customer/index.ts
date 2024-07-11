@@ -68,7 +68,6 @@ custamerRouter.put(
       id: id,
       name: userWithoutId.name,
       image: userWithoutId.image,
-      email: userWithoutId.email,
       address: userWithoutId.address,
       phone: userWithoutId.phone,
     });

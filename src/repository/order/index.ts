@@ -18,13 +18,7 @@ export function getOrderFirst(id: string): Promise<Order> {
 }
 
 export function getsOrder(): Promise<Order[]> {
-  return db.order.findMany({
-    orderBy: { createdAt: "desc" },
-    // include: {
-    //   listProduct: true,
-    //   orderBy: true,
-    // },
-  }) as Promise<Order[]>;
+  return db.order.findMany() as Promise<Order[]>;
 }
 
 export function getsOrderCount(): Promise<number> {
