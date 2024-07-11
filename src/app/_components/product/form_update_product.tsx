@@ -10,9 +10,10 @@ import { supabase } from "~/utils/supabase";
 import { type IProduct } from "~/type/product";
 import * as mobilenet from "@tensorflow-models/mobilenet";
 import styles from "./product.module.css";
+import { Product } from "@prisma/client";
 
 interface UpdateProductProps {
-  data: IProduct;
+  data: Product;
 }
 
 export const FormUpdateProduct = ({ data }: UpdateProductProps) => {

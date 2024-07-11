@@ -1,4 +1,4 @@
-import type { ProductsOnOrder } from "@prisma/client";
+import type { ProductsOnOrder, User } from "@prisma/client";
 
 export interface IProduct {
   id: string;
@@ -11,7 +11,7 @@ export interface IProduct {
   price: number;
   createdAt: Date;
   updatedAt: Date;
-  createdBy?: string | null;
+  // createdBy: User ;
   createdById: string;
   listOrder: ProductsOnOrder[];
 }
