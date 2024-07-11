@@ -22,7 +22,7 @@ import {
   Chip,
   type ChipProps,
   Tooltip,
-  SortDescriptor,
+  type SortDescriptor,
   Input,
   Dropdown,
   Button,
@@ -31,8 +31,7 @@ import {
   DropdownItem,
   DropdownTrigger,
 } from "@nextui-org/react";
-import OpenModal, { IModal } from "~/app/_components/open_modal";
-import toast from "react-hot-toast";
+import OpenModal, { type IModal } from "~/app/_components/open_modal";
 import { SearchIcon } from "public/icons/SearchIcon";
 import { capitalize } from "~/utils/capitalize";
 import { ChevronDownIcon } from "public/icons/ChevronDownIcon";
@@ -102,7 +101,7 @@ const CustamerView = (props: Props) => {
 
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((user) =>
-        user.email!.toLowerCase().includes(filterValue.toLowerCase()),
+        user.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
     if (
@@ -110,7 +109,7 @@ const CustamerView = (props: Props) => {
       Array.from(statusFilter).length !== statusOptions.length
     ) {
       filteredUsers = filteredUsers.filter((user) => {
-        var value: string;
+        let value: string;
         if (user.isActive == true) {
           value = "Active";
         } else {
@@ -138,18 +137,17 @@ const CustamerView = (props: Props) => {
       const second = b[sortDescriptor.column as keyof ICustomer];
       let cmp = 0;
 
-      if (typeof first === 'number' && typeof second === 'number') {
+      if (typeof first === "number" && typeof second === "number") {
         cmp = first - second;
-      } else if (typeof first === 'string' && typeof second === 'string') {
+      } else if (typeof first === "string" && typeof second === "string") {
         cmp = first.localeCompare(second);
-      } else if (typeof first === 'boolean' && typeof second === 'boolean') {
-        cmp = first ? (second ? 0 : 1) : (second ? -1 : 0);
+      } else if (typeof first === "boolean" && typeof second === "boolean") {
+        cmp = first ? (second ? 0 : 1) : second ? -1 : 0;
       }
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
-
 
   const updateActivate = api.custamer.update.useMutation({
     onSuccess: () => {
@@ -173,14 +171,14 @@ const CustamerView = (props: Props) => {
       };
 
       const handleActivate = async () => {
-        // setUploading(true);
+        setLoading(true);
         updateActivate.mutate({
           id: item.id,
           isActive: !item.isActive,
         });
         console.log("berhasil guys");
         console.log("berhasil guys");
-        // setUploading(false);
+        setLoading(false);
       };
 
       switch (columnKey) {
@@ -235,25 +233,29 @@ const CustamerView = (props: Props) => {
                   </Tooltip>
                 }
               />
-              <OpenModal
-                data={modalView}
-                isAction={true}
-                actionTitle={
-                  item.isActive ? "DeActive Customer" : "Activate Customer"
-                }
-                onAction={handleActivate}
-                toOpen={
-                  <Tooltip
-                    content={
-                      item.isActive ? "DeActive Customer" : "Activate Customer"
-                    }
-                  >
-                    <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
-                      <EditIcon />
-                    </span>
-                  </Tooltip>
-                }
-              />
+              {loading == false && (
+                <OpenModal
+                  data={modalView}
+                  isAction={true}
+                  actionTitle={
+                    item.isActive ? "DeActive Customer" : "Activate Customer"
+                  }
+                  onAction={handleActivate}
+                  toOpen={
+                    <Tooltip
+                      content={
+                        item.isActive
+                          ? "DeActive Customer"
+                          : "Activate Customer"
+                      }
+                    >
+                      <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
+                        <EditIcon />
+                      </span>
+                    </Tooltip>
+                  }
+                />
+              )}
             </div>
           );
         default:
@@ -264,7 +266,7 @@ const CustamerView = (props: Props) => {
           return <span>{stringValue}</span>;
       }
     },
-    [updateActivate],
+    [loading, updateActivate],
   );
 
   const onNextPage = React.useCallback(() => {
@@ -397,7 +399,7 @@ const CustamerView = (props: Props) => {
     onSearchChange,
     statusFilter,
     visibleColumns,
-    originalData.length,
+    originalData,
     onRowsPerPageChange,
     onClear,
   ]);

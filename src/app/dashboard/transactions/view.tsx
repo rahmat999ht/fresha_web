@@ -3,14 +3,14 @@
 import {
   Button,
   Chip,
-  ChipProps,
+  type ChipProps,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
   Input,
   Pagination,
-  SortDescriptor,
+  type SortDescriptor,
   Table,
   TableBody,
   TableCell,
@@ -23,16 +23,15 @@ import {
 import React from "react";
 import { type IOrder } from "~/type/order";
 import CardHeaderTransaction from "~/app/_components/transaction/header_data";
-import { useRouter } from "next/navigation";
 import { columns, statusOptions } from "public/data/transactions";
 import OpenModal, { type IModal } from "~/app/_components/open_modal";
 import { EyeIcon } from "public/icons/EyeIcon";
-import { api } from "~/trpc/react";
-import toast from "react-hot-toast";
 import { SearchIcon } from "public/icons/SearchIcon";
 import { ChevronDownIcon } from "public/icons/ChevronDownIcon";
-import { PlusIcon } from "public/icons/PlusIcon";
 import { capitalize } from "~/utils/capitalize";
+import { api } from "~/trpc/react";
+import { useRouter } from "next/navigation";
+import { EditIcon } from "public/icons/EditIcon";
 
 type Props = {
   data: Promise<IOrder[]>;
@@ -44,7 +43,13 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
   pending: "danger",
 };
 
-const INITIAL_VISIBLE_COLUMNS = ["customer", "status", "totBuy", "totPro", "actions"];
+const INITIAL_VISIBLE_COLUMNS = [
+  "customer",
+  "status",
+  "totBuy",
+  "totPro",
+  "actions",
+];
 
 const TransactionView = (props: Props) => {
   const router = useRouter();
@@ -116,7 +121,7 @@ const TransactionView = (props: Props) => {
     const end = start + rowsPerPage;
 
     return filteredItems.slice(start, end);
-  }, [page, filteredItems, rowsPerPage]);
+  }, [page, filteredItems, rowsPerPage, originalData]);
 
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a: IOrder, b: IOrder) => {
@@ -127,6 +132,13 @@ const TransactionView = (props: Props) => {
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
+
+  const updateStatus = api.order.update.useMutation({
+    onSuccess: () => {
+      router.refresh();
+      // setActivate(false);
+    },
+  });
 
   const renderCell = React.useCallback(
     (item: IOrder, columnKey: React.Key): React.ReactNode => {
@@ -139,6 +151,17 @@ const TransactionView = (props: Props) => {
           : "Nama Customer :  " + item.orderBy.email,
         content: "Status :  " + item.status,
         desc: item.totBuy.toString(),
+      };
+
+      const handleStatus = async (status: string) => {
+        setLoading(true);
+        updateStatus.mutate({
+          id: item.id,
+          status: status,
+        });
+        console.log("berhasil guys");
+        console.log("berhasil guys");
+        setLoading(false);
       };
 
       switch (columnKey) {
@@ -169,14 +192,18 @@ const TransactionView = (props: Props) => {
         case "totBuy":
           return (
             <div className="flex flex-col">
-              <p className="text-bold text-sm capitalize">{"Rp. "+item.totBuy}</p>
+              <p className="text-bold text-sm capitalize">
+                {"Rp. " + item.totBuy}
+              </p>
             </div>
           );
 
         case "totPro":
           return (
             <div className="flex flex-col">
-              <p className="text-bold text-sm capitalize">{item.listProduct.length}</p>
+              <p className="text-bold text-sm capitalize">
+                {item.listProduct.length}
+              </p>
             </div>
           );
 
@@ -193,13 +220,22 @@ const TransactionView = (props: Props) => {
                   </Tooltip>
                 }
               />
-              {/* <Link href="/dashboard/products/updateProduct">
-                <Tooltip content="Edit product">
-                  <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
-                    <EditIcon />
-                  </span>
-                </Tooltip>
-              </Link> */}
+
+              {loading == false && (
+                <OpenModal
+                  data={modalView}
+                  isAction={true}
+                  actionTitle={"Order" + item.status}
+                  onAction={() => handleStatus("Done")}
+                  toOpen={
+                    <Tooltip content={"Order" + item.status}>
+                      <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
+                        <EditIcon />
+                      </span>
+                    </Tooltip>
+                  }
+                />
+              )}
             </div>
           );
         default:
@@ -210,7 +246,7 @@ const TransactionView = (props: Props) => {
           return <span>{stringValue}</span>;
       }
     },
-    [],
+    [loading, updateStatus],
   );
 
   const onNextPage = React.useCallback(() => {

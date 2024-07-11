@@ -2,7 +2,7 @@ import React from "react";
 import { cards } from "public/data/cards";
 import Cards from "../_components/dashboard/cards/cards";
 import styles from "../_components/dashboard/dashboard.module.css";
-import { Card, CardBody, CardHeader } from "@nextui-org/react";
+import { Card, CardBody } from "@nextui-org/react";
 import TransactionsLine from "../_components/dashboard/transactions/transactionsLine";
 import PieArcLabel from "../_components/dashboard/transactions/transactions.pie";
 

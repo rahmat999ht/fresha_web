@@ -7,10 +7,9 @@ import { api } from "~/trpc/react";
 import CameraIcon from "public/icons/CameraIcon";
 // import { type NextPage } from "next";
 import { supabase } from "~/utils/supabase";
-import { type IProduct } from "~/type/product";
 import * as mobilenet from "@tensorflow-models/mobilenet";
 import styles from "./product.module.css";
-import { Product } from "@prisma/client";
+import { type Product } from "@prisma/client";
 
 interface UpdateProductProps {
   data: Product;

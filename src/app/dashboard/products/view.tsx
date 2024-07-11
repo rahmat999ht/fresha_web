@@ -18,7 +18,6 @@ import {
   Pagination,
   Tooltip,
   Chip,
-  CircularProgress,
 } from "@nextui-org/react";
 
 import { type IProduct } from "~/type/product";
@@ -27,7 +26,7 @@ import { ChevronDownIcon } from "public/icons/ChevronDownIcon";
 import { capitalize } from "~/utils/capitalize";
 import { PlusIcon } from "public/icons/PlusIcon";
 // import { VerticalDotsIcon } from "public/icons/VerticalDotsIcon";
-import { columns, stockOptions } from "public/data/products";
+import { columns } from "public/data/products";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
@@ -58,7 +57,7 @@ const ProducVtiew = (props: Props) => {
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [statusFilter, setStatusFilter] = React.useState("all");
+  // const [statusFilter, setStatusFilter] = React.useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "age",
@@ -97,23 +96,23 @@ const ProducVtiew = (props: Props) => {
         user.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== stockOptions.length
-    ) {
-      filteredUsers = filteredUsers.filter((user) => {
-        let value: string;
-        if (user.stock == 0) {
-          value = "tidak tersedia";
-        } else {
-          value = "tersedia";
-        }
-        return Array.from(statusFilter).includes(value);
-      });
-    }
+    // if (
+    //   statusFilter !== "all" &&
+    //   Array.from(statusFilter).length !== stockOptions.length
+    // ) {
+    //   filteredUsers = filteredUsers.filter((user) => {
+    //     let value: string;
+    //     if (user.stock == 0) {
+    //       value = "tidak tersedia";
+    //     } else {
+    //       value = "tersedia";
+    //     }
+    //     return Array.from(statusFilter).includes(value);
+    //   });
+    // }
 
     return filteredUsers;
-  }, [originalData, filterValue, hasSearchFilter, statusFilter]);
+  }, [originalData, filterValue, hasSearchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -401,9 +400,9 @@ const ProducVtiew = (props: Props) => {
   }, [
     filterValue,
     onSearchChange,
-    statusFilter,
+    // statusFilter,
     visibleColumns,
-    originalData.length,
+    originalData,
     onRowsPerPageChange,
     onClear,
   ]);

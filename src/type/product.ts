@@ -1,4 +1,4 @@
-import type { ProductsOnOrder, User } from "@prisma/client";
+import type { ProductsOnOrder } from "@prisma/client";
 
 export interface IProduct {
   id: string;
