@@ -5,12 +5,13 @@ import { authMiddleware } from "./auth.middelware";
 
 const authRouter = new Hono();
 
-type Email = { email: string };
+type Login = { email: string  };
+type Register = { email: string,name: string  };
 
 authRouter.post(
   "/login",
   async (c) => {
-    const loginProps: Email = await c.req.json();
+    const loginProps: Login = await c.req.json();
 
     const { costumer, token } = await authService.login(loginProps);
 
@@ -26,7 +27,7 @@ authRouter.post(
 );
 
 authRouter.post("/register", async (c) => {
-  const user: Email = await c.req.json();
+  const user: Register = await c.req.json();
   console.log(user);
 
   const newUser = await authService.signin(user);

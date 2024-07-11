@@ -38,6 +38,7 @@ export function createCustamer(data: Prisma.CustamerCreateInput) : Promise<Custa
   const custamer = db.custamer.create({
     data: {
       email: data.email,
+      name:data.name,
       isActive: true,
     },
   });
@@ -52,7 +53,6 @@ export function updateCustamer(input: UpdateCustomerProps) : Promise<Custamer> {
       name: input.name,
       image: input.image,
       address: input.address,
-      email: input.email,
       phone: input.phone,
     },
   });
