@@ -15,7 +15,7 @@ export const customerUpdateSchema = z.object({
 export const customerSchema = z.object({
   id: z.string(),
   name: z.string().min(0, "name harus diisi"),
-  email: z.string().email(),
+  // email: z.string().email(),
   phone: z.string().min(1, "phone harus diisi"),
   address: z.string(),
   image: z.string(),
