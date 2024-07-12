@@ -1,28 +1,13 @@
 import { Hono } from "hono";
 import { queryPageSchema } from "~/utils/pagination";
 
-// import HttpStatus from "~/utils/http-utils";
-// import logger from "~/utils/logger";
-
 import * as productService from "../../../../services/product.service";
-// import { authMiddleware } from "../auth/auth.middelware";
-// import { createUserSchema, updateUserSchema } from "./user.schema";
-// import { idSchema, queryPageSchema } from "~/schemas";
-// import { setCache } from "~/services/redis";
-// import validatorSchemaMiddleware from "~/middlewares/validator";
-// import cacheMiddleware from "~/middlewares/cache";
-// import { authMiddleware } from "~/middlewares/auth";
-// import type { TVariables } from "~/types";
+import { idProductSchema, updateStockProductSchema } from "~/type/product";
+import validatorSchemaMiddleware from "~/utils/validate_midleware";
+import logger from "~/utils/logger";
+import { HttpStatus } from "~/utils/http_status";
 
 const productRouter = new Hono();
-
-/**
- * Middleware to check if data is cached in Redis
- * If cached data exists, return it
- * Otherwise call next() to continue request processing
- */
-// productRouter.use("*", authMiddleware);
-// productRouter.use("*", cacheMiddleware);
 
 productRouter.get("/", async (c) => {
   const query = c.req.query();
@@ -36,7 +21,7 @@ productRouter.get("/", async (c) => {
       hastag2,
     ]);
     return c.json({
-      code: 200,
+      code: HttpStatus.OK,
       status: "hastag_ml Ok",
       data: productsRekomen,
     });
@@ -46,13 +31,13 @@ productRouter.get("/", async (c) => {
     const product = await productService.getProduct(id);
     if (!product) {
       return c.json({
-        code: 404,
+        code: HttpStatus.NOT_FOUND,
         status: "Not Found",
         message: "Product not found",
       });
     }
     return c.json({
-      code: 200,
+      code: HttpStatus.OK,
       status: "Response Id Ok",
       data: product,
     });
@@ -62,7 +47,7 @@ productRouter.get("/", async (c) => {
   const products = await productService.getsProduct(queryPage);
 
   return c.json({
-    code: 200,
+    code: HttpStatus.OK,
     status: "Response List Ok",
     ...products,
   });
@@ -74,13 +59,13 @@ productRouter.get("/:id", async (c) => {
 
   if (!product) {
     return c.json({
-      code: 404,
+      code: HttpStatus.NOT_FOUND,
       status: "Not Found",
       message: "Product not found",
     });
   }
   return c.json({
-    code: 200,
+    code: HttpStatus.OK,
     status: "Response Id Ok",
     data: product,
   });
@@ -93,65 +78,29 @@ productRouter.get("/:hastag1/:hastag2", async (c) => {
     hastag2,
   ]);
   return c.json({
-    code: 200,
+    code: HttpStatus.OK,
     status: "Response hastag_ml Ok",
     data: productsRekomen,
   });
 });
 
-//  userRouter.post(
-//   "/",
-//   validatorSchemaMiddleware("json", createUserSchema),
-//   async (c) => {
-//     const data = c.req.valid("json");
-//     const user = await userService.createUser(data);
+productRouter.put(
+  "/:id",
+  validatorSchemaMiddleware("json", updateStockProductSchema),
+  validatorSchemaMiddleware("param", idProductSchema),
+  async (c) => {
+    const producStock = c.req.valid("json");
+    const { id } = c.req.valid("param");
+    const user = await productService.decreaseProductStock(id, producStock.stock);
 
-//     logger.debug(user);
+    logger.debug(user);
 
-//     return c.json({
-//       code: HttpStatus.OK,
-//       status: "Ok",
-//       data: user,
-//     });
-//   },
-// );
-
-// userRouter.put(
-//   "/:id",
-//   validatorSchemaMiddleware("json", updateUserSchema),
-//   validatorSchemaMiddleware("param", idSchema),
-//   async (c) => {
-//     const userWithoutId = c.req.valid("json");
-//     const { id } = c.req.valid("param");
-//     const user = await userService.updateUser({
-//       id,
-//       ...userWithoutId,
-//     });
-
-//     logger.debug(user);
-
-//     return c.json({
-//       code: HttpStatus.OK,
-//       status: "Ok",
-//       data: user,
-//     });
-//   },
-// );
-
-// userRouter.delete(
-//   "/:id",
-//   validatorSchemaMiddleware("param", idSchema),
-//   async (c) => {
-//     const { id } = c.req.valid("param");
-//     const user = await userService.deleteUser({ id });
-//     logger.debug(user);
-
-//     return c.json({
-//       code: HttpStatus.OK,
-//       status: "Ok",
-//       data: user,
-//     });
-//   },
-// );
+    return c.json({
+      code: HttpStatus.OK,
+      status: "Ok",
+      data: user,
+    });
+  },
+);
 
 export default productRouter;

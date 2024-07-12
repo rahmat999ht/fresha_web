@@ -1,13 +1,20 @@
 import type { Product } from "@prisma/client";
 import { db } from "~/server/db";
-// import { IProduct } from "~/type/product";
+
+export function decreaseStockProduct(id: string, amount: number) {
+  return db.product.update({
+    where: { id: id },
+    data: {
+      stock: {
+        decrement: amount,
+      },
+    },
+  });
+}
 
 export function getsProduct(): Promise<Product[]> {
   return db.product.findMany({
     orderBy: { createdAt: "desc" },
-    // include: {
-    //   order: true,
-    // },
   });
 }
 
@@ -19,9 +26,6 @@ export function getProductFirst(id: string): Promise<Product | null> {
   return db.product.findFirst({
     where: { id },
     orderBy: { createdAt: "desc" },
-    // include: {
-    //   order: true,
-    // },
   });
 }
 
