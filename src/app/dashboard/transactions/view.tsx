@@ -121,7 +121,7 @@ const TransactionView = (props: Props) => {
     const end = start + rowsPerPage;
 
     return filteredItems.slice(start, end);
-  }, [page, filteredItems, rowsPerPage, originalData]);
+  }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
     return [...items].sort((a: IOrder, b: IOrder) => {
@@ -379,7 +379,7 @@ const TransactionView = (props: Props) => {
     onSearchChange,
     statusFilter,
     visibleColumns,
-    originalData.length,
+    originalData,
     onRowsPerPageChange,
     onClear,
   ]);

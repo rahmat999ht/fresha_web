@@ -18,3 +18,9 @@ export const getProduct = async (id: string) => {
 
   return product;
 };
+
+export const getsRekomenProduct = async (list_hastag: string[]) => {
+  const product = await productRepo.getsProductRekomen(list_hastag);
+
+  return product;
+};

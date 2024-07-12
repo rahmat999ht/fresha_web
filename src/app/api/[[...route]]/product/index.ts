@@ -28,6 +28,19 @@ productRouter.get("/", async (c) => {
   const query = c.req.query();
 
   const { id } = query;
+  const hastag1 = query.hastag1;
+  const hastag2 = query.hastag2;
+  if (hastag1 && hastag2) {
+    const productsRekomen = await productService.getsRekomenProduct([
+      hastag1,
+      hastag2,
+    ]);
+    return c.json({
+      code: 200,
+      status: "hastag_ml Ok",
+      data: productsRekomen,
+    });
+  }
 
   if (id) {
     const product = await productService.getProduct(id);
@@ -40,7 +53,7 @@ productRouter.get("/", async (c) => {
     }
     return c.json({
       code: 200,
-      status: "Ok",
+      status: "Response Id Ok",
       data: product,
     });
   }
@@ -50,7 +63,7 @@ productRouter.get("/", async (c) => {
 
   return c.json({
     code: 200,
-    status: "Ok",
+    status: "Response List Ok",
     ...products,
   });
 });
@@ -59,10 +72,30 @@ productRouter.get("/:id", async (c) => {
   const { id } = c.req.param();
   const product = await productService.getProduct(id);
 
+  if (!product) {
+    return c.json({
+      code: 404,
+      status: "Not Found",
+      message: "Product not found",
+    });
+  }
   return c.json({
     code: 200,
-    status: "Ok",
+    status: "Response Id Ok",
     data: product,
+  });
+});
+productRouter.get("/:hastag1/:hastag2", async (c) => {
+  const { hastag1 } = c.req.param();
+  const { hastag2 } = c.req.param();
+  const productsRekomen = await productService.getsRekomenProduct([
+    hastag1,
+    hastag2,
+  ]);
+  return c.json({
+    code: 200,
+    status: "Response hastag_ml Ok",
+    data: productsRekomen,
   });
 });
 

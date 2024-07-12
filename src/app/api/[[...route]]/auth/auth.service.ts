@@ -3,7 +3,7 @@ import * as costumerRepo from "~/repository/costumer";
 import { signJwtAccessToken } from "~/services/jwt";
 import { validateCreateUser } from "~/utils/validation";
 
-export const signin = async (signinProps: { email: string }) => {
+export const signin = async (signinProps: { email: string, name: string  }) => {
   await validateCreateUser(signinProps);
 
   return costumerRepo.createCustamer(signinProps);
