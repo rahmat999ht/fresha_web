@@ -33,6 +33,17 @@ export const FormCreateProduct: NextPage = () => {
 
   const imageRef = useRef<HTMLImageElement | null>(null);
   const textInputRef = useRef<HTMLInputElement | null>();
+  const listCategory = useState<string[]>([
+    "Daun",
+    "Batang",
+    "Akar",
+    "Polong",
+    "Bunga",
+    "Buah",
+    "Umbi Batang",
+    "Umbi Lapis",
+    "Jamur",
+  ]);
 
   const loadModel = async () => {
     setModelLoading(true);
@@ -241,14 +252,24 @@ export const FormCreateProduct: NextPage = () => {
               variant="flat"
               label="Name"
             />
-            <Input
-              isRequired
+            <select
+              id="small"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              type="text"
-              variant="flat"
-              label="Category"
-            />
+              required
+              className="mb-6 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+            >
+              <option selected>Choose a country</option>
+              {listCategory.map((cat, index) => (
+                <option key={index} value={`${cat}`}>
+                  cat
+                </option>
+              ))}
+              <option value="US">United States</option>
+              <option value="CA">Canada</option>
+              <option value="FR">France</option>
+              <option value="DE">Germany</option>
+            </select>
           </div>
           <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
             <Input
