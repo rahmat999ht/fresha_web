@@ -31,3 +31,10 @@ export interface ICustomer {
   isActive: boolean;
   riwPes: Order[];
 }
+
+export interface ICustomerUpdate {
+  name: string;
+  phone: string;
+  address: string;
+  image: string;
+}
