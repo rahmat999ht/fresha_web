@@ -33,17 +33,6 @@ export const FormCreateProduct: NextPage = () => {
 
   const imageRef = useRef<HTMLImageElement | null>(null);
   const textInputRef = useRef<HTMLInputElement | null>();
-  const listCategory = useState<string[]>([
-    "Daun",
-    "Batang",
-    "Akar",
-    "Polong",
-    "Bunga",
-    "Buah",
-    "Umbi Batang",
-    "Umbi Lapis",
-    "Jamur",
-  ]);
 
   const loadModel = async () => {
     setModelLoading(true);

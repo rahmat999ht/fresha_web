@@ -231,14 +231,24 @@ export const FormUpdateProduct = ({ data }: UpdateProductProps) => {
               variant="flat"
               label="Name"
             />
-            <Input
-              isRequired
+            <select
+              id="small"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              type="text"
-              variant="flat"
-              label="Category"
-            />
+              required
+              className="bg-gray-60  block w-full rounded-lg p-2 py-3 text-sm text-gray-900"
+            >
+              <option selected>Choose a category</option>
+              <option value="Daun">Daun</option>
+              <option value="Batang">Batang</option>
+              <option value="Akar">Akar</option>
+              <option value="Polong">Polong</option>
+              <option value="Bunga">Bunga</option>
+              <option value="Buah">Buah</option>
+              <option value="Umbi Batang">Umbi Batang</option>
+              <option value="Umbi Lapis">Umbi Lapis</option>
+              <option value="Jamur">Jamur</option>
+            </select>
           </div>
           <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
             <Input
