@@ -224,15 +224,15 @@ const TransactionView = (props: Props) => {
                   data={modalView}
                   isAction={true}
                   actionTitle={
-                    item.status == "Done"
+                    item.status == "done"
                       ? "Pesanan Selesai"
                       : "Selesaikan Pesanan"
                   }
-                  onAction={() => handleStatus("Done")}
+                  onAction={() => handleStatus("done")}
                   toOpen={
                     <Tooltip
                       content={
-                        item.status == "Done"
+                        item.status == "done"
                           ? "Pesanan Selesai"
                           : "Selesaikan Pesanan"
                       }
