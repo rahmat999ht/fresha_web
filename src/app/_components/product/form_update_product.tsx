@@ -89,7 +89,7 @@ export const FormUpdateProduct = ({ data }: UpdateProductProps) => {
 
   const createNewProduct = api.product.update.useMutation({
     onSuccess: () => {
-      router.refresh();
+      router.back();
       setName("");
       setCategory("");
       setHastag("");
@@ -104,13 +104,18 @@ export const FormUpdateProduct = ({ data }: UpdateProductProps) => {
   const handleSubmit = async () => {
     setUploading(true);
     if (selectedFile) {
+      const imageUrl =
+        "https://omhmokdygpqbhwdtshvk.supabase.co/storage/v1/object/public/images/sayur/";
+
+      const imageName = Date.now().toString() + selectedFile.name;
+
       const { data, error } = await supabase.storage
         .from("images")
-        .upload("sayur/" + selectedFile.name, selectedFile);
+        .upload("sayur/" + imageName, selectedFile);
       createNewProduct.mutate({
         id: dataId,
         name: name,
-        image: selectedFile.name,
+        image: imageUrl + imageName,
         category: category,
         hastag_ml: hastag,
         desc: description,
