@@ -146,11 +146,9 @@ const TransactionView = (props: Props) => {
       const modalView: IModal = {
         title: "Detail Transaction",
         image: item.orderBy.image!,
-        subTitle: item.orderBy.name
-          ? "Nama Customer :  " + item.orderBy.name
-          : "Nama Customer :  " + item.orderBy.email,
+        subTitle: "Nama Pemesan :  " + item.orderBy.name,
         content: "Status :  " + item.status,
-        desc: item.totBuy.toString(),
+        desc: "Total Harga :  " + item.totBuy.toString(),
       };
 
       const handleStatus = async (status: string) => {
@@ -225,10 +223,20 @@ const TransactionView = (props: Props) => {
                 <OpenModal
                   data={modalView}
                   isAction={true}
-                  actionTitle={"Order" + item.status}
+                  actionTitle={
+                    item.status == "Done"
+                      ? "Pesanan Selesai"
+                      : "Selesaikan Pesanan"
+                  }
                   onAction={() => handleStatus("Done")}
                   toOpen={
-                    <Tooltip content={"Order" + item.status}>
+                    <Tooltip
+                      content={
+                        item.status == "Done"
+                          ? "Pesanan Selesai"
+                          : "Selesaikan Pesanan"
+                      }
+                    >
                       <span className="cursor-pointer text-lg text-default-400 active:opacity-50">
                         <EditIcon />
                       </span>
