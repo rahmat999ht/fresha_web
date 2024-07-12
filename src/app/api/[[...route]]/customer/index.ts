@@ -4,8 +4,7 @@ import * as custamerService from "../../../../services/customer.service";
 import { authMiddleware } from "../auth/auth.middelware";
 import logger from "~/utils/logger";
 import { HttpStatus } from "~/utils/http_status";
-import validatorSchemaMiddleware from "~/utils/validate_midleware";
-import { customerSchema, idCustomerSchema } from "~/type/customer";
+import { ICustomerUpdate } from "~/type/customer";
 import { queryPageSchema } from "~/utils/pagination";
 
 const custamerRouter = new Hono();
@@ -28,17 +27,18 @@ custamerRouter.get("/", async (c) => {
     const customer = await custamerService.getCustomer(id);
     return c.json({
       code: HttpStatus.OK,
-      status: "Ok",
+      status: "Response ID Ok",
       data: customer,
     });
   }
 
   const queryPage = queryPageSchema.parse(query);
   const custamers = await custamerService.getsCustomer(queryPage);
+  logger.debug(custamers);
 
   return c.json({
     code: HttpStatus.OK,
-    status: "Ok",
+    status: "Response List Ok",
     ...custamers,
   });
 });
@@ -51,34 +51,31 @@ custamerRouter.get("/:id", async (c) => {
 
   return c.json({
     code: HttpStatus.OK,
-    status: "Ok",
+    status: "Response Id Ok",
     data: custamer,
   });
 });
 
-custamerRouter.put(
-  "/:id",
-  validatorSchemaMiddleware("json", customerSchema),
-  validatorSchemaMiddleware("param", idCustomerSchema),
+custamerRouter.put("/:id", async (c) => {
+  const { id } = c.req.param();
+  const userData: ICustomerUpdate = await c.req.json();
+  console.log(userData, "userData");
+  logger.debug(userData);
 
-  async (c) => {
-    const userWithoutId = c.req.valid("json");
-    const { id } = c.req.valid("param");
-    const customer = await custamerService.updateCustamer({
-      id: id,
-      name: userWithoutId.name,
-      image: userWithoutId.image,
-      address: userWithoutId.address,
-      phone: userWithoutId.phone,
-    });
-    logger.debug(customer);
+  const customer = await custamerService.custamerUpdate({
+    id: id,
+    name: userData.name,
+    image: userData.image,
+    address: userData.address,
+    phone: userData.phone,
+  });
+  logger.debug(customer);
 
-    return c.json({
-      code: HttpStatus.OK,
-      status: "Ok",
-      data: customer,
-    });
-  },
-);
+  return c.json({
+    code: HttpStatus.OK,
+    status: "Response Update Ok",
+    data: customer,
+  });
+});
 
 export default custamerRouter;

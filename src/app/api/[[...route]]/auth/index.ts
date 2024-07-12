@@ -2,6 +2,7 @@ import { Hono } from "hono";
 
 import * as authService from "./auth.service";
 import { authMiddleware } from "./auth.middelware";
+import { HttpStatus } from "~/utils/http_status";
 
 const authRouter = new Hono();
 
@@ -16,7 +17,7 @@ authRouter.post(
     const { costumer, token } = await authService.login(loginProps);
 
     return c.json({
-      code: 200,
+      code: HttpStatus.OK,
       status: "Ok",
       data: {
         costumer,
@@ -32,7 +33,7 @@ authRouter.post("/register", async (c) => {
 
   const newUser = await authService.signin(user);
   return c.json({
-    code: 200,
+    code: HttpStatus.OK,
     status: "Ok",
     data: newUser,
   });
@@ -45,7 +46,7 @@ authRouter.get("/my", authMiddleware, async (c) => {
 
   const user = await authService.currentUser({ id, email: email ?? "" });
   return c.json({
-    code: 200,
+    code: HttpStatus.OK,
     status: "Ok",
     data: user,
   });

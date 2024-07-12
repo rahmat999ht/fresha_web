@@ -18,7 +18,7 @@ export const getCustomer = async (id: string) => {
   return customer;
 };
 
-export const updateCustamer = async (update: UpdateCustomerProps) => {
+export const custamerUpdate = async (update: UpdateCustomerProps) => {
   const customer = await customerRepo.updateCustamer(update);
 
   return customer;

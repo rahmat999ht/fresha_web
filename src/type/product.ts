@@ -2,7 +2,7 @@ import type { ProductsOnOrder } from "@prisma/client";
 import { z } from "zod";
 
 export const updateStockProductSchema = z.object({
-  stock: z.number().positive().int(), // Rewritten line
+  stock: z.number(), // Rewritten line
 });
 
 export const idProductSchema = z.object({

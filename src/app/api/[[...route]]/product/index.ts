@@ -2,12 +2,15 @@ import { Hono } from "hono";
 import { queryPageSchema } from "~/utils/pagination";
 
 import * as productService from "../../../../services/product.service";
-import { idProductSchema, updateStockProductSchema } from "~/type/product";
-import validatorSchemaMiddleware from "~/utils/validate_midleware";
+// import { idProductSchema, updateStockProductSchema } from "~/type/product";
+// import validatorSchemaMiddleware from "~/utils/validate_midleware";
 import logger from "~/utils/logger";
 import { HttpStatus } from "~/utils/http_status";
 
 const productRouter = new Hono();
+
+type Stock = { stock: number  };
+
 
 productRouter.get("/", async (c) => {
   const query = c.req.query();
@@ -70,6 +73,7 @@ productRouter.get("/:id", async (c) => {
     data: product,
   });
 });
+
 productRouter.get("/:hastag1/:hastag2", async (c) => {
   const { hastag1 } = c.req.param();
   const { hastag2 } = c.req.param();
@@ -86,19 +90,19 @@ productRouter.get("/:hastag1/:hastag2", async (c) => {
 
 productRouter.put(
   "/:id",
-  validatorSchemaMiddleware("json", updateStockProductSchema),
-  validatorSchemaMiddleware("param", idProductSchema),
+  // validatorSchemaMiddleware("json", updateStockProductSchema),
+  // validatorSchemaMiddleware("param", idProductSchema),
   async (c) => {
-    const producStock = c.req.valid("json");
-    const { id } = c.req.valid("param");
-    const user = await productService.decreaseProductStock(id, producStock.stock);
+    const producStock : Stock =  await c.req.json();
+    const { id } = c.req.param();
+    const product = await productService.decreaseProductStock(id, producStock.stock);
 
-    logger.debug(user);
+    logger.debug(product);
 
     return c.json({
       code: HttpStatus.OK,
       status: "Ok",
-      data: user,
+      data: product,
     });
   },
 );

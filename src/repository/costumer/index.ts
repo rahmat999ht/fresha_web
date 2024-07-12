@@ -5,11 +5,13 @@ import type {
   UpdateCustomerProps,
 } from "~/type/customer";
 
-export function getsCustomer(fineManyProps: FindManyCustomerProps) : Promise<Custamer[]> {
-  return db.custamer.findMany(fineManyProps) ;
+export function getsCustomer(
+  fineManyProps: FindManyCustomerProps,
+): Promise<Custamer[]> {
+  return db.custamer.findMany(fineManyProps);
 }
 
-export function getCustamerCount() : Promise<number>{
+export function getCustamerCount(): Promise<number> {
   const custamerCount = db.custamer.count();
 
   return custamerCount;
@@ -21,7 +23,7 @@ export function getCustamerByUniq(where: Prisma.CustamerFindUniqueArgs) {
   return custamer;
 }
 
-export function getCustamerFirst(id: string)  {
+export function getCustamerFirst(id: string) {
   return db.custamer.findFirst({
     where: { id },
     include: {
@@ -34,11 +36,13 @@ export function getCustamerFirst(id: string)  {
   });
 }
 
-export function createCustamer(data: Prisma.CustamerCreateInput) : Promise<Custamer> {
+export function createCustamer(
+  data: Prisma.CustamerCreateInput,
+): Promise<Custamer> {
   const custamer = db.custamer.create({
     data: {
       email: data.email,
-      name:data.name,
+      name: data.name,
       isActive: true,
     },
   });
@@ -46,7 +50,7 @@ export function createCustamer(data: Prisma.CustamerCreateInput) : Promise<Custa
   return custamer;
 }
 
-export function updateCustamer(input: UpdateCustomerProps) : Promise<Custamer> {
+export function updateCustamer(input: UpdateCustomerProps): Promise<Custamer> {
   const custamer = db.custamer.update({
     where: { id: input.id },
     data: {
