@@ -62,9 +62,9 @@ model VerificationToken {
 
 model HastagMl {
     id         String    @id @default(cuid())
-    name       String?
+    name       String
+    custamerId String
     Custamer   Custamer? @relation(fields: [custamerId], references: [id])
-    custamerId String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

@@ -22,7 +22,7 @@ export function getsOrder(): Promise<Order[]> {
 }
 
 export function getsOrderCount(): Promise<number> {
-  return db.product.count() as Promise<number>;
+  return db.order.count() as Promise<number>;
 }
 
 export function createOrderRepo(input: OrderProps): Promise<Order> {

@@ -5,6 +5,7 @@ import productRouter from "./product";
 import orderRouter from "./order";
 import authRouter from "./auth";
 import custamerRouter from "./customer";
+import hastagMlRouter from "./hastag_ml";
 
 // export const runtime = "edge";
 
@@ -41,6 +42,7 @@ app.route("/orders", orderRouter);
 app.route("/products", productRouter);
 app.route("/auth-custamer", authRouter);
 app.route("/custamer", custamerRouter);
+app.route("/hastag-ml", hastagMlRouter);
 
 export const GET = handle(app);
 export const POST = handle(app);

@@ -27,6 +27,7 @@ export function getCustamerFirst(id: string) {
   return db.custamer.findFirst({
     where: { id },
     include: {
+      riwHastag: true,
       riwPes: {
         include: {
           listProduct: true,
