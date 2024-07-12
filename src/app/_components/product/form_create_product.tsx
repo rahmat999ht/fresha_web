@@ -257,18 +257,18 @@ export const FormCreateProduct: NextPage = () => {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               required
-              className="mb-6 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+              className="bg-gray-60  block w-full rounded-lg p-2 py-3 text-sm text-gray-900"
             >
-              <option selected>Choose a country</option>
-              {listCategory.map((cat, index) => (
-                <option key={index} value={`${cat}`}>
-                  cat
-                </option>
-              ))}
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
+              <option selected>Choose a category</option>
+              <option value="Daun">Daun</option>
+              <option value="Batang">Batang</option>
+              <option value="Akar">Akar</option>
+              <option value="Polong">Polong</option>
+              <option value="Bunga">Bunga</option>
+              <option value="Buah">Buah</option>
+              <option value="Umbi Batang">Umbi Batang</option>
+              <option value="Umbi Lapis">Umbi Lapis</option>
+              <option value="Jamur">Jamur</option>
             </select>
           </div>
           <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
