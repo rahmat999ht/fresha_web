@@ -1,16 +1,34 @@
 import { Hono } from "hono";
+import { z } from "zod";
 import { queryPageSchema } from "~/utils/pagination";
 
 import * as productService from "../../../../services/product.service";
-// import { idProductSchema, updateStockProductSchema } from "~/type/product";
-// import validatorSchemaMiddleware from "~/utils/validate_midleware";
 import logger from "~/utils/logger";
 import { HttpStatus } from "~/utils/http_status";
+import { zValidator } from "@hono/zod-validator";
+
+export const stockSchema = z.object({
+  stock: z.number(),
+});
 
 const productRouter = new Hono();
 
-type Stock = { stock: number  };
+productRouter.patch("/:id", zValidator("json", stockSchema), async (c) => {
+  const body = c.req.valid("json");
+  const { id } = c.req.param();
+  const product = await productService.decreaseProductStock(id, body.stock);
 
+  const val = stockSchema.safeParse(body);
+  if (!val.success) return c.text("Invalid!", 500);
+
+  logger.debug(product);
+
+  return c.json({
+    code: HttpStatus.OK,
+    status: "Ok",
+    data: product,
+  });
+});
 
 productRouter.get("/", async (c) => {
   const query = c.req.query();
@@ -87,24 +105,5 @@ productRouter.get("/:hastag1/:hastag2", async (c) => {
     data: productsRekomen,
   });
 });
-
-productRouter.put(
-  "/:id",
-  // validatorSchemaMiddleware("json", updateStockProductSchema),
-  // validatorSchemaMiddleware("param", idProductSchema),
-  async (c) => {
-    const producStock : Stock =  await c.req.json();
-    const { id } = c.req.param();
-    const product = await productService.decreaseProductStock(id, producStock.stock);
-
-    logger.debug(product);
-
-    return c.json({
-      code: HttpStatus.OK,
-      status: "Ok",
-      data: product,
-    });
-  },
-);
 
 export default productRouter;

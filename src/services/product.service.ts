@@ -25,8 +25,8 @@ export const getsRekomenProduct = async (list_hastag: string[]) => {
   return product;
 };
 
-export const decreaseProductStock = async (id: string, amount: number) => {
-  const product = await productRepo.decreaseStockProduct(id, amount);
+export const decreaseProductStock = async (id: string, stock: number) => {
+  const product = await productRepo.decreaseStockProduct(id, stock);
 
   return product;
 };

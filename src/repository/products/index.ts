@@ -1,12 +1,12 @@
 import type { Product } from "@prisma/client";
 import { db } from "~/server/db";
 
-export function decreaseStockProduct(id: string, amount: number) {
+export function decreaseStockProduct(id: string, stock: number) {
   return db.product.update({
     where: { id: id },
     data: {
       stock: {
-        decrement: amount,
+        decrement: stock,
       },
     },
   });

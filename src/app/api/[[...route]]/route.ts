@@ -38,13 +38,14 @@ app.onError((err, c) => {
   );
 });
 
-app.route("/orders", orderRouter);
-app.route("/products", productRouter);
+app.route("/order", orderRouter);
+app.route("/product", productRouter);
 app.route("/auth-custamer", authRouter);
 app.route("/custamer", custamerRouter);
 app.route("/hastag-ml", hastagMlRouter);
 
 export const GET = handle(app);
-export const POST = handle(app);
 export const PUT = handle(app);
+export const POST = handle(app);
+export const PATCH = handle(app);
 export const DELETE = handle(app);

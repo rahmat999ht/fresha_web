@@ -56,7 +56,7 @@ custamerRouter.get("/:id", async (c) => {
   });
 });
 
-custamerRouter.put("/:id", async (c) => {
+custamerRouter.patch("/:id", async (c) => {
   const { id } = c.req.param();
   const userData: ICustomerUpdate = await c.req.json();
   console.log(userData, "userData");
