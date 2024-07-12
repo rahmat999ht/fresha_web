@@ -13,12 +13,12 @@ export const customerUpdateSchema = z.object({
 });
 
 export const customerSchema = z.object({
-  id: z.string(),
-  name: z.string().min(0, "name harus diisi"),
+  id: z.string().min(1, "id harus diisi"),
+  name: z.string().min(1, "name harus diisi"),
   // email: z.string().email(),
   phone: z.string().min(1, "phone harus diisi"),
-  address: z.string(),
-  image: z.string(),
+  address: z.string().min(1, "address harus diisi"),
+  image: z.string().min(1, "image harus diisi"),
 });
 
 export interface ICustomer {

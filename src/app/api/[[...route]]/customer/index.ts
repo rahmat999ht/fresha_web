@@ -4,8 +4,9 @@ import * as custamerService from "../../../../services/customer.service";
 import { authMiddleware } from "../auth/auth.middelware";
 import logger from "~/utils/logger";
 import { HttpStatus } from "~/utils/http_status";
-import { ICustomerUpdate } from "~/type/customer";
+import { customerSchema, ICustomerUpdate } from "~/type/customer";
 import { queryPageSchema } from "~/utils/pagination";
+import { zValidator } from "@hono/zod-validator";
 
 const custamerRouter = new Hono();
 
@@ -56,18 +57,18 @@ custamerRouter.get("/:id", async (c) => {
   });
 });
 
-custamerRouter.patch("/:id", async (c) => {
-  const { id } = c.req.param();
-  const userData: ICustomerUpdate = await c.req.json();
-  console.log(userData, "userData");
-  logger.debug(userData);
+custamerRouter.patch("/", zValidator("json", customerSchema), async (c) => {
+  const body = c.req.valid("json");
+
+  const val = customerSchema.safeParse(body);
+  if (!val.success) return c.text("Invalid!", 500);
 
   const customer = await custamerService.custamerUpdate({
-    id: id,
-    name: userData.name,
-    image: userData.image,
-    address: userData.address,
-    phone: userData.phone,
+    id: body.id,
+    name: body.name,
+    image: body.image,
+    address: body.address,
+    phone: body.phone,
   });
   logger.debug(customer);
 

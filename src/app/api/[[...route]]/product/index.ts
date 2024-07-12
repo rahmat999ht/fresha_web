@@ -8,27 +8,43 @@ import { HttpStatus } from "~/utils/http_status";
 import { zValidator } from "@hono/zod-validator";
 
 export const stockSchema = z.object({
-  stock: z.number(),
+  id: z.string().min(1),
+  stock: z.number().min(1),
 });
 
 const productRouter = new Hono();
 
-productRouter.patch("/:id", zValidator("json", stockSchema), async (c) => {
-  const body = c.req.valid("json");
-  const { id } = c.req.param();
-  const product = await productService.decreaseProductStock(id, body.stock);
+productRouter.patch(
+  "/",
+  zValidator("json", stockSchema),
+  async (c) => {
+    const body = c.req.valid("json");
 
-  const val = stockSchema.safeParse(body);
-  if (!val.success) return c.text("Invalid!", 500);
+    const val = stockSchema.safeParse(body);
+    if (!val.success) return c.text("Invalid!", 500);
 
-  logger.debug(product);
+    const product = await productService.decreaseProductStock(
+      body.id,
+      body.stock,
+    );
 
-  return c.json({
-    code: HttpStatus.OK,
-    status: "Ok",
-    data: product,
-  });
-});
+    logger.debug(product);
+
+    if (!product) {
+      return c.json({
+        code: HttpStatus.NOT_FOUND,
+        status: "Not Found",
+        message: "Product not found",
+      });
+    }
+
+    return c.json({
+      code: HttpStatus.OK,
+      status: "Ok",
+      data: product,
+    });
+  },
+);
 
 productRouter.get("/", async (c) => {
   const query = c.req.query();

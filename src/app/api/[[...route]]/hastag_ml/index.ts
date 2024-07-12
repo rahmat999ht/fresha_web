@@ -5,7 +5,13 @@ import * as hastagService from "../../../../services/hastag_ml.service";
 import { authMiddleware } from "../auth/auth.middelware";
 import logger from "~/utils/logger";
 import { HttpStatus } from "~/utils/http_status";
-import { InputCreateHastagMl } from "~/repository/hastag_ml";
+import { zValidator } from "@hono/zod-validator";
+import { z } from "zod";
+
+export const postHastagMl = z.object({
+  name: z.string().min(2, "nama harus di isi"),
+  custamerId: z.string().min(1, "custamerId harus di isi"),
+});
 
 const hastagMlRouter = new Hono();
 
@@ -55,9 +61,16 @@ hastagMlRouter.get("/:id", async (c) => {
   });
 });
 
-hastagMlRouter.post("/", async (c) => {
-  const data: InputCreateHastagMl = await c.req.json();
-  const hastagMl = await hastagService.createHastagSer(data);
+hastagMlRouter.post("/", zValidator("json", postHastagMl), async (c) => {
+  const body = c.req.valid("json");
+
+  const val = postHastagMl.safeParse(body);
+  if (!val.success) return c.text("Invalid!", 500);
+
+  const hastagMl = await hastagService.createHastagSer({
+    name: body.name,
+    custamerId: body.custamerId,
+  });
 
   logger.debug(hastagMl);
 
