@@ -1,14 +1,12 @@
 import type { HastagMl, Prisma } from "@prisma/client";
 import { db } from "~/server/db";
 
-export type InputCreateHastagMl ={
-  name : string,
-  custamerId : string,
-}
+export type InputCreateHastagMl = {
+  name: string;
+  custamerId: string;
+};
 
-export function createHastag(
-  input: InputCreateHastagMl,
-): Promise<HastagMl> {
+export function createHastag(input: InputCreateHastagMl): Promise<HastagMl> {
   const hastagMl = db.hastagMl.create({
     data: {
       name: input.name,
@@ -17,4 +15,21 @@ export function createHastag(
   });
 
   return hastagMl;
+}
+
+export function getsHastagMl(): Promise<HastagMl[]> {
+  return db.hastagMl.findMany() as Promise<HastagMl[]>;
+}
+
+export function getsHastagMlCount(): Promise<number> {
+  return db.hastagMl.count() as Promise<number>;
+}
+
+export function getHastagMlFirst(id: string): Promise<HastagMl> {
+  return db.hastagMl.findFirst({
+    where: { id },
+    include: {
+      Custamer: true,
+    },
+  }) as Promise<HastagMl>;
 }

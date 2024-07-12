@@ -374,7 +374,11 @@ const ProducVtiew = (props: Props) => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="success" endContent={<PlusIcon />} onClick={() => router.push('/dashboard/products/addProduct')}>
+            <Button
+              color="success"
+              endContent={<PlusIcon />}
+              onClick={() => router.push("/dashboard/products/addProduct")}
+            >
               Add New
             </Button>
           </div>
