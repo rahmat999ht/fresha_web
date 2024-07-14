@@ -17,6 +17,20 @@ export function getOrderFirst(id: string): Promise<Order> {
   }) as Promise<Order>;
 }
 
+export function getOrderCustamer(idCus: string): Promise<Order[]> {
+  return db.order.findMany({
+    where: { orderById : idCus },
+    orderBy: { createdAt: "desc" },
+    include: {
+      listProduct: {
+        include:{
+          product:true,
+        }
+      },
+    },
+  }) as Promise<Order[]>;
+}
+
 export function getsOrder(): Promise<Order[]> {
   return db.order.findMany() as Promise<Order[]>;
 }

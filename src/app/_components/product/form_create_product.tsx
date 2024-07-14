@@ -31,6 +31,34 @@ export const FormCreateProduct: NextPage = () => {
     }[]
   >([]);
 
+  // const daftarNamaSayuran: string[] = [
+  //   "Bawang merah",
+  //   "Bawang putih",
+  //   "Bawang daun",
+  //   "Kentang",
+  //   "Kubis",
+  //   "Kembang kol",
+  //   "Petsai/sawi",
+  //   "Wortel",
+  //   "Lobak",
+  //   "Kacang merah",
+  //   "Kacang panjang",
+  //   "Cabai besar",
+  //   "Cabai rawit",
+  //   "Tomat",
+  //   "Terong",
+  //   "Buncis",
+  //   "Ketimun",
+  //   "Labu siam",
+  //   "Kangkong",
+  //   "Bayam",
+  //   "Melinjo",
+  //   "Paprika",
+  //   "Jamur",
+  //   "Petai",
+  //   "Jengkol",
+  // ];
+
   const imageRef = useRef<HTMLImageElement | null>(null);
   const textInputRef = useRef<HTMLInputElement | null>();
 
@@ -248,7 +276,12 @@ export const FormCreateProduct: NextPage = () => {
               required
               className="bg-gray-60  block w-full rounded-lg p-2 py-3 text-sm text-gray-900"
             >
-              <option selected>Choose a category</option>
+              <option selected>Pilih jenis sayuran</option>
+              {/* {daftarNamaSayuran.map((sayuran) => (
+                <option key={sayuran} value={sayuran}>
+                  {sayuran}
+                </option>
+              ))} */}
               <option value="Daun">Daun</option>
               <option value="Batang">Batang</option>
               <option value="Akar">Akar</option>

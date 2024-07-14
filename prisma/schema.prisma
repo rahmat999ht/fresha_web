@@ -100,12 +100,12 @@ model Order {
     status String
     totBuy Int
     // amount   Int
+    orderById   String
+    listProduct ProductsOnOrder[]
+    orderBy     Custamer          @relation(fields: [orderById], references: [id], onDelete: Cascade)
 
     createdAt   DateTime          @default(now())
     updatedAt   DateTime          @updatedAt
-    orderBy     Custamer          @relation(fields: [orderById], references: [id], onDelete: Cascade)
-    orderById   String
-    listProduct ProductsOnOrder[]
 }
 
 model Product {
@@ -118,12 +118,12 @@ model Product {
     price     Int
     stock     Int
 
-    createdAt   DateTime          @default(now())
-    updatedAt   DateTime          @updatedAt
-    createdBy   User              @relation(fields: [createdById], references: [id], onDelete: Cascade)
     createdById String
     listOrder   ProductsOnOrder[]
+    createdBy   User              @relation(fields: [createdById], references: [id], onDelete: Cascade)
 
+    createdAt   DateTime          @default(now())
+    updatedAt   DateTime          @updatedAt
     @@index([name])
 }
 

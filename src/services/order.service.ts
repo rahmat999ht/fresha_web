@@ -27,4 +27,10 @@ export const getOrder = async (id: string) => {
   return order;
 };
 
+export const getOrderByCustamer = async (idCUs: string) => {
+  const order = await orderRepo.getOrderCustamer(idCUs);
+
+  return order;
+};
+
 

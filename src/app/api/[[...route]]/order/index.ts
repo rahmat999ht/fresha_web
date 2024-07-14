@@ -73,4 +73,17 @@ orderRouter.post(
   },
 );
 
+orderRouter.get("/:id_cus", async (c) => {
+  const { id_cus } = c.req.param();
+  const order = await orderService.getOrderByCustamer(id_cus);
+
+  logger.debug(order);
+
+  return c.json({
+    code: HttpStatus.OK,
+    status: "Ok",
+    data: order,
+  });
+});
+
 export default orderRouter;

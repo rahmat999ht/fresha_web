@@ -28,11 +28,11 @@ export function getCustamerFirst(id: string) {
     where: { id },
     include: {
       riwHastag: true,
-      riwPes: {
-        include: {
-          listProduct: true,
-        },
-      },
+      // riwPes: {
+      //   include: {
+      //     listProduct: true,
+      //   },
+      // },
     },
   });
 }
