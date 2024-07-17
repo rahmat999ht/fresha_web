@@ -1,7 +1,7 @@
 
 import * as hastagRepo from "~/repository/hastag_ml";
-import { InputCreateHastagMl } from "~/repository/hastag_ml";
-import pagination, { TQueryPage } from "~/utils/pagination";
+import { type InputCreateHastagMl } from "~/repository/hastag_ml";
+import pagination, { type TQueryPage } from "~/utils/pagination";
 
 export const createHastagSer = async (create: InputCreateHastagMl) => {
   const hastag = await hastagRepo.createHastag(create);
@@ -27,3 +27,10 @@ export const getHastagMl = async (id: string) => {
 
   return hastagMl;
 };
+
+export const getHastagWhereCustamer = async (id: string) => {
+  const hastagMl = await hastagRepo.getHastagMlWhereIdCus(id);
+
+  return hastagMl;
+};
+

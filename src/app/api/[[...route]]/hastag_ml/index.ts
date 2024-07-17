@@ -28,12 +28,22 @@ hastagMlRouter.get("/", async (c) => {
   const query = c.req.query();
 
   const { id } = query;
+  const { id_cus } = query;
   if (id) {
     const hastagMl = await hastagService.getHastagMl(id);
     logger.debug(hastagMl);
     return c.json({
       code: HttpStatus.OK,
-      status: "Ok",
+      status: "Get id hastag success",
+      data: hastagMl,
+    });
+  }
+  if (id_cus) {
+    const hastagMl = await hastagService.getHastagWhereCustamer(id_cus);
+    logger.debug(hastagMl);
+    return c.json({
+      code: HttpStatus.OK,
+      status: "Get where id custamer success",
       data: hastagMl,
     });
   }
@@ -43,8 +53,21 @@ hastagMlRouter.get("/", async (c) => {
 
   return c.json({
     code: HttpStatus.OK,
-    status: "Ok",
+    status: "Get All Success",
     ...hastagMls,
+  });
+});
+
+hastagMlRouter.get("/:id_cus", async (c) => {
+  const { id_cus } = c.req.param();
+  const hastagMl = await hastagService.getHastagWhereCustamer(id_cus);
+
+  logger.debug(hastagMl);
+
+  return c.json({
+    code: HttpStatus.OK,
+    status: "Get where id custamer success",
+    data: hastagMl,
   });
 });
 
@@ -56,7 +79,7 @@ hastagMlRouter.get("/:id", async (c) => {
 
   return c.json({
     code: HttpStatus.OK,
-    status: "Ok",
+    status: "Get id hastag success",
     data: hastagMl,
   });
 });
@@ -76,7 +99,7 @@ hastagMlRouter.post("/", zValidator("json", postHastagMl), async (c) => {
 
   return c.json({
     code: HttpStatus.OK,
-    status: "Ok",
+    status: "Post success Ok",
     data: hastagMl,
   });
 });

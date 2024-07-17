@@ -1,4 +1,4 @@
-import type { HastagMl, Prisma } from "@prisma/client";
+import type { HastagMl } from "@prisma/client";
 import { db } from "~/server/db";
 
 export type InputCreateHastagMl = {
@@ -32,4 +32,10 @@ export function getHastagMlFirst(id: string): Promise<HastagMl> {
       Custamer: true,
     },
   }) as Promise<HastagMl>;
+}
+
+export function getHastagMlWhereIdCus(id: string): Promise<HastagMl[]> {
+  return db.hastagMl.findMany({
+    where: { custamerId: id },
+  }) as Promise<HastagMl[]>;
 }
