@@ -347,7 +347,7 @@ const ProducVtiew = (props: Props) => {
                 ))}
               </DropdownMenu>
             </Dropdown> */}
-            <Dropdown>
+            {/* <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
@@ -373,7 +373,7 @@ const ProducVtiew = (props: Props) => {
                   </DropdownItem>
                 ))}
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
             <Button
               color="success"
               endContent={<PlusIcon />}

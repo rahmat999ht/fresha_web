@@ -306,7 +306,7 @@ const TransactionView = (props: Props) => {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Dropdown>
+            {/* <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
@@ -358,7 +358,7 @@ const TransactionView = (props: Props) => {
                   </DropdownItem>
                 ))}
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
             {/* <Button color="success" endContent={<PlusIcon />}>
               Add New
             </Button> */}

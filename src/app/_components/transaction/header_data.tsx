@@ -10,7 +10,9 @@ type Props = {
 
 const CardHeaderTransaction = (props: Props) => {
   const orderDone = props.data.filter((item) => item.status == "done");
-  const orderProcessed = props.data.filter((item) => item.status == "processed");
+  const orderProcessed = props.data.filter(
+    (item) => item.status == "processed",
+  );
   const orderPending = props.data.filter((item) => item.status == "pending");
 
   const cardsHeader = [
@@ -28,11 +30,12 @@ const CardHeaderTransaction = (props: Props) => {
       id: 3,
       title: "Processed",
       number: orderProcessed.length,
-    }, {
-      id: 4,
-      title: "Pending",
-      number: orderPending.length,
     },
+    // {
+    //   id: 4,
+    //   title: "Pending",
+    //   number: orderPending.length,
+    // },
   ];
   return (
     <div className="grid grid-cols-4 flex-wrap gap-x-4 sm:flex-wrap">
