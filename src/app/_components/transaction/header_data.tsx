@@ -38,7 +38,7 @@ const CardHeaderTransaction = (props: Props) => {
     // },
   ];
   return (
-    <div className="grid grid-cols-4 flex-wrap gap-x-4 sm:flex-wrap">
+    <div className="grid grid-cols-3 flex-wrap gap-x-4 sm:flex-wrap">
       {cardsHeader.map((item) => (
         <Cards item={item} key={item.id} />
       ))}
