@@ -14,55 +14,63 @@ export const stockSchema = z.object({
 
 const productRouter = new Hono();
 
-productRouter.patch(
-  "/",
-  zValidator("json", stockSchema),
-  async (c) => {
-    const body = c.req.valid("json");
+productRouter.patch("/", zValidator("json", stockSchema), async (c) => {
+  const body = c.req.valid("json");
 
-    const val = stockSchema.safeParse(body);
-    if (!val.success) return c.text("Invalid!", 500);
+  const val = stockSchema.safeParse(body);
+  if (!val.success) return c.text("Invalid!", 500);
 
-    const product = await productService.decreaseProductStock(
-      body.id,
-      body.stock,
-    );
+  const product = await productService.decreaseProductStock(
+    body.id,
+    body.stock,
+  );
 
-    logger.debug(product);
+  logger.debug(product);
 
-    if (!product) {
-      return c.json({
-        code: HttpStatus.NOT_FOUND,
-        status: "Not Found",
-        message: "Product not found",
-      });
-    }
-
+  if (!product) {
     return c.json({
-      code: HttpStatus.OK,
-      status: "Ok",
-      data: product,
+      code: HttpStatus.NOT_FOUND,
+      status: "Not Found",
+      message: "Product not found",
     });
-  },
-);
+  }
+
+  return c.json({
+    code: HttpStatus.OK,
+    status: "Ok",
+    data: product,
+  });
+});
 
 productRouter.get("/", async (c) => {
   const query = c.req.query();
 
   const { id } = query;
-  const hastag1 = query.hastag1;
-  const hastag2 = query.hastag2;
-  if (hastag1 && hastag2) {
-    const productsRekomen = await productService.getsRekomenProduct([
-      hastag1,
-      hastag2,
-    ]);
+  // const hastag1 = query.hastag1;
+  // const hastag2 = query.hastag2;
+  const hastags = query.hastags;
+
+  if (hastags) {
+    const hastagList = hastags.split(","); // Memisahkan string menjadi array
+    const productsRekomen = await productService.getsRekomenProduct(hastagList);
     return c.json({
       code: HttpStatus.OK,
-      status: "hastag_ml Ok",
+      status: "Response hastag_ml Ok",
       data: productsRekomen,
     });
   }
+
+  // if (hastag1 && hastag2) {
+  //   const productsRekomen = await productService.getsRekomenProduct([
+  //     hastag1,
+  //     hastag2,
+  //   ]);
+  //   return c.json({
+  //     code: HttpStatus.OK,
+  //     status: "hastag_ml Ok",
+  //     data: productsRekomen,
+  //   });
+  // }
 
   if (id) {
     const product = await productService.getProduct(id);
@@ -108,13 +116,24 @@ productRouter.get("/:id", async (c) => {
   });
 });
 
-productRouter.get("/:hastag1/:hastag2", async (c) => {
-  const { hastag1 } = c.req.param();
-  const { hastag2 } = c.req.param();
-  const productsRekomen = await productService.getsRekomenProduct([
-    hastag1,
-    hastag2,
-  ]);
+// productRouter.get("/:hastag1/:hastag2", async (c) => {
+//   const { hastag1 } = c.req.param();
+//   const { hastag2 } = c.req.param();
+//   const productsRekomen = await productService.getsRekomenProduct([
+//     hastag1,
+//     hastag2,
+//   ]);
+//   return c.json({
+//     code: HttpStatus.OK,
+//     status: "Response hastag_ml Ok",
+//     data: productsRekomen,
+//   });
+// });
+
+productRouter.get("/:hastags", async (c) => {
+  const { hastags } = c.req.param();
+  const hastagList = hastags.split(","); // Memisahkan string menjadi array
+  const productsRekomen = await productService.getsRekomenProduct(hastagList);
   return c.json({
     code: HttpStatus.OK,
     status: "Response hastag_ml Ok",
