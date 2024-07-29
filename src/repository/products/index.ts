@@ -35,8 +35,13 @@ export function getProductFirst(id: string): Promise<Product | null> {
 //     orderBy: { createdAt: "desc" },
 //   });
 // }
+type TFIDFDetails = {
+  tf: number;
+  idf: number;
+  tfidf: number;
+};
 
-type TFIDF = Record<string, number>; // Changed from index signature to Record
+type TFIDF = Record<string, TFIDFDetails>;
 type ProductWithTFIDF = Product & { tfidf: TFIDF };
 
 // Fungsi untuk menghitung TF
@@ -62,7 +67,11 @@ function calculateTFIDF(
   terms.forEach((term) => {
     const tf = calculateTF(term, document);
     const idf = calculateIDF(term, allDocuments);
-    tfidf[term] = tf * idf;
+    tfidf[term] = {
+      tf,
+      idf,
+      tfidf: tf * idf,
+    };
   });
   return tfidf;
 }
@@ -71,22 +80,22 @@ function calculateTFIDF(
 function cosineSimilarity(vecA: TFIDF, vecB: TFIDF): number {
   const intersection = Object.keys(vecA).filter((term) => term in vecB);
   const dotProduct = intersection.reduce(
-    (sum, term) => sum + (vecA[term] ?? 0) * (vecB[term] ?? 0),
+    (sum, term) => sum + (vecA[term]?.tfidf ?? 0) * (vecB[term]?.tfidf ?? 0),
     0,
   );
 
   const magnitudeA = Math.sqrt(
-    Object.values(vecA).reduce((sum, val) => sum + val * val, 0),
+    Object.values(vecA).reduce((sum, val) => sum + val.tfidf * val.tfidf, 0),
   );
   const magnitudeB = Math.sqrt(
-    Object.values(vecB).reduce((sum, val) => sum + val * val, 0),
+    Object.values(vecB).reduce((sum, val) => sum + val.tfidf * val.tfidf, 0),
   );
   return dotProduct / (magnitudeA * magnitudeB);
 }
 
 export async function getsProductRekomen(
   list_hastag: string[],
-): Promise<Product[]> {
+): Promise<ProductWithTFIDF[]> {
   // Mengambil produk dari database berdasarkan hashtag yang diberikan pengguna
   const products = await db.product.findMany({
     where: { hastag_ml: { in: list_hastag } },
@@ -109,7 +118,7 @@ export async function getsProductRekomen(
 
   // Memfilter produk yang memiliki nilai TF-IDF tidak null
   const filteredProductTFIDFs = productTFIDFs.filter((product) => {
-    return Object.values(product.tfidf).some((value) => value !== null);
+    return Object.values(product.tfidf).some((value) => value.tfidf !== null);
   });
 
   // Mengurutkan produk berdasarkan kesamaan cosine tertinggi
@@ -119,13 +128,5 @@ export async function getsProductRekomen(
     return simB - simA; // Urutkan berdasarkan kesamaan tertinggi
   });
 
-  return filteredProductTFIDFs.map((product) => product);
-
-  // productTFIDFs.sort((a, b) => {
-  //   const simA = cosineSimilarity(a.tfidf, userTFIDF);
-  //   const simB = cosineSimilarity(b.tfidf, userTFIDF);
-  //   return simB - simA; // Urutkan berdasarkan kesamaan tertinggi
-  // });
-
-  // return productTFIDFs.map(product => product);
+  return filteredProductTFIDFs;
 }
