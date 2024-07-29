@@ -46,14 +46,14 @@ type ProductWithTFIDF = Product & { tfidf: TFIDF };
 
 // Fungsi untuk menghitung TF
 function calculateTF(term: string, document: string[]): number {
-  const termFrequency = document.filter(word => word === term).length;
+  const termFrequency = document.filter((word) => word === term).length;
   return termFrequency > 0 ? 1 + Math.log(termFrequency) : 0;
 }
 
 // Fungsi untuk menghitung IDF
 function calculateIDF(term: string, allDocuments: string[][]): number {
   const docCount = allDocuments.length;
-  const docsWithTerm = allDocuments.filter(doc => doc.includes(term)).length;
+  const docsWithTerm = allDocuments.filter((doc) => doc.includes(term)).length;
   return Math.log((docCount + 1) / (1 + docsWithTerm));
 }
 
@@ -103,14 +103,20 @@ export async function getsProductRekomen(
   });
 
   // Memisahkan deskripsi produk menjadi kata-kata
-  const productDocuments = products.map((product) => product.hastag_ml.split(" "));
+  const productDocuments = products.map((product) =>
+    product.hastag_ml.split(" "),
+  );
   // Menggabungkan semua kata yang ada dalam deskripsi produk menjadi satu set unik
   const allTerms = Array.from(new Set(productDocuments.flat()));
 
   // Menghitung nilai TF-IDF untuk setiap produk
   const productTFIDFs: ProductWithTFIDF[] = products.map((product) => ({
     ...product,
-    tfidf: calculateTFIDF(allTerms, product.hastag_ml.split(" "), productDocuments),
+    tfidf: calculateTFIDF(
+      allTerms,
+      product.hastag_ml.split(" "),
+      productDocuments,
+    ),
   }));
 
   // Menghitung nilai TF-IDF untuk hashtag pengguna
