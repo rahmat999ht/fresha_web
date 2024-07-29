@@ -36,7 +36,7 @@ export function getProductFirst(id: string): Promise<Product | null> {
 //   });
 // }
 
-type TFIDF = { [key: string]: number };
+type TFIDF = Record<string, number>; // Changed from index signature to Record
 type ProductWithTFIDF = Product & { tfidf: TFIDF };
 
 // Fungsi untuk menghitung TF

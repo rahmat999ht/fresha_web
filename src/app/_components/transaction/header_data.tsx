@@ -13,7 +13,7 @@ const CardHeaderTransaction = (props: Props) => {
   const orderProcessed = props.data.filter(
     (item) => item.status == "processed",
   );
-  const orderPending = props.data.filter((item) => item.status == "pending");
+  // const orderPending = props.data.filter((item) => item.status == "pending");
 
   const cardsHeader = [
     {

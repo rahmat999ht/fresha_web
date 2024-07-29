@@ -4,7 +4,7 @@ import { type ICustomer } from "~/type/customer";
 import CardHeaderCustamer from "~/app/_components/custamer/header_data";
 
 import { api } from "~/trpc/react";
-import { columns, statusOptions } from "public/data/users";
+import { columns } from "public/data/users";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -24,17 +24,17 @@ import {
   Tooltip,
   type SortDescriptor,
   Input,
-  Dropdown,
+  // Dropdown,
   Button,
   Pagination,
-  DropdownMenu,
-  DropdownItem,
-  DropdownTrigger,
+  // DropdownMenu,
+  // DropdownItem,
+  // DropdownTrigger,
 } from "@nextui-org/react";
 import OpenModal, { type IModal } from "~/app/_components/open_modal";
 import { SearchIcon } from "public/icons/SearchIcon";
-import { capitalize } from "~/utils/capitalize";
-import { ChevronDownIcon } from "public/icons/ChevronDownIcon";
+// import { capitalize } from "~/utils/capitalize";
+// import { ChevronDownIcon } from "public/icons/ChevronDownIcon";
 
 type Props = {
   data: Promise<ICustomer[]>;
@@ -62,10 +62,10 @@ const CustamerView = (props: Props) => {
 
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = React.useState(
+  const [visibleColumns, ] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [statusFilter, setStatusFilter] = React.useState("all");
+  // const [statusFilter, setStatusFilter] = React.useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "phone",
@@ -104,23 +104,23 @@ const CustamerView = (props: Props) => {
         user.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredUsers = filteredUsers.filter((user) => {
-        let value: string;
-        if (user.isActive == true) {
-          value = "Active";
-        } else {
-          value = "non Active";
-        }
-        return Array.from(statusFilter).includes(value);
-      });
-    }
+    // if (
+    //   statusFilter !== "all" &&
+    //   Array.from(statusFilter).length !== statusOptions.length
+    // ) {
+    //   filteredUsers = filteredUsers.filter((user) => {
+    //     let value: string;
+    //     if (user.isActive == true) {
+    //       value = "Active";
+    //     } else {
+    //       value = "non Active";
+    //     }
+    //     return Array.from(statusFilter).includes(value);
+    //   });
+    // }
 
     return filteredUsers;
-  }, [originalData, filterValue, hasSearchFilter, statusFilter]);
+  }, [originalData, filterValue, hasSearchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -397,8 +397,8 @@ const CustamerView = (props: Props) => {
   }, [
     filterValue,
     onSearchChange,
-    statusFilter,
-    visibleColumns,
+    // statusFilter,
+    // visibleColumns,
     originalData,
     onRowsPerPageChange,
     onClear,

@@ -2,10 +2,10 @@
 
 import {
   Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
+  // Dropdown,
+  // DropdownItem,
+  // DropdownMenu,
+  // DropdownTrigger,
   Input,
   type SortDescriptor,
   Table,
@@ -22,8 +22,8 @@ import {
 
 import { type IProduct } from "~/type/product";
 import { SearchIcon } from "public/icons/SearchIcon";
-import { ChevronDownIcon } from "public/icons/ChevronDownIcon";
-import { capitalize } from "~/utils/capitalize";
+// import { ChevronDownIcon } from "public/icons/ChevronDownIcon";
+// import { capitalize } from "~/utils/capitalize";
 import { PlusIcon } from "public/icons/PlusIcon";
 // import { VerticalDotsIcon } from "public/icons/VerticalDotsIcon";
 import { columns } from "public/data/products";
@@ -54,7 +54,7 @@ const ProducVtiew = (props: Props) => {
 
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = React.useState(
+  const [visibleColumns,] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
   // const [statusFilter, setStatusFilter] = React.useState("all");
@@ -404,8 +404,7 @@ const ProducVtiew = (props: Props) => {
   }, [
     filterValue,
     onSearchChange,
-    // statusFilter,
-    visibleColumns,
+    // visibleColumns,
     originalData,
     onRowsPerPageChange,
     onClear,

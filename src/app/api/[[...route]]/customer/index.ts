@@ -4,7 +4,7 @@ import * as custamerService from "../../../../services/customer.service";
 import { authMiddleware } from "../auth/auth.middelware";
 import logger from "~/utils/logger";
 import { HttpStatus } from "~/utils/http_status";
-import { customerSchema, ICustomerUpdate } from "~/type/customer";
+import { customerSchema } from "~/type/customer";
 import { queryPageSchema } from "~/utils/pagination";
 import { zValidator } from "@hono/zod-validator";
 

@@ -4,10 +4,10 @@ import {
   Button,
   Chip,
   type ChipProps,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
+  // Dropdown,
+  // DropdownItem,
+  // DropdownMenu,
+  // DropdownTrigger,
   Input,
   Pagination,
   type SortDescriptor,
@@ -23,12 +23,12 @@ import {
 import React from "react";
 import { type IOrder } from "~/type/order";
 import CardHeaderTransaction from "~/app/_components/transaction/header_data";
-import { columns, statusOptions } from "public/data/transactions";
+import { columns } from "public/data/transactions";
 import OpenModal, { type IModal } from "~/app/_components/open_modal";
 import { EyeIcon } from "public/icons/EyeIcon";
 import { SearchIcon } from "public/icons/SearchIcon";
-import { ChevronDownIcon } from "public/icons/ChevronDownIcon";
-import { capitalize } from "~/utils/capitalize";
+// import { ChevronDownIcon } from "public/icons/ChevronDownIcon";
+// import { capitalize } from "~/utils/capitalize";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import { EditIcon } from "public/icons/EditIcon";
@@ -60,10 +60,10 @@ const TransactionView = (props: Props) => {
 
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = React.useState(
+  const [visibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [statusFilter, setStatusFilter] = React.useState("all");
+  // const [statusFilter, setStatusFilter] = React.useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: "totPro",
@@ -102,17 +102,17 @@ const TransactionView = (props: Props) => {
         user.orderBy.email!.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredUsers = filteredUsers.filter((user) => {
-        return Array.from(statusFilter).includes(user.status);
-      });
-    }
+    // if (
+    //   statusFilter !== "all" &&
+    //   Array.from(statusFilter).length !== statusOptions.length
+    // ) {
+    //   filteredUsers = filteredUsers.filter((user) => {
+    //     return Array.from(statusFilter).includes(user.status);
+    //   });
+    // }
 
     return filteredUsers;
-  }, [originalData, filterValue, hasSearchFilter, statusFilter]);
+  }, [originalData, filterValue, hasSearchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -385,8 +385,8 @@ const TransactionView = (props: Props) => {
   }, [
     filterValue,
     onSearchChange,
-    statusFilter,
-    visibleColumns,
+    // statusFilter,
+    // visibleColumns,
     originalData,
     onRowsPerPageChange,
     onClear,
