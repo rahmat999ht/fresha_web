@@ -65,6 +65,13 @@ export const FormUpdateProduct = ({ data }: UpdateProductProps) => {
         setResults(results);
         console.log(`panjang result${results.length}`);
         setIdentifyLoading(false);
+        if (results.length > 0) {
+          const allHastags = results
+            .map((result) => result.className)
+            .join(", ");
+          updateHastag(allHastags);
+          console.log(allHastags, "hasil result");
+        }
       } else {
         console.error("Image element is undefined."); // Handle the case where image element is undefined
         setIdentifyLoading(false);
@@ -85,6 +92,10 @@ export const FormUpdateProduct = ({ data }: UpdateProductProps) => {
       setSelectedImage(URL.createObjectURL(file ?? new Blob()));
       setSelectedFile(file);
     }
+  };
+
+  const updateHastag = (hastag: string) => {
+    setHastag(hastag);
   };
 
   const createNewProduct = api.product.update.useMutation({

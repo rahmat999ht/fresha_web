@@ -46,8 +46,8 @@ productRouter.get("/", async (c) => {
   const query = c.req.query();
 
   const { id } = query;
-  // const hastag1 = query.hastag1;
-  // const hastag2 = query.hastag2;
+  const hastag1 = query.hastag1;
+  const hastag2 = query.hastag2;
   const hastags = query.hastags;
 
   if (hastags) {
@@ -60,17 +60,17 @@ productRouter.get("/", async (c) => {
     });
   }
 
-  // if (hastag1 && hastag2) {
-  //   const productsRekomen = await productService.getsRekomenProduct([
-  //     hastag1,
-  //     hastag2,
-  //   ]);
-  //   return c.json({
-  //     code: HttpStatus.OK,
-  //     status: "hastag_ml Ok",
-  //     data: productsRekomen,
-  //   });
-  // }
+  if (hastag1 && hastag2) {
+    const productsRekomen = await productService.getsRekomenProduct([
+      hastag1,
+      hastag2,
+    ]);
+    return c.json({
+      code: HttpStatus.OK,
+      status: "hastag_ml Ok",
+      data: productsRekomen,
+    });
+  }
 
   if (id) {
     const product = await productService.getProduct(id);
@@ -116,19 +116,19 @@ productRouter.get("/:id", async (c) => {
   });
 });
 
-// productRouter.get("/:hastag1/:hastag2", async (c) => {
-//   const { hastag1 } = c.req.param();
-//   const { hastag2 } = c.req.param();
-//   const productsRekomen = await productService.getsRekomenProduct([
-//     hastag1,
-//     hastag2,
-//   ]);
-//   return c.json({
-//     code: HttpStatus.OK,
-//     status: "Response hastag_ml Ok",
-//     data: productsRekomen,
-//   });
-// });
+productRouter.get("/:hastag1/:hastag2", async (c) => {
+  const { hastag1 } = c.req.param();
+  const { hastag2 } = c.req.param();
+  const productsRekomen = await productService.getsRekomenProduct([
+    hastag1,
+    hastag2,
+  ]);
+  return c.json({
+    code: HttpStatus.OK,
+    status: "Response hastag_ml Ok",
+    data: productsRekomen,
+  });
+});
 
 productRouter.get("/:hastags", async (c) => {
   const { hastags } = c.req.param();

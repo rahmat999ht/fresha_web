@@ -8,6 +8,7 @@ import CameraIcon from "public/icons/CameraIcon";
 import { type NextPage } from "next";
 import { supabase } from "~/utils/supabase";
 import * as mobilenet from "@tensorflow-models/mobilenet";
+import styles from "./product.module.css";
 
 export const FormCreateProduct: NextPage = () => {
   const router = useRouter();
@@ -87,8 +88,11 @@ export const FormCreateProduct: NextPage = () => {
         console.log(`panjang result${results.length}`);
         setIdentifyLoading(false);
         if (results.length > 0) {
-          updateHastag(results[0]?.className ?? "result kosong");
-          console.log(results[0]?.className ?? "result kosong", "hasil result");
+          const allHastags = results
+            .map((result) => result.className)
+            .join(", ");
+          updateHastag(allHastags);
+          console.log(allHastags, "hasil result");
         }
       } else {
         console.error("Image element is undefined."); // Handle the case where image element is undefined
@@ -223,23 +227,18 @@ export const FormCreateProduct: NextPage = () => {
             {results.length > 0 ? (
               <div className="imageResult">
                 {results.map((result, index) => {
-                  const bgColor =
-                    index === 0
-                      ? "bg-blue-500"
-                      : `bg-gray-${(index + 1) * 200}`;
                   return (
-                    <div
-                      key={result.className}
-                      className={`result border ${bgColor}`}
-                    >
-                      <span className="name">{result.className}</span>
-                      <span className="confidence">
-                        Confidence level:{" "}
-                        {(result.probability * 100).toFixed(2)}%{" "}
+                    <div className={styles.borderCard} key={result.className}>
+                      <span className={styles.name}>{result.className}</span>
+                      <div className={styles.confidence}>
+                        <span className={styles.confidenceText}>
+                          Confidence level:{" "}
+                          {(result.probability * 100).toFixed(2)}%
+                        </span>
                         {index === 0 && (
-                          <span className="bestGuess">Best Guess</span>
+                          <span className={styles.bestGuess}>Best Guess</span>
                         )}
-                      </span>
+                      </div>
                     </div>
                   );
                 })}
