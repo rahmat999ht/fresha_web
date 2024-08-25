@@ -9,6 +9,7 @@ import { type NextPage } from "next";
 import { supabase } from "~/utils/supabase";
 import * as mobilenet from "@tensorflow-models/mobilenet";
 import styles from "./product.module.css";
+import "@tensorflow/tfjs";
 
 export const FormCreateProduct: NextPage = () => {
   const router = useRouter();
@@ -32,36 +33,7 @@ export const FormCreateProduct: NextPage = () => {
     }[]
   >([]);
 
-  // const daftarNamaSayuran: string[] = [
-  //   "Bawang merah",
-  //   "Bawang putih",
-  //   "Bawang daun",
-  //   "Kentang",
-  //   "Kubis",
-  //   "Kembang kol",
-  //   "Petsai/sawi",
-  //   "Wortel",
-  //   "Lobak",
-  //   "Kacang merah",
-  //   "Kacang panjang",
-  //   "Cabai besar",
-  //   "Cabai rawit",
-  //   "Tomat",
-  //   "Terong",
-  //   "Buncis",
-  //   "Ketimun",
-  //   "Labu siam",
-  //   "Kangkong",
-  //   "Bayam",
-  //   "Melinjo",
-  //   "Paprika",
-  //   "Jamur",
-  //   "Petai",
-  //   "Jengkol",
-  // ];
-
   const imageRef = useRef<HTMLImageElement | null>(null);
-  const textInputRef = useRef<HTMLInputElement | null>();
 
   const loadModel = async () => {
     setModelLoading(true);
@@ -77,29 +49,27 @@ export const FormCreateProduct: NextPage = () => {
 
   const handleIdentify = async () => {
     setIdentifyLoading(true);
-    if (textInputRef.current) {
-      textInputRef.current.value = "";
+    const imageElement = imageRef.current;
+
+    if (!imageElement) {
+      console.error("Image element is undefined.");
+      setIdentifyLoading(false);
+      return;
     }
+
     if (model) {
-      const imageElement = imageRef.current;
-      if (imageElement) {
-        const results = await model.classify(imageElement);
-        setResults(results);
-        console.log(`panjang result${results.length}`);
-        setIdentifyLoading(false);
-        if (results.length > 0) {
-          const allHastags = results
-            .map((result) => result.className)
-            .join(", ");
-          updateHastag(allHastags);
-          console.log(allHastags, "hasil result");
-        }
-      } else {
-        console.error("Image element is undefined."); // Handle the case where image element is undefined
-        setIdentifyLoading(false);
+      const predictions = await model.classify(imageElement);
+      setResults(predictions);
+
+      if (results.length > 0) {
+        const allHastags = results.map((result) => result.className).join(", ");
+        updateHastag(allHastags);
+        console.log(allHastags, "hasil result");
       }
+
+      setIdentifyLoading(false);
     } else {
-      console.error("Model is null."); // Handle the case where model is null
+      console.error("Model is null.");
       setIdentifyLoading(false);
     }
   };
@@ -212,7 +182,7 @@ export const FormCreateProduct: NextPage = () => {
                 disabled={identifyLoading}
                 onClick={handleIdentify}
               >
-                {identifyLoading ? "identify..." : "Detect image"}
+                {identifyLoading ? "Identify..." : "Detect image"}
               </Button>
             )}
           </div>
@@ -276,11 +246,6 @@ export const FormCreateProduct: NextPage = () => {
               className="bg-gray-60  block w-full rounded-lg p-2 py-3 text-sm text-gray-900"
             >
               <option selected>Pilih jenis sayuran</option>
-              {/* {daftarNamaSayuran.map((sayuran) => (
-                <option key={sayuran} value={sayuran}>
-                  {sayuran}
-                </option>
-              ))} */}
               <option value="Daun">Daun</option>
               <option value="Batang">Batang</option>
               <option value="Akar">Akar</option>
@@ -313,16 +278,16 @@ export const FormCreateProduct: NextPage = () => {
           <div className="mb-6 flex w-full flex-wrap gap-4 md:mb-0 md:flex-nowrap">
             <Input
               isRequired
-              value={price.toString()} // Convert number to string
-              onChange={(e) => setPrice(parseFloat(e.target.value))}
+              value={price.toString()}
+              onChange={(e) => setPrice(Number(e.target.value))}
               type="number"
               variant="flat"
               label="Price"
             />
             <Input
               isRequired
-              value={stock.toString()} // Convert number to string
-              onChange={(e) => setStock(parseInt(e.target.value, 10))}
+              value={stock.toString()}
+              onChange={(e) => setStock(Number(e.target.value))}
               type="number"
               variant="flat"
               label="Stock"
@@ -331,15 +296,15 @@ export const FormCreateProduct: NextPage = () => {
           <Button
             type="submit"
             color="success"
+            onClick={() => {
+              void handleSubmit();
+            }}
             disabled={uploading}
-            onClick={handleSubmit}
           >
-            {uploading ? "Submitting..." : "Submit"}
+            {uploading ? "Uploading..." : "Submit"}
           </Button>
         </div>
       </form>
     </div>
   );
 };
-
-// export default CreateProduct;

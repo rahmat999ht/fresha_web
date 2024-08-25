@@ -136,7 +136,7 @@ productRouter.get("/:hastags", async (c) => {
   const productsRekomen = await productService.getsRekomenProduct(hastagList);
   return c.json({
     code: HttpStatus.OK,
-    status: "Response hastag_ml Ok",
+    status: "Response list hastag_ml Ok",
     data: productsRekomen,
   });
 });

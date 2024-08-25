@@ -64,7 +64,7 @@ function calculateTFIDF(
   documentTerms: string[],
   allDocuments: string[][],
 ) {
-  const tfidf: { [term: string]: { tf: number; idf: number; tfidf: number } } =
+  const tfidf: Record<string, { tf: number; idf: number; tfidf: number }> =
     {};
 
   allTerms.forEach((term) => {
