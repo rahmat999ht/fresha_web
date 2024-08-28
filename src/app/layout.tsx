@@ -10,7 +10,7 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
 });
-
+ 
 export const metadata = {
   title: "Fresha",
   description: "Web Admin",

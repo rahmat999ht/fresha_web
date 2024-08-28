@@ -39,8 +39,8 @@ export function getsOrderCount(): Promise<number> {
   return db.order.count() as Promise<number>;
 }
 
-export function createOrderRepo(input: OrderProps): Promise<Order> {
-  return db.order.create({
+export async function createOrderRepo(input: OrderProps): Promise<Order> {
+  const createdOrder = await db.order.create({
     data: {
       status: input.status,
       totBuy: input.totBuy,
@@ -48,7 +48,6 @@ export function createOrderRepo(input: OrderProps): Promise<Order> {
       listProduct: {
         create: input.listProduct.map((product) => ({
           productId: product.productId,
-          // orderId: product.orderId,
           quantity: product.quantity,
           totPrice: product.totPrice,
         })),
@@ -58,7 +57,46 @@ export function createOrderRepo(input: OrderProps): Promise<Order> {
       listProduct: true,
     },
   });
+
+  // Mengurangi stok produk setelah order dibuat
+  await Promise.all(
+    input.listProduct.map(async (product) => {
+      await db.product.update({
+        where: { id: product.productId },
+        data: {
+          stock: {
+            decrement: product.quantity,
+          },
+        },
+      });
+    })
+  );
+
+
+  // Posting hashtag dan update riwayat hashtag pelanggan
+  await Promise.all(
+    input.listProduct.map(async (product) => {
+      const productDetails = await db.product.findUnique({
+        where: { id: product.productId },
+      });
+
+      if (productDetails) {
+        await db.hastagMl.create({
+          data: {
+            name: productDetails.hastag_ml,
+            custamerId: input.orderById,
+          },
+        });
+
+        // Anda juga dapat melakukan logika tambahan di sini jika diperlukan
+        // misalnya: mengecek apakah hashtag sudah ada sebelumnya, dsb.
+      }
+    })
+  );
+
+  return createdOrder;
 }
+
 
 /*
     Creation order matches the input order

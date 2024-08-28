@@ -66,7 +66,6 @@ export const FormCreateProduct: NextPage = () => {
         updateHastag(allHastags);
         console.log(allHastags, "hasil result");
       }
-
       setIdentifyLoading(false);
     } else {
       console.error("Model is null.");
