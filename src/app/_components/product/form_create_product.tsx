@@ -62,6 +62,7 @@ export const FormCreateProduct: NextPage = () => {
       setResults(predictions);
 
       if (results.length > 0) {
+        updateHastag('');
         const allHastags = results.map((result) => result.className).join(", ");
         updateHastag(allHastags);
         console.log(allHastags, "hasil result");
