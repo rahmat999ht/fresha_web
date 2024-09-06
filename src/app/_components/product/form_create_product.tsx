@@ -100,6 +100,7 @@ export const FormCreateProduct: NextPage = () => {
       setPrice(0);
       setStock(0);
       setSelectedImage("");
+      setResults([]);
       setSelectedFile(undefined);
     },
   });

@@ -107,6 +107,7 @@ export const FormUpdateProduct = ({ data }: UpdateProductProps) => {
       setPrice(0);
       setStock(0);
       setSelectedImage("");
+      setResults([]);
       setSelectedFile(undefined);
     },
   });
