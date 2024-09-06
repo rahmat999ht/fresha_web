@@ -4,7 +4,7 @@
 import React from "react";
 import styles from "./transactions.module.css";
 import { LineChart } from "@mui/x-charts/LineChart";
-import { IOrder } from '~/type/order';
+import { type IOrder } from '~/type/order';
 
 interface TransactionsLineProps {
   orders: IOrder[];

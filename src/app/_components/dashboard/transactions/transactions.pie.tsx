@@ -4,7 +4,7 @@
 import * as React from "react";
 import styles from "./transactions.module.css";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
-import { IProduct } from '~/type/product';
+import { type IProduct } from '~/type/product';
 
 interface PieArcLabelProps {
   products: IProduct[];

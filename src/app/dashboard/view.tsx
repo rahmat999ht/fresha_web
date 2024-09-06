@@ -57,7 +57,7 @@ const ViewDashboard: React.FC<Props> = (props: Props) => {
 
     React.useEffect(() => {
         void handleDataDashboard();
-    }, []); // Empty dependency array to run only once when the component mounts
+    },); // Empty dependency array to run only once when the component mounts
 
     const cardsHeaderDash = [
         {
