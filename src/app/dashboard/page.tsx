@@ -1,9 +1,9 @@
 import React from "react";
-import { IProduct } from "~/type/product";
+import { type IProduct } from "~/type/product";
 import { getAllCustomer, getAllOrder, getAllProduct } from "~/services/admin.service";
 import ViewDashboard from "./view";
-import { ICustomer } from "~/type/customer";
-import { IOrder } from "~/type/order";
+import { type ICustomer } from "~/type/customer";
+import { type IOrder } from "~/type/order";
 
 const Dashboard: React.FC = () => {
   const dataProduct: Promise<IProduct[]> = getAllProduct();

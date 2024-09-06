@@ -3,11 +3,12 @@ import { MdSupervisedUserCircle } from "react-icons/md";
 import styles from "./card.module.css";
 import { Card, CardBody } from "@nextui-org/react";
 
+// cards.tsx
 export interface ICardProps {
   item: {
+    id: number;
     title: string;
-    number: number;
-    // change: number;
+    number: string | number; // Mengizinkan number atau string
   };
 }
 

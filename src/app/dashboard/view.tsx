@@ -2,13 +2,13 @@
 
 import { Card, CardBody } from '@nextui-org/react';
 import React from 'react'
-import { IProduct } from '~/type/product';
+import { type IProduct } from '~/type/product';
 import TransactionsLine from '../_components/dashboard/transactions/transactionsLine';
 import PieArcLabel from '../_components/dashboard/transactions/transactions.pie';
 import styles from "../_components/dashboard/dashboard.module.css";
 import Cards from '../_components/dashboard/cards/cards';
-import { IOrder } from '~/type/order';
-import { ICustomer } from '~/type/customer';
+import { type IOrder } from '~/type/order';
+import { type ICustomer } from '~/type/customer';
 
 type Props = {
     products: Promise<IProduct[]>;
@@ -77,15 +77,19 @@ const ViewDashboard: React.FC<Props> = (props: Props) => {
         },
     ];
 
+    if (!loading) {
+        <div>
+            Loading
+        </div>
+    }
+
     return (
         <div className="flex flex-col gap-4">
-            {!loading && (
-                <div className="grid w-full grid-cols-3 flex-wrap gap-x-4 sm:flex-wrap">
-                    {cardsHeaderDash.map((item) => (
-                        <Cards item={item} key={item.id} />
-                    ))}
-                </div>
-            )}
+            <div className="grid w-full grid-cols-3 flex-wrap gap-x-4 sm:flex-wrap">
+                {cardsHeaderDash.map((item) => (
+                    <Cards item={item} key={item.id} />
+                ))}
+            </div>
             <div className="grid w-full grid-cols-2 flex-wrap gap-x-4 sm:flex-wrap">
                 <Card className="px-1 py-1">
                     <CardBody className="overflow-visible py-2">
@@ -97,8 +101,8 @@ const ViewDashboard: React.FC<Props> = (props: Props) => {
                 <Card className="px-1 py-1">
                     <CardBody className="overflow-visible py-2">
                         <div className={styles.container}>
-                            <TransactionsLine  orders={dataOrder}/>
-                        </div> 
+                            <TransactionsLine orders={dataOrder} />
+                        </div>
                     </CardBody>
                 </Card>
             </div>
