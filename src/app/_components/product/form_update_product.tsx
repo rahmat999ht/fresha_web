@@ -66,9 +66,8 @@ export const FormUpdateProduct = ({ data }: UpdateProductProps) => {
         console.log(`panjang result${results.length}`);
         setIdentifyLoading(false);
         if (results.length > 0) {
-          const allHastags = results
-            .map((result) => result.className)
-            .join(", ");
+          updateHastag('');
+          const allHastags = results[0]?.className!;
           updateHastag(allHastags);
           console.log(allHastags, "hasil result");
         }
