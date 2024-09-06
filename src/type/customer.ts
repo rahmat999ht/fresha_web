@@ -18,7 +18,7 @@ export const customerSchema = z.object({
   // email: z.string().email(),
   phone: z.string().min(1, "phone harus diisi"),
   address: z.string().min(1, "address harus diisi"),
-  image: z.string().min(1, "image harus diisi"),
+  image: z.string(),
 });
 
 export interface ICustomer {
